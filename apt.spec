@@ -98,7 +98,7 @@ rm -f po/{POTFILES,Makefile}
 mv po/es_ES.po po/es.po
 mv po/it_IT.po po/it.po
 aclocal -I buildlib
-autoconf
+%{__autoconf}
 CXXFLAGS="%{rpmcflags} -fno-rtti -fno-exceptions"
 %configure \
 	--enable-nls \
