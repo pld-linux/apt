@@ -1,0 +1,389 @@
+diff -Nur apt-0.3.19cnc50.orig/apt-pkg/init.cc apt-0.3.19cnc50/apt-pkg/init.cc
+--- apt-0.3.19cnc50.orig/apt-pkg/init.cc	Tue Jun 26 05:51:24 2001
++++ apt-0.3.19cnc50/apt-pkg/init.cc	Tue Aug 14 23:59:37 2001
+@@ -26,7 +26,7 @@
+    Cnf.Set("APT::Architecture",ARCHITECTURE);
+ 
+    // State
+-   Cnf.Set("Dir::State","/var/state/apt/");
++   Cnf.Set("Dir::State","/var/lib/apt/");
+    Cnf.Set("Dir::State::lists","lists/");
+    
+    /* These really should be jammed into a generic 'Local Database' engine
+diff -Nur apt-0.3.19cnc50.orig/doc/apt-cache.8 apt-0.3.19cnc50/doc/apt-cache.8
+--- apt-0.3.19cnc50.orig/doc/apt-cache.8	Thu Jan  4 22:26:14 2001
++++ apt-0.3.19cnc50/doc/apt-cache.8	Tue Aug 14 23:55:55 2001
+@@ -71,7 +71,7 @@
+ 
+ Versions:
+ 
+-2\&.1-12(/var/state/apt/lists/debian\&.midco\&.net_debian_dists_slink_main_binary-i386_Packages),
++2\&.1-12(/var/lib/apt/lists/debian\&.midco\&.net_debian_dists_slink_main_binary-i386_Packages),
+ 
+ Reverse Depends: 
+ 
+@@ -283,11 +283,11 @@
+ locations to fetch packages from
+ .IP 
+ .IP o 
+-/var/state/apt/lists/
++/var/lib/apt/lists/
+ storage area for state information for each package resource specified in
+ .IP 
+ .IP o 
+-/var/state/apt/lists/partial/
++/var/lib/apt/lists/partial/
+ storage area for state information in transit
+ .PP 
+ .SH "SEE ALSO" 
+diff -Nur apt-0.3.19cnc50.orig/doc/apt-cache.8.yo apt-0.3.19cnc50/doc/apt-cache.8.yo
+--- apt-0.3.19cnc50.orig/doc/apt-cache.8.yo	Thu Aug 10 14:42:39 2000
++++ apt-0.3.19cnc50/doc/apt-cache.8.yo	Tue Aug 14 23:56:18 2001
+@@ -57,7 +57,7 @@
+ 
+ Versions:
+ 
+-2.1-12(/var/state/apt/lists/debian.midco.net_debian_dists_slink_main_binary-i386_Packages),
++2.1-12(/var/lib/apt/lists/debian.midco.net_debian_dists_slink_main_binary-i386_Packages),
+ 
+ Reverse Depends: 
+ 
+@@ -256,10 +256,10 @@
+   it() /etc/apt/sources.list 
+   locations to fetch packages from
+   
+-  it() /var/state/apt/lists/
++  it() /var/lib/apt/lists/
+   storage area for state information for each package resource specified in
+   
+-  it() /var/state/apt/lists/partial/
++  it() /var/lib/apt/lists/partial/
+   storage area for state information in transit
+ )
+ 
+diff -Nur apt-0.3.19cnc50.orig/doc/apt-cdrom.8 apt-0.3.19cnc50/doc/apt-cdrom.8
+--- apt-0.3.19cnc50.orig/doc/apt-cdrom.8	Thu Oct 26 18:22:51 2000
++++ apt-0.3.19cnc50/doc/apt-cdrom.8	Tue Aug 14 23:56:55 2001
+@@ -27,7 +27,7 @@
+ directory you will be prompted for a descriptive title\&.
+ .IP 
+ APT uses a CDROM ID to track which disc is currently in the drive and
+-maintains a database of these IDs in \fB/var/state/apt/cdroms\&.list\fP
++maintains a database of these IDs in \fB/var/lib/apt/cdroms\&.list\fP
+ .IP 
+ .PP 
+ .SH "OPTIONS" 
+@@ -95,15 +95,15 @@
+ locations to fetch packages from
+ .IP 
+ .IP o 
+-/var/state/apt/lists/
++/var/lib/apt/lists/
+ storage area for state information for each package resource specified in
+ .IP 
+ .IP o 
+-/var/state/apt/lists/partial/
++/var/lib/apt/lists/partial/
+ storage area for state information in transit
+ .IP 
+ .IP o 
+-/var/state/apt/cdroms\&.list
++/var/lib/apt/cdroms\&.list
+ list of cdrom IDs and names\&.
+ .PP 
+ .SH "SEE ALSO" 
+diff -Nur apt-0.3.19cnc50.orig/doc/apt-cdrom.8.yo apt-0.3.19cnc50/doc/apt-cdrom.8.yo
+--- apt-0.3.19cnc50.orig/doc/apt-cdrom.8.yo	Thu Aug 10 14:42:39 2000
++++ apt-0.3.19cnc50/doc/apt-cdrom.8.yo	Tue Aug 14 23:57:14 2001
+@@ -29,7 +29,7 @@
+ directory you will be prompted for a descriptive title.
+ 
+ APT uses a CDROM ID to track which disc is currently in the drive and
+-maintains a database of these IDs in bf(/var/state/apt/cdroms.list)
++maintains a database of these IDs in bf(/var/lib/apt/cdroms.list)
+ 
+ enddit()
+ 
+@@ -93,13 +93,13 @@
+   it() /etc/apt/sources.list 
+   locations to fetch packages from
+   
+-  it() /var/state/apt/lists/
++  it() /var/lib/apt/lists/
+   storage area for state information for each package resource specified in
+   
+-  it() /var/state/apt/lists/partial/
++  it() /var/lib/apt/lists/partial/
+   storage area for state information in transit
+   
+-  it() /var/state/apt/cdroms.list
++  it() /var/lib/apt/cdroms.list
+   list of cdrom IDs and names.
+ )
+ 
+diff -Nur apt-0.3.19cnc50.orig/doc/apt-get.8 apt-0.3.19cnc50/doc/apt-get.8
+--- apt-0.3.19cnc50.orig/doc/apt-get.8	Wed Nov  1 22:32:28 2000
++++ apt-0.3.19cnc50/doc/apt-get.8	Tue Aug 14 23:57:34 2001
+@@ -252,7 +252,7 @@
+ .IP "\fB--list-cleanup\fP" 
+ This option defaults to on, use \fB--no-list-cleanup\fP to turn it off\&.
+ When on apt-get will automatically manage the contents of 
+-/var/state/apt/lists to ensure that obsolete files are erased\&. The only 
++/var/lib/apt/lists to ensure that obsolete files are erased\&. The only 
+ reason to turn it off is if you frequently change your source list\&. 
+ Configuration Item: \fBAPT::Get::List-Cleanup\fP
+ .IP 
+@@ -299,12 +299,12 @@
+ storage area for package files in transit
+ .IP 
+ .IP o 
+-/var/state/apt/lists/
++/var/lib/apt/lists/
+ storage area for state information for each package resource specified in
+ the source list
+ .IP 
+ .IP o 
+-/var/state/apt/lists/partial/
++/var/lib/apt/lists/partial/
+ storage area for state information in transit
+ .PP 
+ .SH "SEE ALSO" 
+diff -Nur apt-0.3.19cnc50.orig/doc/apt-get.8.yo apt-0.3.19cnc50/doc/apt-get.8.yo
+--- apt-0.3.19cnc50.orig/doc/apt-get.8.yo	Thu Aug 10 14:42:39 2000
++++ apt-0.3.19cnc50/doc/apt-get.8.yo	Tue Aug 14 23:57:50 2001
+@@ -235,7 +235,7 @@
+ dit(bf(--list-cleanup))
+ This option defaults to on, use bf(--no-list-cleanup) to turn it off.
+ When on apt-get will automatically manage the contents of 
+-/var/state/apt/lists to ensure that obsolete files are erased. The only 
++/var/lib/apt/lists to ensure that obsolete files are erased. The only 
+ reason to turn it off is if you frequently change your source list. 
+ Configuration Item: bf(APT::Get::List-Cleanup)
+ 
+@@ -274,11 +274,11 @@
+   it() /var/cache/apt/archives/partial/
+   storage area for package files in transit
+   
+-  it() /var/state/apt/lists/
++  it() /var/lib/apt/lists/
+   storage area for state information for each package resource specified in
+   the source list
+   
+-  it() /var/state/apt/lists/partial/
++  it() /var/lib/apt/lists/partial/
+   storage area for state information in transit
+ )
+ 
+diff -Nur apt-0.3.19cnc50.orig/doc/examples/configure-index apt-0.3.19cnc50/doc/examples/configure-index
+--- apt-0.3.19cnc50.orig/doc/examples/configure-index	Thu Jan  4 22:26:14 2001
++++ apt-0.3.19cnc50/doc/examples/configure-index	Tue Aug 14 23:59:24 2001
+@@ -137,7 +137,7 @@
+ Dir 
+ {
+   // Location of the state dir
+-  State "/var/state/apt/" 
++  State "/var/lib/apt/" 
+   {
+      lists "lists/";
+      xstatus "xstatus";
+diff -Nur apt-0.3.19cnc50.orig/doc/files.sgml apt-0.3.19cnc50/doc/files.sgml
+--- apt-0.3.19cnc50.orig/doc/files.sgml	Thu Aug 10 14:42:39 2000
++++ apt-0.3.19cnc50/doc/files.sgml	Tue Aug 14 23:58:13 2001
+@@ -41,7 +41,7 @@
+ <p>
+ The var directory structure is as follows:
+ <example>
+-  /var/state/apt/
++  /var/lib/apt/
+ 		  lists/
+ 		       partial/
+ 		  xstatus
+@@ -66,7 +66,7 @@
+ </example>
+ 
+ <p>
+-As is specified in the FHS 2.0 /var/state/apt is used for application 
++As is specified in the FHS 2.2 /var/lib/apt is used for application 
+ data that is not expected to be user modified. /var/cache/apt is used
+ for regeneratable data and is where the package cache and downloaded .debs
+ go.
+@@ -183,10 +183,10 @@
+ 
+ <example>
+ http://www.debian.org/archive/dists/stable/binary-i386/Packages 
+-/var/state/apt/lists/www.debian.org_archive_dists_stable_binary-i386_Packages
++/var/lib/apt/lists/www.debian.org_archive_dists_stable_binary-i386_Packages
+ 
+ cdrom:Debian 1.3/debian/Packages
+-/var/state/apt/info/Debian%201.3_debian_Packages
++/var/lib/apt/info/Debian%201.3_debian_Packages
+ </example>
+ 
+ <p> 
+diff -Nur apt-0.3.19cnc50.orig/doc/pt_BR/apt-cache.8 apt-0.3.19cnc50/doc/pt_BR/apt-cache.8
+--- apt-0.3.19cnc50.orig/doc/pt_BR/apt-cache.8	Mon Nov 27 19:01:01 2000
++++ apt-0.3.19cnc50/doc/pt_BR/apt-cache.8	Tue Aug 14 23:58:34 2001
+@@ -71,7 +71,7 @@
+ 
+ Versões:
+ 
+-2\&.1-12(/var/state/apt/lists/debian\&.midco\&.net_debian_dists_slink_main_binary-i386_Packages),
++2\&.1-12(/var/lib/apt/lists/debian\&.midco\&.net_debian_dists_slink_main_binary-i386_Packages),
+ 
+ Retro-Dependências: 
+ 
+@@ -290,12 +290,12 @@
+ locais de onde obter os pacotes
+ .IP 
+ .IP o 
+-/var/state/apt/lists/
++/var/lib/apt/lists/
+ área de armazenamento para exibir informação para cada recurso de pacote
+ especificado em
+ .IP 
+ .IP o 
+-/var/state/apt/lists/partial/
++/var/lib/apt/lists/partial/
+ área de armazenamento para exibir informação de estado em trânsito
+ .PP 
+ .SH "CONSULTE TAMBÉM" 
+diff -Nur apt-0.3.19cnc50.orig/doc/pt_BR/apt-cdrom.8 apt-0.3.19cnc50/doc/pt_BR/apt-cdrom.8
+--- apt-0.3.19cnc50.orig/doc/pt_BR/apt-cdrom.8	Mon Nov 27 19:01:01 2000
++++ apt-0.3.19cnc50/doc/pt_BR/apt-cdrom.8	Tue Aug 14 23:58:54 2001
+@@ -31,7 +31,7 @@
+ .IP 
+ APT usa uma identificação de CDROM para rastrear qual disco está
+ atualmente no drive e mantém uma base de dados destes IDs em
+-\fB/var/state/apt/cdroms\&.list\fP
++\fB/var/lib/apt/cdroms\&.list\fP
+ .IP 
+ .PP 
+ .SH "OPÇÕES" 
+@@ -98,16 +98,16 @@
+ locais da onde obter pacotes
+ .IP 
+ .IP o 
+-/var/state/apt/lists/
++/var/lib/apt/lists/
+ área de armazenamento para informação de estado para cada tipo de recurso de
+ pacote especificado em
+ .IP 
+ .IP o 
+-/var/state/apt/lists/partial/
++/var/lib/apt/lists/partial/
+ área de armazenamento para informação de estado em trânsito
+ .IP 
+ .IP o 
+-/var/state/apt/cdroms\&.list
++/var/lib/apt/cdroms\&.list
+ lista de IDs de CDROMs e nomes\&.
+ .PP 
+ .SH "CONSULTE TAMBÉM" 
+diff -Nur apt-0.3.19cnc50.orig/doc/pt_BR/apt-get.8 apt-0.3.19cnc50/doc/pt_BR/apt-get.8
+--- apt-0.3.19cnc50.orig/doc/pt_BR/apt-get.8	Mon Nov 27 19:01:01 2000
++++ apt-0.3.19cnc50/doc/pt_BR/apt-get.8	Tue Aug 14 23:59:16 2001
+@@ -254,7 +254,7 @@
+ .IP "\fB--list-cleanup\fP" 
+ Esta opção é habilitada por padrão, use \fB--no-list-cleanup\fP para
+ desabilitá-la\&. Quando habilitada o apt-get irá gerenciar
+-automaticamente os conteúdos de /var/state/apt/lists para
++automaticamente os conteúdos de /var/lib/apt/lists para
+ certificar-se de que os arquivos obsoletos serão apagados\&. A única
+ razão para desativá-la é se você altera sua lista-fonte com freqüência\&. 
+ Item de configuração: \fBAPT::Get::List-Cleanup\fP
+@@ -307,12 +307,12 @@
+ área de armazenagem para arquivos de pacotes em trânsito
+ .IP 
+ .IP o 
+-/var/state/apt/lists/
++/var/lib/apt/lists/
+ área de armazenagem para informação de estado para cada recurso de
+ pacote especificado na lista de fontes
+ .IP 
+ .IP o 
+-/var/state/apt/lists/partial/
++/var/lib/apt/lists/partial/
+ área de armazenagem para informação de estado em trânsito
+ .PP 
+ .SH "SEE ALSO" 
+diff -Nur apt-0.3.19cnc50.orig/docs/files.html/ch1.html apt-0.3.19cnc50/docs/files.html/ch1.html
+--- apt-0.3.19cnc50.orig/docs/files.html/ch1.html	Mon Oct  2 22:04:53 2000
++++ apt-0.3.19cnc50/docs/files.html/ch1.html	Tue Aug 14 23:55:08 2001
+@@ -42,7 +42,7 @@
+ The var directory structure is as follows:
+ 
+ <pre>
+-       /var/state/apt/
++       /var/lib/apt/
+      		  lists/
+      		       partial/
+      		  xstatus
+@@ -67,7 +67,7 @@
+ </pre>
+ 
+ <p>
+-As is specified in the FHS 2.0 /var/state/apt is used for application data that
++As is specified in the FHS 2.2 /var/lib/apt is used for application data that
+ is not expected to be user modified.  /var/cache/apt is used for regeneratable
+ data and is where the package cache and downloaded .debs go.
+ </p>
+diff -Nur apt-0.3.19cnc50.orig/docs/files.html/ch2.html apt-0.3.19cnc50/docs/files.html/ch2.html
+--- apt-0.3.19cnc50.orig/docs/files.html/ch2.html	Mon Oct  2 22:04:53 2000
++++ apt-0.3.19cnc50/docs/files.html/ch2.html	Tue Aug 14 23:55:26 2001
+@@ -174,10 +174,10 @@
+ 
+ <pre>
+      http://www.debian.org/archive/dists/stable/binary-i386/Packages 
+-     /var/state/apt/lists/www.debian.org_archive_dists_stable_binary-i386_Packages
++     /var/lib/apt/lists/www.debian.org_archive_dists_stable_binary-i386_Packages
+      
+      cdrom:Debian 1.3/debian/Packages
+-     /var/state/apt/info/Debian%201.3_debian_Packages
++     /var/lib/apt/info/Debian%201.3_debian_Packages
+ </pre>
+ 
+ <p>
+diff -Nur apt-0.3.19cnc50.orig/docs/files.text apt-0.3.19cnc50/docs/files.text
+--- apt-0.3.19cnc50.orig/docs/files.text	Mon Oct  2 22:04:53 2000
++++ apt-0.3.19cnc50/docs/files.text	Tue Aug 14 23:54:36 2001
+@@ -68,12 +68,12 @@
+ 
+      The var directory structure is as follows:
+ 
+-            /var/state/apt/
+-          		  lists/
+-          		       partial/
+-          		  xstatus
+-          		  userstatus
+-          		  cdroms.list
++            /var/lib/apt/
++          		lists/
++          		     partial/
++          		xstatus
++          		userstatus
++          		cdroms.list
+             /var/cache/apt/
+                             pkgcache.bin
+           		  srcpkgcache.bin
+@@ -91,7 +91,7 @@
+           		       gzip
+           		       copy
+ 
+-     As is specified in the FHS 2.0 /var/state/apt is used for application
++     As is specified in the FHS 2.2 /var/lib/apt is used for application
+      data that is not expected to be user modified.  /var/cache/apt is used
+      for regeneratable data and is where the package cache and downloaded
+      .debs go.
+@@ -202,10 +202,10 @@
+      representation from the ascii character set.  Examples:
+ 
+ http://www.debian.org/archive/dists/stable/binary-i386/Packages
+-/var/state/apt/lists/www.debian.org_archive_dists_stable_binary-i386_Packages
++/var/lib/apt/lists/www.debian.org_archive_dists_stable_binary-i386_Packages
+ 
+ cdrom:Debian 1.3/debian/Packages
+-/var/state/apt/info/Debian%201.3_debian_Packages
++/var/lib/apt/info/Debian%201.3_debian_Packages
+ 
+      The other alternative that was considered was to use a deep directory
+      structure but this poses two problems, it makes it very difficult to

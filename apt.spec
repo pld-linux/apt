@@ -4,7 +4,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc50
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -17,6 +17,7 @@ Source3:	vendors.list
 Source4:	rpmpriorities
 Patch0:		%{name}-norequires.patch
 Patch1:		%{name}-pld_user_in_ftp_pass.patch
+Patch2:		%{name}-FHS.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
@@ -38,7 +39,7 @@ multiple source capability and several other unique features.
 
 %description -l pl
 Port debianowego narzêdzia APT dla dystrybucji bazuj±cych na zarz±dcy
-pakietów RPM. APT dostarcza narzêdzie apt-get, które umo¿liwia prost±
+pakietów RPM. APT dostarcza narzêdzie apt-get, które umo¿liwia prost±,
 bezpieczn± instalacjê i aktualizacjê pakietów. Mo¿liwo¶ci APT to wybór
 kolejno¶ci instalacji, mo¿liwo¶æ ustawienia kilku ¼róde³ pakietów itp.
 
@@ -82,6 +83,7 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %patch0 -p1
 %patch1 -p1
 tar xzf docs.tar.gz
+%patch2 -p1
 
 %build
 autoconf
@@ -93,7 +95,7 @@ autoconf
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
-	$RPM_BUILD_ROOT/var/state/apt/lists/partial \
+	$RPM_BUILD_ROOT/var/lib/apt/lists/partial \
 	$RPM_BUILD_ROOT{%{_includedir}/apt-pkg,%{_libdir}/apt,%{_mandir}/man{5,8},%{_bindir}} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/apt
 
@@ -141,7 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/apt/*
 %{_mandir}/man[58]/*
 /var/cache/apt
-/var/state/apt
+/var/lib/apt
 %attr(755,root,root) %{_libdir}/libapt-pkg.so.*.*.*
 
 %files devel
