@@ -109,7 +109,7 @@ CXXFLAGS="%{rpmcflags} -fno-rtti -fno-exceptions"
 %configure \
 	--enable-nls \
 	--with-gpm
-%{__make} CC="%{__cc}" CXX="%{__cxx}"
+%{__make} CC="%{__cc}"  %{?__cxx:CXX=%{__cxx}}
 
 %install
 rm -rf $RPM_BUILD_ROOT
