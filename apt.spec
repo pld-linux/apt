@@ -4,7 +4,7 @@ Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl):	Zaawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.5.5cnc3
+Version:	0.5.5cnc4.1
 Release:	0.1
 License:	GPL
 Group:		Applications/Archiving
