@@ -1,0 +1,412 @@
+diff -ru /home/kojima/rapt/tmp/apt-0.3.19cnc53/apt-pkg/acquire-item.cc apt-0.3.19cnc53/apt-pkg/acquire-item.cc
+--- /home/kojima/rapt/tmp/apt-0.3.19cnc53/apt-pkg/acquire-item.cc	Mon Nov 12 14:34:00 2001
++++ apt-0.3.19cnc53/apt-pkg/acquire-item.cc	Tue Nov 13 16:26:27 2001
+@@ -480,6 +480,119 @@
+    
+    Item::Failed(Message,Cnf);
+ }
++
++									/*}}}*/
++// AcqMirrors::AcqMirrors - Constructor					/*{{{*/
++// ---------------------------------------------------------------------
++/* The package file is added to the queue */
++pkgAcqMirrors::pkgAcqMirrors(pkgAcquire *Owner,
++			     pkgSourceList::RepositoryItem *Location) :
++             Item(Owner), Location(Location)
++{
++   Retries = _config->FindI("Acquire::Retries",0);
++    
++   DestFile = _config->FindDir("Dir::State::lists") + "partial/";
++   DestFile += URItoFileName(Location->MirrorsURI());
++   
++   // If we're verifying authentication, check whether the size and
++   // MD5 matches, if not, delete the cached files and force redownload
++   string fname = Location->MirrorsURI();
++   string hash;
++   unsigned int size;
++
++   if (Location->MD5HashForFile(fname, hash, size)
++       && !hash.empty() && size != 0) 
++   {
++      string FinalFile = _config->FindDir("Dir::State::lists");
++      FinalFile += URItoFileName(Location->MirrorsURI());
++       
++      if (!RecheckFile(FinalFile, hash, size)) 
++      {
++	 unlink(FinalFile.c_str());
++	 unlink(DestFile.c_str());
++      }
++   }
++   
++   // Create the item
++   Desc.URI = Location->MirrorsURI();
++   Desc.Description = Location->MirrorsInfo();
++   Desc.Owner = this;
++
++   Desc.ShortDesc = Location->Dist;
++
++   QueueURI(Desc);
++}
++
++									/*}}}*/
++// AcqMirrors::Custom600Headers - Insert custom request headers	/*{{{*/
++// ---------------------------------------------------------------------
++/* The only header we use is the last-modified header. */
++string pkgAcqMirrors::Custom600Headers()
++{
++   string Final = _config->FindDir("Dir::State::lists");
++   Final += URItoFileName(Location->MirrorsURI());
++   
++   struct stat Buf;
++   if (stat(Final.c_str(),&Buf) != 0)
++      return "\nIndex-File: true";
++   
++   return "\nIndex-File: true\nLast-Modified: " + TimeRFC1123(Buf.st_mtime);
++}
++                                                                        /*}}}*/
++// AcqMirrors::Done - Finished a fetch					/*{{{*/
++// ---------------------------------------------------------------------
++void pkgAcqMirrors::Done(string Message,unsigned long Size,string MD5,
++			 pkgAcquire::MethodConfig *Cfg)
++{
++   Item::Done(Message,Size,MD5,Cfg);
++
++   // The files timestamp matches
++   if (StringToBool(LookupTag(Message,"IMS-Hit"),false) == true)
++      return;
++
++   // Done, move it into position
++   string FinalFile = _config->FindDir("Dir::State::lists");
++   FinalFile += URItoFileName(Location->MirrorsURI());
++   Rename(DestFile,FinalFile);
++   
++   /* We restore the original name to DestFile so that the clean operation
++      will work OK */
++   DestFile = _config->FindDir("Dir::State::lists") + "partial/";
++   DestFile += URItoFileName(Location->MirrorsURI());
++}
++
++                                                                        /*}}}*/
++// AcqMirrors::Failed - Failure handler				        /*{{{*/
++// ---------------------------------------------------------------------
++/* Here we try other sources */
++void pkgAcqMirrors::Failed(string Message,pkgAcquire::MethodConfig *Cnf)
++{
++   ErrorText = LookupTag(Message,"Message");
++   
++   // This is the retry counter
++   if (Retries != 0 &&
++       Cnf->LocalOnly == false &&
++       StringToBool(LookupTag(Message,"Transient-Failure"),false) == true)
++   {
++      Retries--;
++      // wait a little before retrying
++      sleep(1);
++      QueueURI(Desc);
++      return;
++   }
++   
++   if (Cnf->LocalOnly == true || 
++	StringToBool(LookupTag(Message,"Transient-Failure"),false) == false)
++   {      
++      // Ignore this
++      Status = StatDone;
++      Complete = false;
++      Dequeue();
++      return;
++   }
++   
++   Item::Failed(Message,Cnf);
++}
+ 									/*}}}*/
+ // AcqIndexRel::pkgAcqIndexRel - Constructor				/*{{{*/
+ // ---------------------------------------------------------------------
+@@ -660,6 +773,8 @@
+                StoreFilename(StoreFilename), Vf(Version.FileList())
+ {
+    Retries = _config->FindI("Acquire::Retries",0);
++   MirrorRetries = _config->FindI("Acquire::MirrorRetries",3);
++   UsingMirror = false;
+ 
+    if (Version.Arch() == 0)
+    {
+@@ -790,8 +905,20 @@
+       }
+       
+       // Create the item
+-      Desc.URI = Location->ArchiveURI(PkgFile);
+-      Desc.Description = Location->ArchiveInfo(Version);
++      const pkgSourceList::Item *MirrorLocation = Location->NextMirror(!UsingMirror);
++      if (MirrorLocation != NULL && MirrorRetries != 0)
++      {
++	 UsingMirror = true;
++	 Desc.URI = MirrorLocation->ArchiveURI(PkgFile);
++	 Desc.Description = MirrorLocation->ArchiveInfo(Version);
++      }
++      else
++      {
++	 /* Do not set UsingMirror to false here. Once it is used, it must
++	  * stay true, so NextMirror() (above) will reset just once */
++	 Desc.URI = Location->ArchiveURI(PkgFile);
++	 Desc.Description = Location->ArchiveInfo(Version);
++      }
+       Desc.Owner = this;
+       Desc.ShortDesc = Version.ParentPkg().Name();
+       QueueURI(Desc);
+@@ -866,12 +993,16 @@
+    ErrorText = LookupTag(Message,"Message");
+    if (QueueNext() == false)
+    {
+-      // This is the retry counter
+-      if (Retries != 0 &&
+-	  Cnf->LocalOnly == false &&
+-	  StringToBool(LookupTag(Message,"Transient-Failure"),false) == true)
++      if (((UsingMirror && MirrorRetries != 0) ||
++          (Retries != 0 && 
++	   StringToBool(LookupTag(Message,"Transient-Failure"),false) == true)) &&
++	   Cnf->LocalOnly == false)
+       {
+-	 Retries--;
++	 if (UsingMirror && MirrorRetries != 0)
++	    MirrorRetries--;
++	 else
++	    Retries--;
++
+ 	 // wait a little before retrying
+ 	 sleep(1);
+ 	 Vf = Version.FileList();
+diff -ru /home/kojima/rapt/tmp/apt-0.3.19cnc53/apt-pkg/acquire-item.h apt-0.3.19cnc53/apt-pkg/acquire-item.h
+--- /home/kojima/rapt/tmp/apt-0.3.19cnc53/apt-pkg/acquire-item.h	Mon Nov 12 14:34:00 2001
++++ apt-0.3.19cnc53/apt-pkg/acquire-item.h	Tue Nov 13 16:26:27 2001
+@@ -136,6 +136,9 @@
+    pkgCache::VerFileIterator Vf;
+    unsigned int Retries;
+ 
++   bool UsingMirror;
++   unsigned int MirrorRetries;
++
+    // Queue the next available file for download.
+    bool QueueNext();
+    
+@@ -175,6 +178,27 @@
+    
+    pkgAcqHashes(pkgAcquire *Owner,
+ 		pkgSourceList::RepositoryItem *Location);
++};
++
++// Item class for mirrors files
++class pkgAcqMirrors : public pkgAcquire::Item
++{
++   protected:
++   
++   pkgSourceList::RepositoryItem *Location;
++   pkgAcquire::ItemDesc Desc;
++   unsigned int Retries;
++      
++   public:
++   
++   virtual void Done(string Message,unsigned long Size,string Md5Hash,
++		     pkgAcquire::MethodConfig *Cnf);   
++   virtual string DescURI() {return Location->MirrorsURI();};
++   virtual string Custom600Headers();
++   virtual void Failed(string Message,pkgAcquire::MethodConfig *Cnf);
++   
++   pkgAcqMirrors(pkgAcquire *Owner,
++		 pkgSourceList::RepositoryItem *Location);
+ };
+ 
+ // Fetch a generic file to the current directory
+diff -ru /home/kojima/rapt/tmp/apt-0.3.19cnc53/apt-pkg/sourcelist.cc apt-0.3.19cnc53/apt-pkg/sourcelist.cc
+--- /home/kojima/rapt/tmp/apt-0.3.19cnc53/apt-pkg/sourcelist.cc	Mon Nov 12 14:34:00 2001
++++ apt-0.3.19cnc53/apt-pkg/sourcelist.cc	Tue Nov 13 16:26:27 2001
+@@ -1,3 +1,4 @@
++	
+ // -*- mode: cpp; mode: fold -*-
+ // Description								/*{{{*/
+ // $Id$
+@@ -183,6 +184,20 @@
+ 	 List.push_back(Itm);
+       }
+       while (ParseQuoteWord(C, Section) == true);
++
++      // Parse mirrors file
++      string MirrorsFile = _config->FindDir("Dir::State::lists");
++      MirrorsFile += URItoFileName(Rep->MirrorsURI());
++      static bool recursion = false;
++      if (!recursion && FileExists(MirrorsFile) && _config->FindB("APT::Use-Mirrors",true))
++      { 
++	 recursion = true;
++	 Rep->Mirrors = new pkgSourceList();
++	 Rep->Mirrors->Read(MirrorsFile);
++	 recursion = false;
++      } else {
++      	 Rep->Mirrors = NULL;
++      }
+       
+       Repositories.push_back(Rep);
+       
+@@ -345,6 +360,47 @@
+ }
+ 
+ 
++string pkgSourceList::RepositoryItem::MirrorsURI()
++{   
++   string Res;
++   switch (Type)
++   {
++    case Deb:
++      break;
++      
++    case DebSrc:
++      break;
++      
++    case Rpm:
++    case RpmSrc:
++      Res = URI + Dist + "/base/mirrors";
++      break;
++   };
++   return Res;   
++}
++
++string pkgSourceList::RepositoryItem::MirrorsInfo()
++{
++   string Res;
++   switch (Type)
++   {
++    case Deb:
++      break;
++     
++    case DebSrc:
++      break;
++      
++    case Rpm:
++    case RpmSrc:
++      Res = SiteOnly(URI) + ' ';
++      Res += Dist + "/";
++      Res += "base/mirrors";
++      break;
++   };
++   return Res;
++}
++
++
+ bool pkgSourceList::RepositoryItem::UpdateHashes(string File)
+ {
+   // Open the stream for reading
+@@ -721,3 +777,35 @@
+    };
+    return Res;
+ }
++
++  										/*}}}*/
++// SourceList::Item::NextMirror	- Returns an info line for next mirror to try	/*{{{*/
++// ---------------------------------------------------------------------
++/* */
++const pkgSourceList::Item *pkgSourceList::Item::NextMirror(bool reset) const
++{
++   pkgSourceList *Mirrors = Repository->Mirrors;
++   if (Mirrors != NULL && !Mirrors->empty())
++   {
++      if (reset)
++      {
++	 I = Mirrors->begin();
++	 I += random() % Mirrors->size();
++	 EndI = I;
++      }
++      while (I != EndI || reset)
++      {
++	 if (reset)
++	    reset = false;
++	 else
++	    I++;
++	 if (I == Mirrors->end())
++	    I = Mirrors->begin();
++	 if ((*I).Section == Section)
++	    return &(*I);
++      }
++   }
++   return NULL;
++}
++
++
+diff -ru /home/kojima/rapt/tmp/apt-0.3.19cnc53/apt-pkg/sourcelist.h apt-0.3.19cnc53/apt-pkg/sourcelist.h
+--- /home/kojima/rapt/tmp/apt-0.3.19cnc53/apt-pkg/sourcelist.h	Mon Nov 12 14:34:00 2001
++++ apt-0.3.19cnc53/apt-pkg/sourcelist.h	Tue Nov 13 16:26:27 2001
+@@ -58,6 +58,8 @@
+       map<string,FileData> HashIndex; // filename -> filedata
+ 
+       VendorItem *Vendor;
++      
++      pkgSourceList *Mirrors;
+ 
+       string URI;
+       string Dist;
+@@ -74,6 +76,9 @@
+ 
+       string HashesURI();
+       string HashesInfo();
++      
++      string MirrorsURI();
++      string MirrorsInfo();
+ 
+       bool UpdateHashes(string File);
+             
+@@ -89,6 +94,10 @@
+    {
+       RepositoryItem *Repository;
+       string Section;
++      
++      mutable vector<Item>::const_iterator I;
++      mutable vector<Item>::const_iterator EndI;
++      
+ 
+       inline RepositoryType Type() const { return Repository->Type; };
+       inline string URI() const { return Repository->URI; };
+@@ -104,6 +113,8 @@
+ 
+       string ArchiveInfo(pkgCache::VerIterator Ver) const;
+       string ArchiveURI(string File) const;
++
++      const Item *NextMirror(bool reset = false) const;
+    };
+    typedef vector<Item>::const_iterator const_iterator;
+ 
+diff -ru /home/kojima/rapt/tmp/apt-0.3.19cnc53/cmdline/apt-get.cc apt-0.3.19cnc53/cmdline/apt-get.cc
+--- /home/kojima/rapt/tmp/apt-0.3.19cnc53/cmdline/apt-get.cc	Tue Nov 13 16:00:07 2001
++++ apt-0.3.19cnc53/cmdline/apt-get.cc	Tue Nov 13 18:39:27 2001
+@@ -1,6 +1,6 @@
+ // -*- mode: cpp; mode: fold -*-
+ // Description								/*{{{*/
+-// $Id$
++// $Id$
+ /* ######################################################################
+    
+    apt-get - Cover for dpkg and rpm
+@@ -1206,6 +1217,17 @@
+       if (_error->PendingError() == true)
+ 	 return false;
+    }
++    
++   // Add mirrors files
++   if (_config->FindB("APT::Use-Mirrors",true))
++   {
++      for (R = List.rep_begin(); R != List.rep_end(); R++)
++      {
++         new pkgAcqMirrors(&Fetcher,*R);
++         if (_error->PendingError() == true)
++              return false;
++      }
++   }
+ 
+    // Run it
+    if (Fetcher.Run() == pkgAcquire::Failed)
+@@ -2045,6 +2067,8 @@
+    setlocale(LC_ALL, "");
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
++
++   srandom((unsigned int)time(NULL));
+ 
+    // Parse the command line and initialize the package library
+    CommandLine CmdL(Args,_config);
+
