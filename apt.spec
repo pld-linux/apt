@@ -10,11 +10,11 @@ Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
 Group(es):	Administración
 Group(pl):	Aplikacje/Archiwizacja
-Source0:	%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 Source2:	sources.list
 Source3:	vendors.list
-URL:		ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/
+URL:		azar.conectiva.com.br/~godoy/apt-howto/
 BuildRequires:	rpm-devel >= 3.0.6-2
 BuildRequires:	gettext-devel
 BuildRequires:	gpm-devel
