@@ -14,6 +14,7 @@ Source2:	%{name}-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
 Source5:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-pl-man-pages.tar.bz2
+# Source5-md5:	a3e9b7fd3dbf243d63cbfcc78cb20c1c
 Patch0:		%{name}-no_PARALLEL_RUN.patch
 Patch1:		%{name}-ac_fixes.patch
 Patch2:		%{name}-pld_man.patch
