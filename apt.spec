@@ -135,7 +135,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man[58]/*
 /var/cache/apt
 /var/state/apt
-%attr(755,root,root) %{_libdir}/libapt-pkg.so*
+%attr(755,root,root) %{_libdir}/libapt-pkg.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
