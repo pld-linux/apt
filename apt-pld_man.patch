@@ -1,0 +1,155 @@
+diff -uNr apt-0.3.19cnc52.old/doc/apt-get.8 apt-0.3.19cnc52/doc/apt-get.8
+--- apt-0.3.19cnc52.old/doc/apt-get.8	Tue Nov 27 00:05:40 2001
++++ apt-0.3.19cnc52/doc/apt-get.8	Tue Nov 27 00:13:47 2001
+@@ -313,7 +313,7 @@
+ dselect(8),
+ sources\&.list(5),
+ apt\&.conf(5),
+-The APT Users Guide in /usr/doc/apt/
++The APT Users Guide in /usr/share/doc/apt*/
+ .PP 
+ .SH "DIAGNOSTICS" 
+ apt-get returns zero on normal operation, decimal 100 on error\&.
+diff -uNr apt-0.3.19cnc52.old/doc/apt-get.8.yo apt-0.3.19cnc52/doc/apt-get.8.yo
+--- apt-0.3.19cnc52.old/doc/apt-get.8.yo	Tue Nov 27 00:05:40 2001
++++ apt-0.3.19cnc52/doc/apt-get.8.yo	Tue Nov 27 00:14:13 2001
+@@ -288,7 +288,7 @@
+ dselect(8),
+ sources.list(5),
+ apt.conf(5),
+-The APT Users Guide in /usr/doc/apt/
++The APT Users Guide in /usr/share/doc/apt*/
+ 
+ manpagediagnostics()
+ apt-get returns zero on normal operation, decimal 100 on error.
+diff -uNr apt-0.3.19cnc52.old/doc/apt.conf.5 apt-0.3.19cnc52/doc/apt.conf.5
+--- apt-0.3.19cnc52.old/doc/apt.conf.5	Thu Jan  4 22:26:14 2001
++++ apt-0.3.19cnc52doc/apt.conf.5	Tue Nov 27 00:20:59 2001
+@@ -42,9 +42,8 @@
+ it more readable\&. Lists can be created by opening a scope an including a 
+ single word enclosed in quotes followed by a semicolon\&. 
+ In general the sample configuration file in
+-\fI/usr/doc/apt/examples/apt\&.conf\fP and
+-\fI/usr/doc/apt/examples/configure-index\fP 
+-(or \fI/usr/share/doc/apt*/examples/configure-index\fP in Conectiva)
++\fI/usr/share/doc/apt*/apt\&.conf.gz\fP and
++\fI/usr/share/doc/apt*/configure-index.gz\fP 
+ is a good guide for how it should look\&.
+ .PP 
+ All of the APT tools take a -o option which allows an arbitary configuration 
+@@ -154,7 +153,7 @@
+ by the ftp_proxy environment variable\&. To use a ftp proxy you will have to
+ set the ftp::ProxyLogin script in the configuration file\&. This entry 
+ specifies the commands to send to tell the proxy server what to connect
+-to\&. Please see \fI/usr/doc/apt/examples/configure-index\fP for an example of how 
++to\&. Please see \fI/usr/share/doc/apt*/configure-index.gz\fP for an example of how 
+ to do this\&. The subsitution variables available are $(PROXY_USER),
+ $(PROXY_PASS), $(SITE_USER), $(SITE_PASS), $(SITE), and $(SITE_PORT)\&. 
+ Each is taken from it\'s respective URI component\&.
+@@ -265,8 +264,7 @@
+ disable the inclusion of statfs data in CDROM IDs\&.
+ .PP 
+ .SH "EXAMPLES" 
+-\fB/usr/doc/apt/examples/configure-index\&.gz\fP or
+-\fB/usr/share/doc/apt*/configure-index\fP 
++\fB/usr/share/doc/apt*/configure-index.gz\fP 
+ contains a sample configuration 
+ file showing the default values for all possible options\&.
+ .PP 
+diff -uNr apt-0.3.19cnc52.old/doc/apt.conf.5.yo apt-0.3.19cnc52/doc/apt.conf.5.yo
+--- apt-0.3.19cnc52.old/doc/apt.conf.5.yo	Thu Aug 10 14:42:39 2000
++++ apt-0.3.19cnc52/doc/apt.conf.5.yo	Tue Nov 27 00:20:10 2001
+@@ -33,8 +33,8 @@
+ it more readable. Lists can be created by opening a scope an including a 
+ single word enclosed in quotes followed by a semicolon. 
+ In general the sample configuration file in
+-em(/usr/doc/apt/examples/apt.conf) and
+-em(/usr/doc/apt/examples/configure-index) 
++em(/usr/share/doc/apt*/apt.conf.gz) and
++em(/usr/share/doc/apt*/configure-index.gz) 
+ is a good guide for how it should look.
+ 
+ All of the APT tools take a -o option which allows an arbitary configuration 
+@@ -146,7 +146,7 @@
+ by the ftp_proxy environment variable. To use a ftp proxy you will have to
+ set the ftp::ProxyLogin script in the configuration file. This entry 
+ specifies the commands to send to tell the proxy server what to connect
+-to. Please see em(/usr/doc/apt/examples/configure-index) for an example of how 
++to. Please see em(/usr/share/doc/apt*/configure-index.gz) for an example of how 
+ to do this. The subsitution variables available are $(PROXY_USER),
+ $(PROXY_PASS), $(SITE_USER), $(SITE_PASS), $(SITE), and $(SITE_PORT). 
+ Each is taken from it's respective URI component.
+@@ -263,7 +263,7 @@
+ data in CDROM IDs.
+ 
+ manpagesection(EXAMPLES)
+-bf(/usr/doc/apt/examples/configure-index.gz) contains a sample configuration 
++bf(/usr/share/doc/apt*/configure-index.gz) contains a sample configuration 
+ file showing the default values for all possible options.
+ 
+ manpagesection(FILES)
+diff -uNr apt-0.3.19cnc52.old/doc/pt_BR/apt-get.8 apt-0.3.19cnc52/doc/pt_BR/apt-get.8
+--- apt-0.3.19cnc52.old/doc/pt_BR/apt-get.8	Tue Nov 27 00:05:40 2001
++++ apt-0.3.19cnc52/doc/pt_BR/apt-get.8	Tue Nov 27 00:22:40 2001
+@@ -321,7 +321,7 @@
+ dselect(8),
+ sources\&.list(5),
+ apt\&.conf(5),
+-O guia do usuário APT em /usr/doc/apt/
++O guia do usuário APT em /usr/share/doc/apt*/
+ .PP 
+ .SH "DIAGNOSTICS" 
+ apt-get retorna zero em operação normal, decimal 100 em erro\&.
+diff -uNr apt-0.3.19cnc52.old/doc/pt_BR/apt.conf.5 apt-0.3.19cnc52/doc/pt_BR/apt.conf.5
+--- apt-0.3.19cnc52.old/doc/pt_BR/apt.conf.5	Mon Nov 27 19:01:01 2000
++++ apt-0.3.19cnc52/doc/pt_BR/apt.conf.5	Tue Nov 27 00:25:08 2001
+@@ -43,9 +43,9 @@
+ podem ser criadas abrindo-se um escopo e incluindo uma palavra simples
+ encapsulada em aspas seguida por um ponto-e-vírgula\&. 
+ Geralmente o arquivo exemplo de configuração em
+-\fI/usr/doc/apt/examples/apt\&.conf\fP e \fI/usr/doc/apt/examples/configure-index\fP 
+-(ou \fI/usr/share/doc/apt*/examples/configure-index\fP no Conectiva) é
+-um bom guia sobre como o arquivo deve ficar.
++\fI/usr/share/doc/apt*/apt\&.conf.gz\fP e
++\fI/usr/share/doc/apt*/configure-index.gz\fP 
++é um bom guia sobre como o arquivo deve ficar.
+ .PP 
+ Todas as ferramentas APT usam uma opção -o que permite que uma
+ diretiva arbitrária de configuração seja especificada na linha de
+@@ -169,7 +169,7 @@
+ ftp você deverá configurar o script ftp::ProxyLogin no arquivo de
+ configuração\&. Esta entrada especifica os comandos a serem enviados
+ para dizer ao servidor proxy o que deve ser conectado aonde\&. Por
+-favor consulte \fI/usr/doc/apt/examples/configure-index\fP para um
++favor consulte \fI/usr/share/doc/apt*/examples/configure-index.gz\fP para um
+ exemplo de como fazer isso\&. As variáveis de substituição disponíveis
+ são $(PROXY_USER), $(PROXY_PASS), $(SITE_USER), $(SITE_PASS), $(SITE),
+ e $(SITE_PORT)\&. 
+@@ -259,8 +259,7 @@
+ A maioria das opções na seção \fBdebug\fP não são interessantes ao usuário normal, entretanto, \fBDebug::pkgProblemResolver\fP mostra uma saída interessante sobre as decisões feitas por dist-upgrade\&. \fBDebug::NoLocking\fP desabilita a trava de arquivos de forma que o apt possa executar algumas operações sem ser root e \fBDebug::pkgDPkgPM\fP (ou \fBDebug::pkgRPMPM\fP) irá imprimir a linha de comando para cada chamada de dpkg\&. \fBDebug::IdentCdrom\fP irá desabilitar a inclusão de dados statfs nas IDs de CDROMs\&.
+ .PP 
+ .SH "EXEMPLOS" 
+-\fB/usr/doc/apt/examples/configure-index\&.gz\fP ou
+-\fB/usr/share/doc/apt*/configure-index\fP 
++\fB/usr/share/doc/apt*/configure-index\&.gz\fP
+ contém um arquivo exemplo de configurações mostrando os valores padrão de todas as opções possíveis\&.
+ .PP 
+ .SH "ARQUIVOS" 
+--- apt-0.3.19cnc52.old/doc/makefile	Wed Nov  1 23:29:15 2000
++++ apt-0.3.19cnc52/doc/makefile	Mon Nov 26 23:59:16 2001
+@@ -1,6 +1,6 @@
+ # -*- make -*-
+ BASE=..
+-SUBDIR=doc doc/pt_BR
++SUBDIR=doc doc/pl doc/pt_BR
+ 
+ # Bring in the default rules
+ include ../buildlib/defaults.mak
+@@ -13,6 +13,7 @@
+ # Man pages
+ SOURCE = apt-cache.8 apt-get.8 apt-cdrom.8 apt.conf.5 \
+         sources.list.5 vendors.list.5 apt-config.8 \
++        pl/apt-cache.8 pl/apt-get.8 pl/apt-cdrom.8 \
+         pt_BR/apt-cache.8 pt_BR/apt-get.8 pt_BR/apt-cdrom.8 \
+         pt_BR/apt.conf.5 pt_BR/sources.list.5 pt_BR/vendors.list.5 \
+         pt_BR/apt-config.8
