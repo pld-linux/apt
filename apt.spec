@@ -3,7 +3,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc52
-Release:	10
+Release:	11
 License:	GPL
 Group:		Applications/Archiving
 Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
@@ -140,8 +140,6 @@ sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/s
 
 cd po; make install DESTDIR=$RPM_BUILD_ROOT; cd ..
 
-gzip -9fn docs/*.text docs/examples/* README.RPM TODO
-
 %find_lang %{name}
 
 %clean
@@ -152,7 +150,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc docs/*.gz docs/examples/*.gz *.gz
+%doc docs/*.text docs/examples/* README.RPM TODO
 %attr(755,root,root) %{_bindir}/*
 %dir %{_sysconfdir}/apt
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/apt.conf
