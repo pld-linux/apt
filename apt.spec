@@ -23,7 +23,6 @@ URL:		http://moin.conectiva.com.br/files/AptRpm/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
-BuildRequires:	db3-devel >= 3.1.17-3
 BuildRequires:	gettext-devel
 BuildRequires:	gpm-devel
 BuildRequires:	popt-devel
@@ -81,11 +80,11 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %setup -q -a5
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p0
-%patch6 -p1
+#%patch2 -p1
+#%patch3 -p1
+#%patch4 -p1
+%patch5 -p1
+#%patch6 -p1
 
 %build
 mv po/es_ES.po po/es.po
@@ -120,7 +119,7 @@ install -m755 tools/genbasedir $RPM_BUILD_ROOT%{_bindir}
 
 install apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
 
-for a in "" pl pt_BR ; do
+for a in "" pl ; do
 	if ls doc/$a/*.5 >/dev/null 2>&1 ; then
 		install -m644 doc/*.5 $RPM_BUILD_ROOT%{_mandir}/$a/man5
 	fi
