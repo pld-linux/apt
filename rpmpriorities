@@ -12,11 +12,10 @@ Important:
   dev
   e2fsprogs
   ed
-  etcskel
   filesystem
   fileutils
   findutils
-  gawk
+  awk
   gettext
   glib
   glibc
@@ -30,7 +29,6 @@ Important:
   lilo
   MAKEDEV
   mingetty
-  mkinitrd
   geninitrd
   mktemp
   modutils
@@ -43,11 +41,10 @@ Important:
   psmisc
   pwdb
   reiserfs-utils
-  rootfiles
   rpm
   sed
   setup
-  shadow-utils
+  shadow
   sh-utils
   slang
   stat
@@ -89,10 +86,10 @@ Required:
   readline
   rmt
   slocate
-  sysklogd
+  klogd
+  syslog
   tcp_wrappers
   telnet
-  termcap
   tmpwatch
   utempter
   vim-rt
