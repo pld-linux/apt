@@ -9,6 +9,7 @@ Release:	0.1
 License:	GPL
 Group:		Applications/Archiving
 Source0:	http://moin.conectiva.com.br/files/AptRpm/attachments/%{name}-%{version}.tar.bz2
+# Source0-md5:	cde405f21583ea6f8e012dc3d62412aa
 Source1:	%{name}.conf
 Source2:	%{name}-sources.list
 Source3:	vendors.list
