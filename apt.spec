@@ -46,8 +46,6 @@ Group:		Development
 Group(de):	Entwicklung
 Group(pl):	Programowanie
 Group(pt_BR):Desenvolvimento
-Group:		
-Group():	
 Group(de):	Applikationen/Archivierung
 Group(es):	Desarrollo
 Group(pl):	Aplikacje/Archiwizacja
