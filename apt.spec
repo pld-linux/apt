@@ -64,16 +64,16 @@ This package contains the header files and static libraries for
 developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
 
-%description -l es devel
+%description devel -l es
 This package contains the header files and static libraries for
 developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
 
-%description -l pl devel
+%description devel -l pl
 Pakiet zawiera pliki nag³ówkowe potrzebne do tworzenia aplikacji
 korzystaj±cych z biblioteki libapt-pkg.
 
-%description -l pt_BR devel
+%description devel -l pt_BR
 Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
 %prep
@@ -148,7 +148,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/*.gz docs/examples/*.gz *.gz
 %attr(755,root,root) %{_bindir}/*
 %dir %{_sysconfdir}/apt
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/apt.conf 
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/apt.conf
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/sources.list
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/vendors.list
 %config %{_sysconfdir}/apt/rpmpriorities
