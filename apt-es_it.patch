@@ -1,11 +1,11 @@
---- configure.in~	Sun May 19 23:27:54 2002
-+++ configure.in	Sun May 19 23:27:54 2002
-@@ -38,7 +38,7 @@
+--- apt-0.5.4cnc7/configure.in.wiget	Tue Jul 30 15:28:36 2002
++++ apt-0.5.4cnc7/configure.in	Tue Jul 30 15:29:10 2002
+@@ -39,7 +39,7 @@
  AC_CHECK_TOOL(AR,ar,"ar")
  
- 
--ALL_LINGUAS="pt_BR es_ES it_IT"
-+ALL_LINGUAS="pt_BR es it"
- 
- dnl Check for i18n stuff through gettext 
+ dnl CNC:2002-07-08
+-ALL_LINGUAS="pt_BR de_DE es_ES it_IT ru"
++ALL_LINGUAS="pt_BR de es it ru"
  AM_GNU_GETTEXT
+ LOCALEDIR="/usr/share/locale"
+ AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEDIR")
