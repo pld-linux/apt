@@ -1,5 +1,5 @@
 Name:		apt
-Version:	0.3.19cnc21
+Version:	0.3.19cnc26
 Release:	1
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
@@ -18,8 +18,7 @@ URL:		ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/
 BuildRequires:	rpm-devel >= 3.0.6-2
 BuildRequires:	gettext-devel
 BuildRequires:	gpm-devel
-BuildRequires:	glibc-db1-devel
-BuildRequires:	db3-devel
+BuildRequires:	db3-devel >= 3.1.17-3
 BuildRequires:	zlib-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	popt-devel
@@ -138,7 +137,7 @@ install -D %{SOURCE2}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 install -D %{SOURCE3}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
 install -D rpmpriorities	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
 
-(cd po;make install DESTDIR=$RPM_BUILD_ROOT)
+cd po; make install DESTDIR=$RPM_BUILD_ROOT; cd ..
 
 gzip -9fn docs/*.text docs/examples/* README.RPM TODO
 
