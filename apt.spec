@@ -4,7 +4,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt_BR):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc26
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -66,7 +66,7 @@ Group(pt_BR):	Desenvolvimento
 Group(de):	Applikationen/Archivierung
 Group(es):	Desarrollo
 Group(pl):	Aplikacje/Archiwizacja
-Requires:	%{name}-%{version}
+Requires:	libapt-pkg = %{version}
 
 %description -n libapt-pkg-devel
 This package contains the header files and static libraries for
@@ -102,7 +102,8 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 	$RPM_BUILD_ROOT{%{_includedir}/apt-pkg,%{_libdir}/apt,%{_mandir}/man{5,8},%{_bindir}} \
 	$RPM_BUILD_ROOT/etc/apt
 
-install bin/libapt-pkg.so* $RPM_BUILD_ROOT%{_libdir}
+install bin/libapt-pkg.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
+cp bin/libapt-pkg.so $RPM_BUILD_ROOT%{_libdir}
 
 install bin/{apt-{get,cache,config,cdrom},genpkglist,gensrclist} \
 	tools/genbasedir $RPM_BUILD_ROOT%{_bindir}
@@ -125,8 +126,8 @@ gzip -9fn docs/*.text docs/examples/* README.RPM TODO
 
 %find_lang %{name}
 
-%post   -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post   -n libapt-pkg -p /sbin/ldconfig
+%postun -n libapt-pkg -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -148,7 +149,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n libapt-pkg
 %defattr(644,root,root,755)
-%{_libdir}/libapt-pkg.so.*.*
+%{_libdir}/libapt-pkg.so.*.*.*
 
 %files -n libapt-pkg-devel
 %defattr(644,root,root,755)
