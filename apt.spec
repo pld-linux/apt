@@ -3,7 +3,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc52
-Release:	4
+Release:	5
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -21,6 +21,7 @@ Patch2:		%{name}-no_PARALLEL_RUN.patch
 Patch3:		%{name}-ac_fixes.patch
 Patch4:		%{name}-newmethods.patch
 Patch5:		%{name}-pld_man.patch
+Patch6:		%{name}-man_fixes.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
@@ -94,6 +95,7 @@ tar xzf docs.tar.gz
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 mkdir docs/{pl,pt_BR}
 rm -f po/{POTFILES,Makefile}
