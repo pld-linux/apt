@@ -5,7 +5,7 @@ Summary(pl):	Zaawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.5.5cnc4.1
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		Applications/Archiving
 Source0:	http://moin.conectiva.com.br/files/AptRpm/attachments/%{name}-%{version}.tar.bz2
