@@ -1,42 +1,16 @@
-diff -Nur apt-0.5.4cnc7.orig/cmdline/apt-get.cc apt-0.5.4cnc7/cmdline/apt-get.cc
---- apt-0.5.4cnc7.orig/cmdline/apt-get.cc	Thu Aug  8 22:07:33 2002
-+++ apt-0.5.4cnc7/cmdline/apt-get.cc	Tue Dec 10 17:10:42 2002
-@@ -1515,7 +1515,7 @@
- 	 c1out << 
- 	  _("Since you only requested a single operation it is extremely likely that\n"
- 	    "the package is simply not installable and a bug report against\n" 
--	    "that package should be filed.") << endl;
-+	    "that package should be filled.") << endl;
-       }
- 
-       c1out << _("The following information may help to resolve the situation:") << endl;
-diff -Nur apt-0.5.4cnc7.orig/po/apt.pot apt-0.5.4cnc7/po/apt.pot
---- apt-0.5.4cnc7.orig/po/apt.pot	Thu Sep  5 00:54:05 2002
-+++ apt-0.5.4cnc7/po/apt.pot	Tue Dec 10 17:10:55 2002
-@@ -1350,7 +1350,7 @@
+--- apt-0.5.5cnc3/po/de_DE.po.wiget	Thu Feb 27 17:18:53 2003
++++ apt-0.5.5cnc3/po/de_DE.po	Thu Mar  6 17:39:08 2003
+@@ -609,7 +609,7 @@
  msgid ""
  "Since you only requested a single operation it is extremely likely that\n"
  "the package is simply not installable and a bug report against\n"
 -"that package should be filed."
 +"that package should be filled."
  msgstr ""
- 
- #: cmdline/apt-get.cc:1515
-diff -Nur apt-0.5.4cnc7.orig/po/de_DE.po apt-0.5.4cnc7/po/de_DE.po
---- apt-0.5.4cnc7.orig/po/de_DE.po	Thu Sep  5 00:54:05 2002
-+++ apt-0.5.4cnc7/po/de_DE.po	Tue Dec 10 17:11:17 2002
-@@ -1378,7 +1378,7 @@
- msgid ""
- "Since you only requested a single operation it is extremely likely that\n"
- "the package is simply not installable and a bug report against\n"
--"that package should be filed."
-+"that package should be filled."
- msgstr ""
- 
- #: cmdline/apt-get.cc:1515
-diff -Nur apt-0.5.4cnc7.orig/po/es_ES.po apt-0.5.4cnc7/po/es_ES.po
---- apt-0.5.4cnc7.orig/po/es_ES.po	Tue Jul 23 19:54:53 2002
-+++ apt-0.5.4cnc7/po/es_ES.po	Tue Dec 10 17:11:29 2002
+ "Da Sie nur eine einzelne Operation angefordert haben, ist es extrem\n"
+ "wahrscheinlich, dass das Paket schlichtweg nicht installierbar ist und\n"
+--- apt-0.5.5cnc3/po/es_ES.po.wiget	Thu Feb 27 17:18:58 2003
++++ apt-0.5.5cnc3/po/es_ES.po	Thu Mar  6 17:39:08 2003
 @@ -435,7 +435,7 @@
  msgstr "el paquete simplemente no se pueda instalar y se deba informar"
  
@@ -46,9 +20,8 @@ diff -Nur apt-0.5.4cnc7.orig/po/es_ES.po apt-0.5.4cnc7/po/es_ES.po
  msgstr "de un error acerca de este paquete."
  
  #: cmdline/apt-get.cc:1386
-diff -Nur apt-0.5.4cnc7.orig/po/it_IT.po apt-0.5.4cnc7/po/it_IT.po
---- apt-0.5.4cnc7.orig/po/it_IT.po	Tue Jul 23 19:54:53 2002
-+++ apt-0.5.4cnc7/po/it_IT.po	Tue Dec 10 17:11:34 2002
+--- apt-0.5.5cnc3/po/it_IT.po.wiget	Thu Feb 27 17:18:30 2003
++++ apt-0.5.5cnc3/po/it_IT.po	Thu Mar  6 17:39:08 2003
 @@ -435,7 +435,7 @@
  msgstr "il pacchetto sia semplicemente non installabile e"
  
@@ -58,21 +31,19 @@ diff -Nur apt-0.5.4cnc7.orig/po/it_IT.po apt-0.5.4cnc7/po/it_IT.po
  msgstr "che debba essere inviato un bug report per il pacchetto."
  
  #: cmdline/apt-get.cc:1386
-diff -Nur apt-0.5.4cnc7.orig/po/pt_BR.po apt-0.5.4cnc7/po/pt_BR.po
---- apt-0.5.4cnc7.orig/po/pt_BR.po	Tue Jul 23 19:54:53 2002
-+++ apt-0.5.4cnc7/po/pt_BR.po	Tue Dec 10 17:11:40 2002
-@@ -1037,7 +1037,7 @@
- msgstr "o pacote simplesmente não esteja instalado e um relatório de bug"
- 
- #: cmdline/apt-get.cc:1424
--msgid "that package should be filed."
-+msgid "that package should be filled."
- msgstr "deste pacote deve ser preenchido."
- 
- #: cmdline/apt-get.cc:1427
-diff -Nur apt-0.5.4cnc7.orig/po/ru.po apt-0.5.4cnc7/po/ru.po
---- apt-0.5.4cnc7.orig/po/ru.po	Tue Jul 23 19:54:53 2002
-+++ apt-0.5.4cnc7/po/ru.po	Tue Dec 10 17:11:44 2002
+--- apt-0.5.5cnc3/po/pt_BR.po.wiget	Thu Feb 27 17:18:39 2003
++++ apt-0.5.5cnc3/po/pt_BR.po	Thu Mar  6 17:39:27 2003
+@@ -606,7 +606,7 @@
+ msgid ""
+ "Since you only requested a single operation it is extremely likely that\n"
+ "the package is simply not installable and a bug report against\n"
+-"that package should be filed."
++"that package should be filled."
+ msgstr ""
+ "Já que você solicitou uma única operação é extremamente provável que\n"
+ "o pacote esteja simplesmente não instalável e um relato de erro sobre\n"
+--- apt-0.5.5cnc3/po/ru.po.wiget	Thu Feb 27 17:18:46 2003
++++ apt-0.5.5cnc3/po/ru.po	Thu Mar  6 17:39:08 2003
 @@ -1040,7 +1040,7 @@
  msgstr "ÎÅ×ÏÚÍÏÖÎÏ ÕÓÔÁÎÏ×ÉÔØ É ÔÒÅÂÕÅÔÓÑ ÏÔÐÒÁ×ÉÔØ ÓÏÏÂÝÅÎÉÅ ÏÂ ÏÛÉÂËÅ"
  
@@ -82,3 +53,14 @@ diff -Nur apt-0.5.4cnc7.orig/po/ru.po apt-0.5.4cnc7/po/ru.po
  msgstr "Ó ÜÔÉÍ ÐÁËÅÔÏÍ ÒÁÚÒÁÂÏÔÞÉËÁÍ."
  
  #: cmdline/apt-get.cc:1416
+--- apt-0.5.5cnc3/cmdline/apt-get.cc.wiget	Thu Feb 27 17:19:29 2003
++++ apt-0.5.5cnc3/cmdline/apt-get.cc	Thu Mar  6 17:39:08 2003
+@@ -1552,7 +1552,7 @@
+ 	 c1out << 
+ 	  _("Since you only requested a single operation it is extremely likely that\n"
+ 	    "the package is simply not installable and a bug report against\n" 
+-	    "that package should be filed.") << endl;
++	    "that package should be filled.") << endl;
+       }
+ 
+       c1out << _("The following information may help to resolve the situation:") << endl;
