@@ -18,7 +18,6 @@ Patch0:		%{name}-no_PARALLEL_RUN.patch
 Patch1:		%{name}-ac_fixes.patch
 Patch2:		%{name}-pld_man.patch
 Patch3:		%{name}-man_fixes.patch
-Patch4:		%{name}-md5-cache-dir-option.patch
 Patch5:		%{name}-es_it.patch
 Patch6:		%{name}-filed.patch
 Patch7:		%{name}-pld_user_in_ftp_pass.patch
