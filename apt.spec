@@ -3,7 +3,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc52
-Release:	3
+Release:	4
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -20,6 +20,7 @@ Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-no_PARALLEL_RUN.patch
 Patch3:		%{name}-ac_fixes.patch
 Patch4:		%{name}-newmethods.patch
+Patch5:		%{name}-pld_man.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
@@ -85,14 +86,16 @@ korzystaj±cych z biblioteki libapt-pkg.
 Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
 %prep
-%setup -q
+%setup -q -a5
 %patch0 -p1
 tar xzf docs.tar.gz
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
+mkdir docs/{pl,pt_BR}
 rm -f po/{POTFILES,Makefile}
 
 %build
@@ -108,7 +111,8 @@ CXXFLAGS="%{rpmcflags} -fno-rtti -fno-exceptions"
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 	$RPM_BUILD_ROOT/var/lib/apt/lists/partial \
-	$RPM_BUILD_ROOT{%{_includedir}/apt-pkg,%{_libdir}/apt,%{_mandir}/man{5,8},%{_bindir}} \
+	$RPM_BUILD_ROOT{%{_includedir}/apt-pkg,%{_libdir}/apt} \
+	$RPM_BUILD_ROOT{%{_mandir}/{,pl/,pt_BR/}man{5,8},%{_bindir}} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/apt
 
 install bin/libapt-pkg.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
@@ -119,15 +123,19 @@ install bin/{apt-{get,cache,config,cdrom},genpkglist,gensrclist} \
 
 install apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
 
-install doc/*.5 $RPM_BUILD_ROOT/%{_mandir}/man5
-install doc/*.8 $RPM_BUILD_ROOT/%{_mandir}/man8
+for a in "" pl pt_BR ; do
+	if ls doc/*.5 >/dev/null 2>&1 ; then
+		install doc/*.5 $RPM_BUILD_ROOT/%{_mandir}/$a/man5
+	fi
+	install doc/*.8 $RPM_BUILD_ROOT/%{_mandir}/$a/man8
+done
 
 install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
 
 install %{SOURCE1}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
 install %{SOURCE3}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
-bzip2 -dc %{SOURCE5} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
+# bzip2 -dc %{SOURCE5} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
 sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 
@@ -156,6 +164,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/apt/*
 %{_mandir}/man[58]/*
 %lang(pl) %{_mandir}/pl/man8/*
+%lang(pt) %{_mandir}/pt_BR/man[58]/*
 /var/cache/apt
 /var/lib/apt
 %attr(755,root,root) %{_libdir}/libapt-pkg.so.*.*.*
