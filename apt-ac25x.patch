@@ -1,0 +1,80 @@
+diff -Nur apt-0.3.19cnc55.orig/configure.in apt-0.3.19cnc55/configure.in
+--- apt-0.3.19cnc55.orig/configure.in	Sat Mar 30 17:01:03 2002
++++ apt-0.3.19cnc55/configure.in	Sat Mar 30 17:10:06 2002
+@@ -16,9 +16,9 @@
+ AC_CONFIG_HEADER(include/config.h:buildlib/config.h.in)
+ 
+ dnl -- SET THIS TO THE RELEASE VERSION --
+-AC_DEFINE_UNQUOTED(VERSION,"0.3.19cnc55")
++AC_DEFINE_UNQUOTED(VERSION,"0.3.19cnc55",[The version number string])
+ PACKAGE="apt"
+-AC_DEFINE_UNQUOTED(PACKAGE,"$PACKAGE")
++AC_DEFINE_UNQUOTED(PACKAGE,"$PACKAGE",[The package name string])
+ AC_SUBST(PACKAGE)
+ AC_SUBST(VERSION)
+ 
+@@ -45,7 +45,7 @@
+ AC_CHECK_HEADERS(libintl.h)
+ 
+ LOCALEDIR="/usr/share/locale"
+-AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEDIR")
++AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEDIR",[Define locale location])
+ AC_SUBST(LOCALEDIR)
+ 
+ dnl Checks for sockets
+@@ -67,7 +67,7 @@
+ dnl Check for DB2
+ AC_CHECK_HEADER(db2/db.h,
+      [AC_CHECK_LIB(db2,db_open,
+-        [AC_DEFINE(HAVE_DB2) DB2LIB="-ldb2"])])
++        [AC_DEFINE(HAVE_DB2,,[Define if we have db2]) DB2LIB="-ldb2"])])
+ AC_SUBST(DB2LIB)
+ 
+ 
+@@ -89,7 +89,8 @@
+ 
+       LIBS="$SAVE_LIBS $RPMDBLIBS -lrpmio -lz -lbz2 -lpopt"
+       AC_CHECK_LIB(rpm,rpmdbGetIteratorOffset,
+-        [AC_DEFINE_UNQUOTED(HAVE_RPM, 1) AC_DEFINE_UNQUOTED(HAVE_RPM4, 1)
++        [AC_DEFINE_UNQUOTED(HAVE_RPM, 1, [The system has rpm installed])
++	 AC_DEFINE_UNQUOTED(HAVE_RPM4, 1, [This system uses RPM 4])
+ 	 RPMLIBS="-lrpm $RPMDBLIBS -lrpmio -lz -lbz2 -lpopt"
+          SAVE_CPPFLAGS="$SAVE_CPPFLAGS -I/usr/include/rpm"
+ 	 rpm_version="4"])
+@@ -119,14 +120,14 @@
+   AC_MSG_ERROR(failed: use --host=)
+ fi
+ AC_MSG_RESULT($archset)
+-AC_DEFINE_UNQUOTED(COMMON_CPU,"$archset")
++AC_DEFINE_UNQUOTED(COMMON_CPU,"$archset",[Define the cpu name string])
+ 
+ dnl Get a common name for the host OS - this is primarily only for HURD and is
+ dnl non fatal if it fails
+ AC_MSG_CHECKING(system OS)
+ osset="`awk \" ! /^#|^\\\$/ {if (match(\\\"$target_vendor-$target_os\\\",\\\$1)) {print \\\$2; exit}}\" $srcdir/buildlib/ostable`"
+ AC_MSG_RESULT($osset)
+-AC_DEFINE_UNQUOTED(COMMON_OS,"$osset")
++AC_DEFINE_UNQUOTED(COMMON_OS,"$osset",[Define the os name string])
+ 
+ dnl We use C99 types if at all possible
+ AC_CACHE_CHECK([for C99 integer types],c9x_ints,[
+@@ -140,8 +141,8 @@
+ 
+ dnl Arg, linux and bsd put their statfs function in different places
+ if test x"$HAVE_STATVFS" != x"yes"; then
+-   AC_EGREP_HEADER(statfs,sys/vfs.h,[AC_DEFINE(HAVE_VFS_H)],[
+-   AC_EGREP_HEADER(statfs,sys/mount.h,[AC_DEFINE(HAVE_MOUNT_H)],[AC_MSG_ERROR(failed: Need statvfs)])
++   AC_EGREP_HEADER(statfs,sys/vfs.h,[AC_DEFINE(HAVE_VFS_H,,[Define if we have sys/vfs.h])],[
++   AC_EGREP_HEADER(statfs,sys/mount.h,[AC_DEFINE(HAVE_MOUNT_H,,[Define if we have sys/mount.h])],[AC_MSG_ERROR(failed: Need statvfs)])
+    ])
+ fi
+ 
+@@ -188,7 +189,7 @@
+ dnl HP-UX sux..
+ AC_MSG_CHECKING(for missing socklen_t)
+ AC_EGREP_HEADER(socklen_t, sys/socket.h,[AC_MSG_RESULT(no)],[
+-	AC_DEFINE(NEED_SOCKLEN_T_DEFINE)
++	AC_DEFINE(NEED_SOCKLEN_T_DEFINE,,[We need socklen_t define])
+ 	NEED_SOCKLEN_T_DEFINE=yes
+         AC_MSG_RESULT(missing.)])
+ AC_SUBST(NEED_SOCKLEN_T_DEFINE)
