@@ -21,6 +21,7 @@ Patch5:		%{name}-pld_man.patch
 Patch6:		%{name}-man_fixes.patch
 Patch7:		%{name}-md5-cache-dir-option.patch
 Patch8:		%{name}-es_it.patch
+Patch9:		%{name}-filed.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -91,6 +92,7 @@ tar xzf docs.tar.gz
 %patch6 -p1
 %patch7 -p1
 %patch8 -p0
+%patch9 -p1
 
 mkdir docs/{pl,pt_BR}
 rm -f po/{POTFILES,Makefile}
