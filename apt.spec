@@ -22,7 +22,6 @@ Patch6:		%{name}-man_fixes.patch
 Patch7:		%{name}-md5-cache-dir-option.patch
 Patch8:		%{name}-es_it.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
-Requires:	gnupg
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
@@ -32,6 +31,8 @@ BuildRequires:	gpm-devel
 BuildRequires:	popt-devel
 BuildRequires:	rpm-devel >= 3.0.6-2
 BuildRequires:	zlib-devel
+Requires:	gnupg
+Requires:	rpm
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	libapt-pkg
 
