@@ -37,7 +37,7 @@ Patch6:		%{name}-man_fixes.patch
 Patch7:		%{name}-mirrors.patch
 Patch8:		%{name}-mdfile.patch
 Patch9:		%{name}-gcc31.patch
-URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
+URL:		http://distro.conectiva.com/projetos/42
 Requires:	gnupg
 Obsoletes:	libapt-pkg
 BuildRequires:	rpm-devel >= 3.0.6-2
