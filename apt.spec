@@ -14,7 +14,7 @@ Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{versio
 Source1:	%{name}.conf
 Source2:	sources.list
 Source3:	vendors.list
-URL:		azar.conectiva.com.br/~godoy/apt-howto/
+URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 BuildRequires:	rpm-devel >= 3.0.6-2
 BuildRequires:	gettext-devel
 BuildRequires:	gpm-devel
@@ -97,9 +97,10 @@ tar xzf docs.tar.gz
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial
+install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 	$RPM_BUILD_ROOT/var/state/apt/lists/partial \
-	$RPM_BUILD_ROOT{%{_includedir}/apt-pkg,%{_libdir}/apt,%{_mandir}/man{5,8}}
+	$RPM_BUILD_ROOT{%{_includedir}/apt-pkg,%{_libdir}/apt,%{_mandir}/man{5,8},%{_bindir}} \
+	$RPM_BUILD_ROOT/etc/apt
 
 install bin/libapt-pkg.so* $RPM_BUILD_ROOT%{_libdir}
 
@@ -109,7 +110,7 @@ install bin/{apt-{get,cache,config,cdrom},genpkglist,gensrclist} \
 install apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
 
 install doc/*.5 $RPM_BUILD_ROOT/%{_mandir}/man5
-install doc/.8 $RPM_BUILD_ROOT/%{_mandir}/man8
+install doc/*.8 $RPM_BUILD_ROOT/%{_mandir}/man8
 
 install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
 
@@ -130,7 +131,7 @@ gzip -9fn docs/*.text docs/examples/* README.RPM TODO
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f %{namne}.lang
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc docs/*.gz docs/examples/*.gz *.gz
 %attr(755,root,root) %{_bindir}/*
