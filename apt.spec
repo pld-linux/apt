@@ -4,7 +4,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc50
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -27,6 +27,7 @@ BuildRequires:	db3-devel >= 3.1.17-3
 BuildRequires:	zlib-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	popt-devel
+BuildRequires:	autoconf
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -83,6 +84,7 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 tar xzf docs.tar.gz
 
 %build
+autoconf
 %configure \
 	--enable-nls \
 	--with-gpm
@@ -96,7 +98,7 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 	$RPM_BUILD_ROOT%{_sysconfdir}/apt
 
 install bin/libapt-pkg.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
-cp bin/libapt-pkg.so $RPM_BUILD_ROOT%{_libdir}
+cp -f bin/libapt-pkg.so $RPM_BUILD_ROOT%{_libdir}
 
 install bin/{apt-{get,cache,config,cdrom},genpkglist,gensrclist} \
 	tools/genbasedir $RPM_BUILD_ROOT%{_bindir}
