@@ -2,8 +2,8 @@ Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.3.19cnc52
-Release:	5
+Version:	0.3.19cnc55
+Release:	1
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -22,6 +22,7 @@ Patch3:		%{name}-ac_fixes.patch
 Patch4:		%{name}-newmethods.patch
 Patch5:		%{name}-pld_man.patch
 Patch6:		%{name}-man_fixes.patch
+Patch7:		%{name}-mirrors.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
@@ -88,7 +89,7 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
 %prep
 %setup -q -a5
-%patch0 -p1
+#%patch0 -p1
 tar xzf docs.tar.gz
 %patch1 -p1
 %patch2 -p1
@@ -96,6 +97,7 @@ tar xzf docs.tar.gz
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 mkdir docs/{pl,pt_BR}
 rm -f po/{POTFILES,Makefile}
@@ -107,7 +109,7 @@ CXXFLAGS="%{rpmcflags} -fno-rtti -fno-exceptions"
 %configure \
 	--enable-nls \
 	--with-gpm
-%{__make}
+%{__make} CC="%{__cc}" CXX="%{__cxx}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
