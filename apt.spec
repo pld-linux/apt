@@ -107,7 +107,7 @@ CXXFLAGS="%{rpmcflags} -fno-exceptions"
 %configure \
 	--enable-nls \
 	--with-gpm
-%{__make} CC="%{__cc}"  CXX="%{__cxx}"
+%{__make} CC="%{__cc}" CXX="%{__cxx}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -134,14 +134,14 @@ for a in "" pl ; do
 	install -m644 doc/$a/*.8 $RPM_BUILD_ROOT%{_mandir}/$a/man8
 done
 
-install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
+install bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
 rm -f $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
 rm -f $RPM_BUILD_ROOT%{_libdir}/apt/ssh
 ln -sf ./gzip $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
 ln -sf ./rsh $RPM_BUILD_ROOT%{_libdir}/apt/ssh
 
-install %{SOURCE1}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
-install %{SOURCE3}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
+install %{SOURCE1}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
+install %{SOURCE3}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
 
 sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
@@ -155,8 +155,8 @@ cat libapt-pkg3.3.lang >> %{name}.lang
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post   -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
