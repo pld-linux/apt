@@ -1,12 +1,12 @@
 Important:
-  ash
   basesystem
-  bash
+  FHS
+  pdksh
   bdflush
   bzip2
   chkconfig
-  conectiva-release
   console-tools
+  console-data
   cracklib
   cracklib-dicts
   dev
@@ -22,15 +22,16 @@ Important:
   glibc
   grep
   gzip
+  fix-info-dir
   info
-  initscripts
+  rc-scripts
   kernel
   ldconfig
   lilo
-  losetup
   MAKEDEV
   mingetty
   mkinitrd
+  geninitrd
   mktemp
   modutils
   mount
@@ -63,38 +64,27 @@ Required:
   cpp
   crontabs
   dhcp
-  doc-licenses
   eject
   file
   finger
   ftp
   gdbm
   groff
-  initscripts-translations
   isapnptools
-  kbdconfig
-  kernel-pcmcia-cs
   less
   libgd
   libpng
   libstdc++
-  libtermcap
-  linuxconf
-  linux_logo
   logrotate
   mailcap
   man
-  memtest86
-  mkbootdisk
-  mouseconfig
+  pinfo
   mtools
   netkit-base
-  net-tools
+  iproute2
   newt
-  ntsysv
   pciutils
   portmap
-  pump
   raidtools
   readline
   rmt
@@ -103,12 +93,10 @@ Required:
   tcp_wrappers
   telnet
   termcap
-  timeconfig
   tmpwatch
-  linuxconf-userinfo
   utempter
-  vim-common
-  vim-minimal
+  vim-rt
+  vim-static
   vixie-cron
   which
   zip
@@ -116,21 +104,19 @@ Standard:
   bind-utils
   dhcpcd
   diffutils
-  fwhois
+  whois
   gmp
   gpm
-  kudzu
-  ncftp
+  lftp
   nfs-utils
+  openssh
+  openssh-clients
   openssl
   perl
-  pidentd
+  oidentd
   python
-  rsh
   rsync
-  setuptool
   tcsh
-  timeconfig
   unzip
   ypbind
   yp-tools
