@@ -1,7 +1,7 @@
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(es):	Advanced Packaging Tool frontend for rpm and dpkg
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
-Summary(pt_BR):Frontend avançado para pacotes rpm e deb
+Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc38
 Release:	4
@@ -49,21 +49,11 @@ RPM. Sob desenvolvimento, use por sua própria conta e risco.
 Summary:	Development files for APT's libapt-pkg
 Summary(es):	Development files for APT's libapt-pkg
 Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
-Summary(pt_BR):Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
-Group:		Development
-Group(de):	Entwicklung
-Group(pl):	Programowanie
-Group(pt_BR):Desenvolvimento
-Group:		
-Group():	
-Group(de):	Applikationen/Archivierung
-Group(pl):	Aplikacje/Archiwizacja
-Group():	
-Group:		
-Group():	
-Group(de):	Applikationen/Archivierung
-Group(es):	Desarrollo
-Group(pl):	Aplikacje/Archiwizacja
+Summary(pt):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
+Group:		Development/Libraries
+Group(de):	Entwicklung/Libraries
+Group(fr):	Development/Librairies
+Group(pl):	Programowanie/Biblioteki
 Requires:	%{name} = %{version}
 Requires:	rpm-devel
 Obsoletes:	libapt-pkg-devel
