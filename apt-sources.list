@@ -1,0 +1,25 @@
+# Package repository URLs 
+#
+
+# Uncomment narest locations
+rpm ftp://ftp.pld.org.pl/apt PLD-1.0/i686 base supported
+#rpm ftp://ftp.icm.edu.pl/pub/Linux/distributions/pld/apt PLD-1.0/i686 base supported
+#rpm ftp://ftp.mimuw.edu.pl/pub/linux/PLD/apt PLD-1.0/i686 base supported
+#rpm ftp://ftp.wsisiz.edu.pl/pub/Linux/PLD/apt PLD-1.0/i686 base supported
+#rpm ftp://ftp.pld.kernel.pl/apt PLD-1.0/i686 base supported
+
+# experimental stuff
+#rpm ftp://ftp.pld.org.pl/apt PLD-1.0/i686 test
+#rpm ftp://ftp.icm.edu.pl/pub/Linux/distributions/pld/apt PLD-1.0/i686 test
+#rpm ftp://ftp.mimuw.edu.pl/pub/linux/PLD/apt PLD-1.0/i686 test
+#rpm ftp://ftp.wsisiz.edu.pl/pub/Linux/PLD/apt PLD-1.0/i686 test
+#rpm ftp://ftp.pld.kernel.pl/apt PLD-1.0/i686 test
+
+# Uncomment narest locations
+rpm-src ftp://ftp.pld.org.pl/apt PLD-1.0/i686 base test supported
+#rpm-src ftp://ftp.icm.edu.pl/pub/Linux/distributions/pld/apt PLD-1.0/i686 base test supported
+#rpm-src ftp://ftp.mimuw.edu.pl/pub/linux/PLD/apt PLD-1.0/i686 base test supported
+#rpm-src ftp://ftp.wsisiz.edu.pl/pub/Linux/PLD/apt PLD-1.0/i686 base test supported
+#rpm-src ftp://ftp.pld.kernel.pl/apt PLD-1.0/i686 base test supported
+
+
