@@ -26,7 +26,7 @@ Source1:	%{name}.conf
 Source2:	%{name}-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
-Source5:	%{name}-pl-man-pages.tar.bz2
+Source5:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-pl-man-pages.tar.bz2
 Patch0:		%{name}-norequires.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-no_PARALLEL_RUN.patch
@@ -156,10 +156,10 @@ install bin/{apt-{get,cache,config,cdrom},genpkglist,gensrclist} \
 install apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
 
 for a in "" pl pt_BR ; do
-	if ls doc/*.5 >/dev/null 2>&1 ; then
-		install doc/*.5 $RPM_BUILD_ROOT/%{_mandir}/$a/man5
+	if ls doc/$a/*.5 >/dev/null 2>&1 ; then
+		install doc/*.5 $RPM_BUILD_ROOT%{_mandir}/$a/man5
 	fi
-	install doc/*.8 $RPM_BUILD_ROOT/%{_mandir}/$a/man8
+	install doc/$a/*.8 $RPM_BUILD_ROOT%{_mandir}/$a/man8
 done
 
 install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
