@@ -1,10 +1,10 @@
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(es):	Advanced Packaging Tool frontend for rpm and dpkg
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
-Summary(pt_BR):	Frontend avançado para pacotes rpm e deb
+Summary(pt_BR):Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version: 	0.3.19cnc38
-Release:	3
+Version:	0.3.19cnc38
+Release:	4
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -12,10 +12,11 @@ Group(es):	Administración
 Group(pl):	Aplikacje/Archiwizacja
 Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
-Source2:	apt-sources.list
+Source2:	%{name}-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
-Patch0:		apt-norequires.patch
+Patch0:		%{name}-norequires.patch
+Patch0:		%{name}-pld_user_in_ftp_pass.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
@@ -48,11 +49,18 @@ RPM. Sob desenvolvimento, use por sua própria conta e risco.
 Summary:	Development files for APT's libapt-pkg
 Summary(es):	Development files for APT's libapt-pkg
 Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
-Summary(pt_BR):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
+Summary(pt_BR):Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Group:		Development
 Group(de):	Entwicklung
 Group(pl):	Programowanie
-Group(pt_BR):	Desenvolvimento
+Group(pt_BR):Desenvolvimento
+Group:		
+Group():	
+Group(de):	Applikationen/Archivierung
+Group(pl):	Aplikacje/Archiwizacja
+Group():	
+Group:		
+Group():	
 Group(de):	Applikationen/Archivierung
 Group(es):	Desarrollo
 Group(pl):	Aplikacje/Archiwizacja
@@ -81,6 +89,7 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 tar xzf docs.tar.gz
 
 %build
@@ -94,7 +103,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 	$RPM_BUILD_ROOT/var/state/apt/lists/partial \
 	$RPM_BUILD_ROOT{%{_includedir}/apt-pkg,%{_libdir}/apt,%{_mandir}/man{5,8},%{_bindir}} \
-	$RPM_BUILD_ROOT/etc/apt
+	$RPM_BUILD_ROOT%{_sysconfdir}/apt
 
 install bin/libapt-pkg.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
 cp bin/libapt-pkg.so $RPM_BUILD_ROOT%{_libdir}
