@@ -5,8 +5,6 @@ Important:
   bdflush
   bzip2
   chkconfig
-  console-tools
-  console-data
   cracklib
   cracklib-dicts
   dev
@@ -17,7 +15,6 @@ Important:
   findutils
   awk
   gettext
-  glib
   glibc
   grep
   gzip
@@ -25,7 +22,6 @@ Important:
   info
   rc-scripts
   kernel
-  ldconfig
   lilo
   MAKEDEV
   mingetty
@@ -33,26 +29,19 @@ Important:
   mktemp
   modutils
   mount
-  ncurses
-  pam
   passwd
-  popt
   procps
   psmisc
-  pwdb
-  reiserfs-utils
   rpm
   sed
   setup
   shadow
   sh-utils
-  slang
   stat
   SysVinit
   tar
   textutils
   util-linux
-  zlib
 Required:
   apt
   at
@@ -65,25 +54,14 @@ Required:
   file
   finger
   ftp
-  gdbm
   groff
-  isapnptools
   less
-  libgd
-  libpng
-  libstdc++
   logrotate
   mailcap
   man
   pinfo
   mtools
-  netkit-base
-  iproute2
-  newt
-  pciutils
-  portmap
   raidtools
-  readline
   rmt
   slocate
   klogd
@@ -118,5 +96,3 @@ Standard:
   ypbind
   yp-tools
   zlib
-
-
