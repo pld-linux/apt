@@ -1,6 +1,6 @@
-diff -urN apt-0.3.19cnc52.org/apt-pkg/acquire-method.cc apt-0.3.19cnc52/apt-pkg/acquire-method.cc
---- apt-0.3.19cnc52.org/apt-pkg/acquire-method.cc	Thu Sep  6 22:20:42 2001
-+++ apt-0.3.19cnc52/apt-pkg/acquire-method.cc	Sat Sep  8 13:18:36 2001
+diff -urN apt-0.3.19cnc55.org/apt-pkg/acquire-method.cc apt-0.3.19cnc55/apt-pkg/acquire-method.cc
+--- apt-0.3.19cnc55.org/apt-pkg/acquire-method.cc	Sat Jan  5 13:24:15 2002
++++ apt-0.3.19cnc55/apt-pkg/acquire-method.cc	Sat Jan  5 13:24:33 2002
 @@ -97,7 +97,8 @@
     if (Queue != 0)
     {
@@ -21,9 +21,9 @@ diff -urN apt-0.3.19cnc52.org/apt-pkg/acquire-method.cc apt-0.3.19cnc52/apt-pkg/
        
     // Set the transient flag 
     if (Transient == true)
-diff -urN apt-0.3.19cnc52.org/apt-pkg/acquire-method.h apt-0.3.19cnc52/apt-pkg/acquire-method.h
---- apt-0.3.19cnc52.org/apt-pkg/acquire-method.h	Thu Sep  6 22:20:42 2001
-+++ apt-0.3.19cnc52/apt-pkg/acquire-method.h	Sat Sep  8 13:15:34 2001
+diff -urN apt-0.3.19cnc55.org/apt-pkg/acquire-method.h apt-0.3.19cnc55/apt-pkg/acquire-method.h
+--- apt-0.3.19cnc55.org/apt-pkg/acquire-method.h	Sat Jan  5 13:24:15 2002
++++ apt-0.3.19cnc55/apt-pkg/acquire-method.h	Sat Jan  5 13:24:33 2002
 @@ -50,6 +50,7 @@
     vector<string> Messages;
     FetchItem *Queue;
@@ -40,9 +40,9 @@ diff -urN apt-0.3.19cnc52.org/apt-pkg/acquire-method.h apt-0.3.19cnc52/apt-pkg/a
     
     pkgAcqMethod(const char *Ver,unsigned long Flags = 0);
     virtual ~pkgAcqMethod() {};
-diff -urN apt-0.3.19cnc52.org/apt-pkg/contrib/strutl.cc apt-0.3.19cnc52/apt-pkg/contrib/strutl.cc
---- apt-0.3.19cnc52.org/apt-pkg/contrib/strutl.cc	Thu Sep  6 22:20:42 2001
-+++ apt-0.3.19cnc52/apt-pkg/contrib/strutl.cc	Sat Sep  8 12:54:40 2001
+diff -urN apt-0.3.19cnc55.org/apt-pkg/contrib/strutl.cc apt-0.3.19cnc55/apt-pkg/contrib/strutl.cc
+--- apt-0.3.19cnc55.org/apt-pkg/contrib/strutl.cc	Sat Jan  5 13:24:14 2002
++++ apt-0.3.19cnc55/apt-pkg/contrib/strutl.cc	Sat Jan  5 13:24:33 2002
 @@ -861,7 +861,29 @@
     return Hits;
  }
@@ -74,9 +74,9 @@ diff -urN apt-0.3.19cnc52.org/apt-pkg/contrib/strutl.cc apt-0.3.19cnc52/apt-pkg/
  // URI::CopyFrom - Copy from an object					/*{{{*/
  // ---------------------------------------------------------------------
  /* This parses the URI into all of its components */
-diff -urN apt-0.3.19cnc52.org/apt-pkg/contrib/strutl.h apt-0.3.19cnc52/apt-pkg/contrib/strutl.h
---- apt-0.3.19cnc52.org/apt-pkg/contrib/strutl.h	Thu Sep  6 22:20:42 2001
-+++ apt-0.3.19cnc52/apt-pkg/contrib/strutl.h	Sat Sep  8 12:53:14 2001
+diff -urN apt-0.3.19cnc55.org/apt-pkg/contrib/strutl.h apt-0.3.19cnc55/apt-pkg/contrib/strutl.h
+--- apt-0.3.19cnc55.org/apt-pkg/contrib/strutl.h	Sat Jan  5 13:24:15 2002
++++ apt-0.3.19cnc55/apt-pkg/contrib/strutl.h	Sat Jan  5 13:24:33 2002
 @@ -45,6 +45,7 @@
  	     unsigned int Length);
  bool TokSplitString(char Tok,char *Input,char **List,
@@ -85,17 +85,9 @@ diff -urN apt-0.3.19cnc52.org/apt-pkg/contrib/strutl.h apt-0.3.19cnc52/apt-pkg/c
     
  int stringcmp(const char *A,const char *AEnd,const char *B,const char *BEnd);
  inline int stringcmp(const char *A,const char *AEnd,const char *B) {return stringcmp(A,AEnd,B,B+strlen(B));};
-diff -urN apt-0.3.19cnc52.org/methods/connect.cc apt-0.3.19cnc52/methods/connect.cc
---- apt-0.3.19cnc52.org/methods/connect.cc	Thu Sep  6 22:20:43 2001
-+++ apt-0.3.19cnc52/methods/connect.cc	Tue Feb 20 08:03:18 2001
-@@ -1,6 +1,6 @@
- // -*- mode: cpp; mode: fold -*-
- // Description								/*{{{*/
--// $Id$
-+// $Id$
- /* ######################################################################
- 
-    Connect - Replacement connect call
+diff -urN apt-0.3.19cnc55.org/methods/connect.cc apt-0.3.19cnc55/methods/connect.cc
+--- apt-0.3.19cnc55.org/methods/connect.cc	Sat Jan  5 13:24:14 2002
++++ apt-0.3.19cnc55/methods/connect.cc	Sat Jan  5 13:28:48 2002
 @@ -30,6 +30,18 @@
  static struct addrinfo *LastHostAddr = 0;
  static struct addrinfo *LastUsed = 0;
@@ -243,10 +235,10 @@ diff -urN apt-0.3.19cnc52.org/methods/connect.cc apt-0.3.19cnc52/methods/connect
  	       return _error->Error("Could not resolve '%s'",Host.c_str());
  	    }
  	    
--	    return _error->Error("Something wicked happend resolving '%s/%s'",
+-	    return _error->Error("Something wicked happened resolving '%s/%s'",
 -				 Host.c_str(),S);
 +	    return _error->Error("Something wicked happened resolving '%s:%s' (%i)",
-+				 Host.c_str(),ServStr,Res);
++				Host.c_str(),ServStr,Res);
  	 }
  	 break;
        }
@@ -299,9 +291,9 @@ diff -urN apt-0.3.19cnc52.org/methods/connect.cc apt-0.3.19cnc52/methods/connect
 +   return _error->Error("Unable to connect to %s %s:",Host.c_str(),ServStr);
  }
  									/*}}}*/
-diff -urN apt-0.3.19cnc52.org/methods/connect.h apt-0.3.19cnc52/methods/connect.h
---- apt-0.3.19cnc52.org/methods/connect.h	Thu Sep  6 22:20:43 2001
-+++ apt-0.3.19cnc52/methods/connect.h	Tue Feb 20 08:03:18 2001
+diff -urN apt-0.3.19cnc55.org/methods/connect.h apt-0.3.19cnc55/methods/connect.h
+--- apt-0.3.19cnc55.org/methods/connect.h	Sat Jan  5 13:24:14 2002
++++ apt-0.3.19cnc55/methods/connect.h	Sat Jan  5 13:24:33 2002
 @@ -1,6 +1,6 @@
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
@@ -317,9 +309,9 @@ diff -urN apt-0.3.19cnc52.org/methods/connect.h apt-0.3.19cnc52/methods/connect.
 +void RotateDNS();
  
  #endif
-diff -urN apt-0.3.19cnc52.org/methods/ftp.cc apt-0.3.19cnc52/methods/ftp.cc
---- apt-0.3.19cnc52.org/methods/ftp.cc	Thu Sep  6 22:20:43 2001
-+++ apt-0.3.19cnc52/methods/ftp.cc	Sat Sep  8 12:33:40 2001
+diff -urN apt-0.3.19cnc55.org/methods/ftp.cc apt-0.3.19cnc55/methods/ftp.cc
+--- apt-0.3.19cnc55.org/methods/ftp.cc	Sat Jan  5 13:24:14 2002
++++ apt-0.3.19cnc55/methods/ftp.cc	Sat Jan  5 13:24:33 2002
 @@ -1,9 +1,9 @@
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
@@ -877,9 +869,9 @@ diff -urN apt-0.3.19cnc52.org/methods/ftp.cc apt-0.3.19cnc52/methods/ftp.cc
  	 
  	 // Run the http method
  	 string Path = flNotFile(argv[0]) + "/http";
-diff -urN apt-0.3.19cnc52.org/methods/ftp.h apt-0.3.19cnc52/methods/ftp.h
---- apt-0.3.19cnc52.org/methods/ftp.h	Thu Sep  6 22:20:43 2001
-+++ apt-0.3.19cnc52/methods/ftp.h	Sat Sep  8 12:35:01 2001
+diff -urN apt-0.3.19cnc55.org/methods/ftp.h apt-0.3.19cnc55/methods/ftp.h
+--- apt-0.3.19cnc55.org/methods/ftp.h	Sat Jan  5 13:24:14 2002
++++ apt-0.3.19cnc55/methods/ftp.h	Sat Jan  5 13:24:33 2002
 @@ -1,5 +1,6 @@
  // -*- mode: cpp; mode: fold -*-
 -// Description								/*{{{*/// $Id$
@@ -920,9 +912,9 @@ diff -urN apt-0.3.19cnc52.org/methods/ftp.h apt-0.3.19cnc52/methods/ftp.h
     
     // Query
     bool Size(const char *Path,unsigned long &Size);
-diff -urN apt-0.3.19cnc52.org/methods/http.cc apt-0.3.19cnc52/methods/http.cc
---- apt-0.3.19cnc52.org/methods/http.cc	Thu Sep  6 22:20:43 2001
-+++ apt-0.3.19cnc52/methods/http.cc	Sat Sep  8 12:41:18 2001
+diff -urN apt-0.3.19cnc55.org/methods/http.cc apt-0.3.19cnc55/methods/http.cc
+--- apt-0.3.19cnc55.org/methods/http.cc	Sat Jan  5 13:24:14 2002
++++ apt-0.3.19cnc55/methods/http.cc	Sat Jan  5 13:24:33 2002
 @@ -1,20 +1,18 @@
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
@@ -1216,9 +1208,9 @@ diff -urN apt-0.3.19cnc52.org/methods/http.cc apt-0.3.19cnc52/methods/http.cc
  	    Server->Close();
  	    break;
  	 }
-diff -urN apt-0.3.19cnc52.org/methods/http.h apt-0.3.19cnc52/methods/http.h
---- apt-0.3.19cnc52.org/methods/http.h	Thu Sep  6 22:20:43 2001
-+++ apt-0.3.19cnc52/methods/http.h	Sat Sep  8 12:42:54 2001
+diff -urN apt-0.3.19cnc55.org/methods/http.h apt-0.3.19cnc55/methods/http.h
+--- apt-0.3.19cnc55.org/methods/http.h	Sat Jan  5 13:24:14 2002
++++ apt-0.3.19cnc55/methods/http.h	Sat Jan  5 13:24:33 2002
 @@ -1,5 +1,6 @@
  // -*- mode: cpp; mode: fold -*-
 -// Description								/*{{{*/// $Id$
@@ -1258,9 +1250,9 @@ diff -urN apt-0.3.19cnc52.org/methods/http.h apt-0.3.19cnc52/methods/http.h
  
     FileFd *File;
     ServerState *Server;
-diff -urN apt-0.3.19cnc52.org/methods/rfc2553emu.cc apt-0.3.19cnc52/methods/rfc2553emu.cc
---- apt-0.3.19cnc52.org/methods/rfc2553emu.cc	Thu Sep  6 22:20:43 2001
-+++ apt-0.3.19cnc52/methods/rfc2553emu.cc	Tue Feb 20 08:03:18 2001
+diff -urN apt-0.3.19cnc55.org/methods/rfc2553emu.cc apt-0.3.19cnc55/methods/rfc2553emu.cc
+--- apt-0.3.19cnc55.org/methods/rfc2553emu.cc	Sat Jan  5 13:24:14 2002
++++ apt-0.3.19cnc55/methods/rfc2553emu.cc	Sat Jan  5 13:24:33 2002
 @@ -1,6 +1,6 @@
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
@@ -1363,9 +1355,9 @@ diff -urN apt-0.3.19cnc52.org/methods/rfc2553emu.cc apt-0.3.19cnc52/methods/rfc2
        }
     }
     
-diff -urN apt-0.3.19cnc52.org/methods/rfc2553emu.h apt-0.3.19cnc52/methods/rfc2553emu.h
---- apt-0.3.19cnc52.org/methods/rfc2553emu.h	Thu Sep  6 22:20:43 2001
-+++ apt-0.3.19cnc52/methods/rfc2553emu.h	Sun Jun 18 08:04:45 2000
+diff -urN apt-0.3.19cnc55.org/methods/rfc2553emu.h apt-0.3.19cnc55/methods/rfc2553emu.h
+--- apt-0.3.19cnc55.org/methods/rfc2553emu.h	Sat Jan  5 13:24:14 2002
++++ apt-0.3.19cnc55/methods/rfc2553emu.h	Sat Jan  5 13:24:33 2002
 @@ -1,6 +1,6 @@
  // -*- mode: cpp; mode: fold -*-
  // Description								/*{{{*/
