@@ -14,7 +14,7 @@ Source1:	%{name}.conf
 Source2:	%{name}-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
-Source5:	%{name}-pl-man-pages.tar.bz2
+Source5:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-pl-man-pages.tar.bz2
 Patch0:		%{name}-norequires.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-no_PARALLEL_RUN.patch
