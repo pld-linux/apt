@@ -3,7 +3,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc52
-Release:	8
+Release:	9
 License:	GPL
 Group:		Applications/Archiving
 Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
@@ -19,6 +19,7 @@ Patch3:		%{name}-ac_fixes.patch
 Patch4:		%{name}-newmethods.patch
 Patch5:		%{name}-pld_man.patch
 Patch6:		%{name}-man_fixes.patch
+Patch7:		%{name}-md5-cache-dir-option.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 BuildRequires:	autoconf
@@ -86,6 +87,7 @@ tar xzf docs.tar.gz
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 mkdir docs/{pl,pt_BR}
 rm -f po/{POTFILES,Makefile}
