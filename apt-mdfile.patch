@@ -1,0 +1,22 @@
+diff -urN apt-0.3.19cnc55.org/tools/cached_md5.cc apt-0.3.19cnc55/tools/cached_md5.cc
+--- apt-0.3.19cnc55.org/tools/cached_md5.cc	Sun Feb 17 01:46:11 2002
++++ apt-0.3.19cnc55/tools/cached_md5.cc	Sun Feb 17 01:46:25 2002
+@@ -39,6 +39,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <rpm/rpmlib.h>
++#include <rpm/misc.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/stat.h>
+diff -urN apt-0.3.19cnc55.org/tools/hdlist2pkglist.cc apt-0.3.19cnc55/tools/hdlist2pkglist.cc
+--- apt-0.3.19cnc55.org/tools/hdlist2pkglist.cc	Sun Feb 17 01:46:11 2002
++++ apt-0.3.19cnc55/tools/hdlist2pkglist.cc	Sun Feb 17 01:46:46 2002
+@@ -37,6 +37,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <rpmlib.h>
++#include <rpm/misc.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/stat.h>
