@@ -2,26 +2,12 @@ Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.3.19cnc55
-Release:	4
+Version:	0.5.4cnc4
+Release:	0.1
+
 License:	GPL
 Group:		Applications/Archiving
-Group(cs):	Aplikace/Archivování
-Group(da):	Programmer/Arkivering
-Group(de):	Applikationen/Archivierung
-Group(es):	Aplicaciones/Archivar
-Group(fr):	Applications/Archivage
-Group(is):	Forrit/Þjöppun
-Group(it):	Applicazioni/Archiviazione
-Group(ja):	¥¢¥×¥ê¥±¡¼¥·¥ç¥ó/¥¢¡¼¥«¥¤¥Ö
-Group(no):	Applikasjoner/Arkivering
-Group(pl):	Aplikacje/Archiwizacja
-Group(pt):	Aplicações/Arquivos
-Group(ru):	ðÒÉÌÏÖÅÎÉÑ/áÒÈÉ×ÁÃÉÑ
-Group(sl):	Programi/Arhiviranje
-Group(sv):	Tillämpningar/Arkivering
-Group(uk):	ðÒÉËÌÁÄÎ¦ ðÒÏÇÒÁÍÉ/áÒÈ¦×ÁÃ¦Ñ
-Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
+Source0:	http://moin.conectiva.com.br/files/AptRpm/attachments/%{name}-%{version}.tar.bz2
 Source1:	%{name}.conf
 Source2:	%{name}-sources.list
 Source3:	vendors.list
@@ -31,14 +17,11 @@ Patch0:		%{name}-norequires.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-no_PARALLEL_RUN.patch
 Patch3:		%{name}-ac_fixes.patch
-Patch4:		%{name}-newmethods.patch
 Patch5:		%{name}-pld_man.patch
 Patch6:		%{name}-man_fixes.patch
 Patch7:		%{name}-mirrors.patch
-Patch8:		%{name}-mdfile.patch
-Patch9:		%{name}-gcc31.patch
-Patch10:	%{name}-ac25x.patch
-URL:		http://distro.conectiva.com/projetos/42
+Patch8:		%{name}-es_it.patch
+URL:		http://moin.conectiva.com.br/files/AptRpm/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
 BuildRequires:	autoconf
@@ -73,22 +56,6 @@ Summary:	Development files for APT's libapt-pkg
 Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
 Summary(pt):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Group:		Development/Libraries
-Group(cs):	Vývojové prostøedky/Knihovny
-Group(da):	Udvikling/Biblioteker
-Group(de):	Entwicklung/Bibliotheken
-Group(es):	Desarrollo/Bibliotecas
-Group(fr):	Development/Librairies
-Group(is):	Þróunartól/Aðgerðasöfn
-Group(it):	Sviluppo/Librerie
-Group(ja):	³«È¯/¥é¥¤¥Ö¥é¥ê
-Group(no):	Utvikling/Bibliotek
-Group(pl):	Programowanie/Biblioteki
-Group(pt_BR):	Desenvolvimento/Bibliotecas
-Group(pt):	Desenvolvimento/Bibliotecas
-Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
-Group(sl):	Razvoj/Knji¾nice
-Group(sv):	Utveckling/Bibliotek
-Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 Requires:	rpm-devel
 Obsoletes:	libapt-pkg-devel
@@ -114,30 +81,30 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %prep
 %setup -q -a5
 %patch0 -p1
-tar xzf docs.tar.gz
-%patch1 -p1
+# probably unneeded
+#%patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-%patch10 -p1
-
-mkdir docs/{pl,pt_BR}
-rm -f po/{POTFILES,Makefile}
+# need review
+#%patch5 -p1
+# need review
+#%patch6 -p1
+%patch8 -p1 -b .wiget
 
 %build
+mv po/es_ES.po po/es.po
+mv po/it_IT.po po/it.po
+
 aclocal -I buildlib
-autoheader
-autoconf
+#need patching
+#autoheader
+%{__autoconf}
+CPPFLAGS="-Wno-deprecated"
 CXXFLAGS="%{rpmcflags} -fno-rtti -fno-exceptions"
 %configure \
 	--enable-nls \
 	--with-gpm
-%{__make} CC="%{__cc}"  %{?__cxx:CXX=%{__cxx}}
+%{__make} CC="%{__cc}"  CXX="%{__cxx}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -147,22 +114,27 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 	$RPM_BUILD_ROOT{%{_mandir}/{,pl/,pt_BR/}man{5,8},%{_bindir}} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/apt
 
-install bin/libapt-pkg.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
-cp -f bin/libapt-pkg.so $RPM_BUILD_ROOT%{_libdir}
+install bin/libapt*.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
+cp -f bin/libapt*.so $RPM_BUILD_ROOT%{_libdir}
 
-install bin/{apt-{get,cache,config,cdrom},genpkglist,gensrclist} \
-	tools/genbasedir $RPM_BUILD_ROOT%{_bindir}
+install -m755 bin/apt-* bin/gen* bin/hd* \
+	$RPM_BUILD_ROOT%{_bindir}
+install -m755 tools/genbasedir $RPM_BUILD_ROOT%{_bindir}	
 
 install apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
 
-for a in "" pl pt_BR ; do
+for a in "" pl ; do
 	if ls doc/$a/*.5 >/dev/null 2>&1 ; then
-		install doc/*.5 $RPM_BUILD_ROOT%{_mandir}/$a/man5
+		install -m644 doc/*.5 $RPM_BUILD_ROOT%{_mandir}/$a/man5
 	fi
-	install doc/$a/*.8 $RPM_BUILD_ROOT%{_mandir}/$a/man8
+	install -m644 doc/$a/*.8 $RPM_BUILD_ROOT%{_mandir}/$a/man8
 done
 
 install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
+rm -f $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
+rm -f $RPM_BUILD_ROOT%{_libdir}/apt/ssh
+ln -s ./gzip $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
+ln -s ./rsh $RPM_BUILD_ROOT%{_libdir}/apt/ssh
 
 install %{SOURCE1}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
 install %{SOURCE3}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
@@ -173,7 +145,6 @@ sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/s
 
 cd po; make install DESTDIR=$RPM_BUILD_ROOT; cd ..
 
-gzip -9fn docs/*.text docs/examples/* README.RPM TODO
 
 %find_lang %{name}
 
@@ -185,7 +156,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc docs/*.gz docs/examples/*.gz *.gz
+%doc doc/examples/* README.RPM TODO
 %attr(755,root,root) %{_bindir}/*
 %dir %{_sysconfdir}/apt
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/apt.conf 
@@ -196,12 +167,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/apt/*
 %{_mandir}/man[58]/*
 %lang(pl) %{_mandir}/pl/man8/*
-%lang(pt) %{_mandir}/pt_BR/man[58]/*
+#%lang(pt) %{_mandir}/pt_BR/man[58]/*
 /var/cache/apt
 /var/lib/apt
-%attr(755,root,root) %{_libdir}/libapt-pkg.so.*.*.*
+%attr(755,root,root) %{_libdir}/libapt*.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
-%{_libdir}/libapt-pkg.so
+%{_libdir}/libapt*.so
 %{_includedir}/apt-pkg
