@@ -141,7 +141,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/apt/vendors.list
 %config %{_sysconfdir}/apt/rpmpriorities
 %dir %{_libdir}/apt
-%config %verify(not mode) %{_libdir}/apt/*
+%attr(755,root,root) %{_libdir}/apt/*
 %{_mandir}/man[58]/*
 /var/cache/apt
 /var/state/apt
