@@ -98,7 +98,7 @@ rm -f po/{POTFILES,Makefile}
 %build
 mv po/es_ES.po po/es.po
 mv po/it_IT.po po/it.po
-aclocal -I buildlib
+%{__aclocal} -I buildlib
 %{__autoconf}
 CXXFLAGS="%{rpmcflags} -fno-rtti -fno-exceptions"
 %configure \
