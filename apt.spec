@@ -6,9 +6,14 @@ Version:	0.3.19cnc52
 Release:	5
 License:	GPL
 Group:		Applications/Archiving
-Group(de):	Applikationen/Archivierung
-Group(es):	Administración
+Group(cs):	Aplikace/Archivování
+Group(de):	Anwendungen/Archivierung
+Group(es):	Aplicaciones/Archivar
+Group(fr):	Applications/Archivage
+Group(ja):	¥¢¥×¥ê¥±¡¼¥·¥ç¥ó/¥¢¡¼¥«¥¤¥Ö
 Group(pl):	Aplikacje/Archiwizacja
+Group(pt):	Aplicações/Arquivos
+Group(ru):	ğÒÉÌÏÖÅÎÉÑ/áÒÈÉ×ÉÒÏ×ÁÎÉÅ
 Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 Source2:	%{name}-sources.list
@@ -57,11 +62,14 @@ Summary:	Development files for APT's libapt-pkg
 Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
 Summary(pt):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Group:		Development/Libraries
-Group(de):	Entwicklung/Libraries
+Group(cs):	Vıvojové prostøedky/Knihovny
+Group(de):	Entwicklung/Bibliotheken
 Group(es):	Desarrollo/Bibliotecas
 Group(fr):	Development/Librairies
+Group(ja):	³«È¯/¥é¥¤¥Ö¥é¥ê
 Group(pl):	Programowanie/Biblioteki
 Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(pt):	Desenvolvimento/Bibliotecas
 Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
 Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
