@@ -14,6 +14,7 @@ Source2: sources.list
 Source3: vendors.list
 Requires: rpm >= 3.0.5
 BuildPreReq: rpm-devel >= 3.0.5
+BuildRequires: db1-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 
 %description
