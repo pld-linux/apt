@@ -23,6 +23,7 @@ Patch3:		%{name}-man_fixes.patch
 Patch5:		%{name}-es_it.patch
 Patch6:		%{name}-filed.patch
 Patch7:		%{name}-pld_user_in_ftp_pass.patch
+Patch8:		%{name}-assert.patch
 URL:		http://moin.conectiva.com.br/files/AptRpm/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -87,11 +88,10 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-# use -o Cache::Dir=foo instead
-#%%patch4 -p1
 %patch5 -p1
-%patch6 -p1 -b .wiget
+%patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 %build
 mv po/es_ES.po po/es.po
@@ -177,6 +177,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%%doc doc/libapt-pkg2_to_3.txt 
+%doc doc/libapt-pkg2_to_3.txt 
 %{_libdir}/libapt*.so
 %{_includedir}/apt-pkg
