@@ -4,7 +4,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt_BR):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version: 	0.3.19cnc38
-Release:	0.1
+Release:	1
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
