@@ -69,7 +69,7 @@ diff -ur apt-0.3.19cnc52/tools/gensrclist.cc apt-0.3.19cnc52-/tools/gensrclist.c
          if (buf[i]=='/')
   	   buf[i]='_';
 -    filename = strdup(string("/var/cache/apt/gensrclist/"+string(buf)).c_str());
-+    filename = strdup(string(cache_dir +string(buf)).c_str());
++    filename = strdup(string(cache_dir + "/" + string(buf)).c_str());
  
      f = fopen(filename, "r");
      if (!f) {
