@@ -14,6 +14,7 @@ Source1:	%{name}.conf
 Source2:	%{name}-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
+Source5:	%{name}-pl-man-pages.tar.bz2
 Patch0:		%{name}-norequires.patch
 Patch1:		%{name}-FHS.patch
 Patch2:		%{name}-no_PARALLEL_RUN.patch
@@ -126,6 +127,7 @@ install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
 install %{SOURCE1}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
 install %{SOURCE3}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
+bzip2 -dc %{SOURCE5} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
 sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 
@@ -153,6 +155,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/apt
 %attr(755,root,root) %{_libdir}/apt/*
 %{_mandir}/man[58]/*
+%lang(pl) %{_mandir}/pl/man8/*
 /var/cache/apt
 /var/lib/apt
 %attr(755,root,root) %{_libdir}/libapt-pkg.so.*.*.*
