@@ -3,7 +3,7 @@ Summary(es):	Advanced Packaging Tool frontend for rpm and dpkg
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt_BR):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version: 	0.3.19cnc35
+Version: 	0.3.19cnc36
 Release:	0.1
 License:	GPL
 Group:		Applications/Archiving
@@ -16,6 +16,7 @@ Source2:	sources.list
 Source3:	vendors.list
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
+Obsoletes:	libapt-pkg
 BuildRequires:	rpm-devel >= 3.0.6-2
 BuildRequires:	gettext-devel
 BuildRequires:	gpm-devel
@@ -41,21 +42,7 @@ kolejno¶ci instalacji, mo¿liwo¶æ ustawienia kilku ¼róde³ pakietów itp.
 Um porte das ferramentas apt do Debian para distribuições baseadas no
 RPM. Sob desenvolvimento, use por sua própria conta e risco.
 
-%package -n libapt-pkg
-Summary:        libapt-pkg library
-Summary(pl):    Biblioteka libapt-pkg
-Group:          Libraries
-Group(de):      Libraries
-Group(fr):      Librairies
-Group(pl):      Biblioteki
-
-%description -n libapt-pkg
-libapt-pkg library
-
-%description -l pl -n libapt-pkg
-Biblioteka libapt-pkg.
-
-%package -n libapt-pkg-devel
+%package devel
 Summary:	Development files for APT's libapt-pkg
 Summary(es):	Development files for APT's libapt-pkg
 Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
@@ -67,23 +54,24 @@ Group(pt_BR):	Desenvolvimento
 Group(de):	Applikationen/Archivierung
 Group(es):	Desarrollo
 Group(pl):	Aplikacje/Archiwizacja
-Requires:	libapt-pkg = %{version}
+Obsoletes:	libapt-pkg-devel
+Requires:	%{name} = %{version}
 
-%description -n libapt-pkg-devel
+%description devel
 This package contains the header files and static libraries for
 developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
 
-%description -l es -n libapt-pkg-devel
+%description -l es devel
 This package contains the header files and static libraries for
 developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
 
-%description -l pl -n libapt-pkg-devel
+%description -l pl devel
 Pakiet zawiera pliki nag³ówkowe potrzebne do tworzenia aplikacji
 korzystaj±cych z biblioteki libapt-pkg.
 
-%description -l pt_BR -n libapt-pkg-devel
+%description -l pt_BR devel
 Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
 %prep
@@ -127,8 +115,8 @@ gzip -9fn docs/*.text docs/examples/* README.RPM TODO
 
 %find_lang %{name}
 
-%post   -n libapt-pkg -p /sbin/ldconfig
-%postun -n libapt-pkg -p /sbin/ldconfig
+%post   -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -147,12 +135,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man[58]/*
 /var/cache/apt
 /var/state/apt
+%attr(755,root,root) %{_libdir}/libapt-pkg.so.*.*.*
 
-%files -n libapt-pkg
-%defattr(644,root,root,755)
-%{_libdir}/libapt-pkg.so.*.*.*
-
-%files -n libapt-pkg-devel
+%files devel
 %defattr(644,root,root,755)
 %{_libdir}/libapt-pkg.so
 %{_includedir}/apt-pkg
