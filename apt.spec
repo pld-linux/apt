@@ -14,6 +14,7 @@ Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{versio
 Source1:	%{name}.conf
 Source2:	sources.list
 Source3:	vendors.list
+Source4:	rpmpriorities
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
@@ -107,7 +108,7 @@ install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
 install %{SOURCE1}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
 install %{SOURCE2}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 install %{SOURCE3}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
-install rpmpriorities	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
+install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
 
 cd po; make install DESTDIR=$RPM_BUILD_ROOT; cd ..
 
