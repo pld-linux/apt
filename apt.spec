@@ -4,7 +4,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt_BR):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version: 	0.3.19cnc38
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -15,6 +15,7 @@ Source1:	%{name}.conf
 Source2:	apt-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
+Patch0:		apt-norequires.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
@@ -79,6 +80,7 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
 %prep
 %setup -q
+%patch0 -p1
 tar xzf docs.tar.gz
 
 %build
