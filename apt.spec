@@ -15,10 +15,14 @@ Source1:	%{name}.conf
 Source2:	sources.list
 Source3:	vendors.list
 URL:		ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/
-BuildRequires:	rpm-devel >= 3.0.5
+BuildRequires:	rpm-devel >= 3.0.6-2
 BuildRequires:	gettext-devel
 BuildRequires:	gpm-devel
+BuildRequires:	glibc-db1-devel
 BuildRequires:	db3-devel
+BuildRequires:	zlib-devel
+BuildRequires:	bzip2-devel
+BuildRequires:	popt-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -136,7 +140,7 @@ install -D rpmpriorities	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
 
 (cd po;make install DESTDIR=$RPM_BUILD_ROOT)
 
-gzip -9fn docs/*.text
+gzip -9fn docs/*.text docs/examples/* README.RPM TODO
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -146,10 +150,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README* TODO
-%doc docs/examples/configure-index
-%doc docs/examples/vendors.list
-%doc docs/examples/sources.list
+%doc README.RPM.gz TODO.gz
+%doc docs/examples/configure-index.gz
+%doc docs/examples/vendors.list.gz
+%doc docs/examples/sources.list.gz
 %{_mandir}/man5/*
 %{_mandir}/man8/*
 %{_datadir}/locale/*/LC_MESSAGES/%{name}.mo
