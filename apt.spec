@@ -3,7 +3,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc52
-Release:	5
+Release:	6
 License:	GPL
 Group:		Applications/Archiving
 Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
@@ -21,17 +21,17 @@ Patch5:		%{name}-pld_man.patch
 Patch6:		%{name}-man_fixes.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
-Obsoletes:	libapt-pkg
-BuildRequires:	rpm-devel >= 3.0.6-2
-BuildRequires:	gettext-devel
-BuildRequires:	gpm-devel
-BuildRequires:	db3-devel >= 3.1.17-3
-BuildRequires:	zlib-devel
-BuildRequires:	bzip2-devel
-BuildRequires:	popt-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	bzip2-devel
+BuildRequires:	db3-devel >= 3.1.17-3
+BuildRequires:	gettext-devel
+BuildRequires:	gpm-devel
+BuildRequires:	popt-devel
+BuildRequires:	rpm-devel >= 3.0.6-2
+BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	libapt-pkg
 
 %description
 A port of Debian's apt tools for RPM based distributions. It provides
