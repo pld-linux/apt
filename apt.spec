@@ -2,8 +2,8 @@ Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.5.4cnc6
-Release:	0.1
+Version:	0.5.4cnc7
+Release:	0.9
 License:	GPL
 Group:		Applications/Archiving
 Source0:	http://moin.conectiva.com.br/files/AptRpm/attachments/%{name}-%{version}.tar.bz2
@@ -12,14 +12,9 @@ Source2:	%{name}-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
 Source5:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-pl-man-pages.tar.bz2
-Patch0:		%{name}-norequires.patch
-Patch1:		%{name}-FHS.patch
-Patch2:		%{name}-no_PARALLEL_RUN.patch
-Patch3:		%{name}-ac_fixes.patch
-Patch5:		%{name}-pld_man.patch
-Patch6:		%{name}-man_fixes.patch
-Patch7:		%{name}-mirrors.patch
-Patch8:		%{name}-es_it.patch
+Patch0:		%{name}-no_PARALLEL_RUN.patch
+Patch1:		%{name}-ac_fixes.patch
+Patch2:		%{name}-es_it.patch
 URL:		http://moin.conectiva.com.br/files/AptRpm/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
@@ -79,20 +74,14 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
 %prep
 %setup -q -a5
-#%patch0 -p1
-# probably unneeded
-#%patch1 -p1
+%patch0 -p1
+%patch1 -p1
 %patch2 -p1
-%patch3 -p1
-# need review
-#%patch5 -p1
-# need review
-#%patch6 -p1
-%patch8 -p1 -b .wiget
 
 %build
 mv po/es_ES.po po/es.po
 mv po/it_IT.po po/it.po
+mv po/de_DE.po po/de.po
 
 aclocal -I buildlib
 #need patching
