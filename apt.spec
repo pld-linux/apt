@@ -4,7 +4,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt_BR):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version: 	0.3.19cnc37
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -12,7 +12,7 @@ Group(es):	Administración
 Group(pl):	Aplikacje/Archiwizacja
 Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
-Source2:	sources.list
+Source2:	apt-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
