@@ -70,11 +70,6 @@ This package contains the header files and static libraries for
 developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
 
-%description devel -l es
-This package contains the header files and static libraries for
-developing with APT's libapt-pkg package manipulation library,
-modified for RPM.
-
 %description devel -l pl
 Pakiet zawiera pliki nag³ówkowe potrzebne do tworzenia aplikacji
 korzystaj±cych z biblioteki libapt-pkg.
