@@ -1,15 +1,18 @@
 # Package repository URLs 
 #
-# Internal use for Conectiva Only.
-#rpm ftp://mapi2.distro.conectiva/pub 5.9/conectiva 001 002
-#rpm [akk] http://zaphod.distro.conectiva/rapt latest/conectiva 001
-
-#
 # Official repositories.
-rpm [cncbr] ftp://ftp.conectiva.com/pub/conectiva/.0 beta/conectiva 001 002
-rpm-src [cncbr] ftp://ftp.conectiva.com/pub/conectiva/.0 beta/conectiva 001 002
-
+rpm ftp://ftp.pld.org.pl/apt PLD-1.0/i386 base test supported
+rpm ftp://ftp.pld.org.pl/apt PLD-1.0/i586 base test supported
+rpm ftp://ftp.pld.org.pl/apt PLD-1.0/i686 base test supported
+rpm ftp://ftp.pld.org.pl/apt PLD-1.0/alpha base test supported
+rpm ftp://ftp.pld.org.pl/apt PLD-1.0/sparc base test supported
+rpm-src ftp://ftp.pld.org.pl/apt PLD-1.0/SRPMS base test supported
 #
 # Mirror repositories.
-#rpm ftp://rufus.w3.org/linux/conectiva beta/conectiva 001 002
-#rpm-src ftp://rufus.w3.org/linux/conectiva beta/conectiva 001 002
+rpm ftp://ftp.mimuw.edu.pl/pub/linux/PLD/apt PLD-1.0/i386 base test supported
+rpm ftp://ftp.mimuw.edu.pl/pub/linux/PLD/apt PLD-1.0/i586 base test supported
+rpm ftp://ftp.mimuw.edu.pl/pub/linux/PLD/apt PLD-1.0/i686 base test supported
+rpm ftp://ftp.mimuw.edu.pl/pub/linux/PLD/apt PLD-1.0/alpha base test supported
+rpm ftp://ftp.mimuw.edu.pl/pub/linux/PLD/apt PLD-1.0/sparc base test supported
+rpm-src ftp://ftp.mimuw.edu.pl/pub/linux/PLD/apt PLD-1.0/SRPMS base test supported
+
