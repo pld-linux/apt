@@ -37,18 +37,19 @@ Patch6:		%{name}-man_fixes.patch
 Patch7:		%{name}-mirrors.patch
 Patch8:		%{name}-mdfile.patch
 Patch9:		%{name}-gcc31.patch
+Patch10:	%{name}-ac25x.patch
 URL:		http://distro.conectiva.com/projetos/42
 Requires:	gnupg
 Obsoletes:	libapt-pkg
-BuildRequires:	rpm-devel >= 3.0.6-2
-BuildRequires:	gettext-devel
-BuildRequires:	gpm-devel
-BuildRequires:	db3-devel >= 3.1.17-3
-BuildRequires:	zlib-devel
-BuildRequires:	bzip2-devel
-BuildRequires:	popt-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	bzip2-devel
+BuildRequires:	db3-devel >= 3.1.17-3
+BuildRequires:	gettext-devel
+BuildRequires:	gpm-devel
+BuildRequires:	popt-devel
+BuildRequires:	rpm-devel >= 3.0.6-2
+BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -123,12 +124,14 @@ tar xzf docs.tar.gz
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 
 mkdir docs/{pl,pt_BR}
 rm -f po/{POTFILES,Makefile}
 
 %build
 aclocal -I buildlib
+autoheader
 autoconf
 CXXFLAGS="%{rpmcflags} -fno-rtti -fno-exceptions"
 %configure \
