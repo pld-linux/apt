@@ -101,16 +101,15 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial
 	$RPM_BUILD_ROOT/var/state/apt/lists/partial \
 	$RPM_BUILD_ROOT{%{_includedir}/apt-pkg,%{_libdir}/apt,%{_mandir}/man{5,8}}
 
-cp -a	bin/libapt-pkg.so.*	$RPM_BUILD_ROOT%{_libdir}/
-cp -a	bin/libapt-pkg.so	$RPM_BUILD_ROOT%{_libdir}/
+install bin/libapt-pkg.so* $RPM_BUILD_ROOT%{_libdir}
 
 install bin/{apt-{get,cache,config,cdrom},genpkglist,gensrclist} \
 	tools/genbasedir $RPM_BUILD_ROOT%{_bindir}
 
-install -D apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
+install apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
 
-install -D doc/*.5 $RPM_BUILD_ROOT/%{_mandir}/man5
-install -D doc/.8 $RPM_BUILD_ROOT/%{_mandir}/man8
+install doc/*.5 $RPM_BUILD_ROOT/%{_mandir}/man5
+install doc/.8 $RPM_BUILD_ROOT/%{_mandir}/man8
 
 install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
 
