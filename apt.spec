@@ -57,7 +57,7 @@ developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
 
 %description -l pl -n libapt-pkg-devel
-Pakiet zawiera pliki nag³ówkowe potrzebne do rozwoju aplikacji
+Pakiet zawiera pliki nag³ówkowe potrzebne do tworzenia aplikacji
 korzystaj±cych z biblioteki libapt-pkg.
 
 %description -l pt_BR -n libapt-pkg-devel
@@ -89,8 +89,7 @@ tar xzf docs.tar.gz
 %build
 %configure \
 	--enable-nls \
-	--with-gpm \
-	--with-cpus=1
+	--with-gpm
 %{__make}
 
 %install
@@ -147,7 +146,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc COPYING* README* TODO
+%doc README* TODO
 %doc docs/examples/configure-index
 %doc docs/examples/vendors.list
 %doc docs/examples/sources.list
