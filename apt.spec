@@ -3,7 +3,7 @@ Summary(es):	Advanced Packaging Tool frontend for rpm and dpkg
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.3.19cnc44
+Version:	0.3.19cnc45
 Release:	1
 License:	GPL
 Group:		Applications/Archiving
@@ -109,9 +109,10 @@ install doc/*.8 $RPM_BUILD_ROOT/%{_mandir}/man8
 install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
 
 install %{SOURCE1}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
-install %{SOURCE2}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 install %{SOURCE3}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
+
+sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 
 cd po; make install DESTDIR=$RPM_BUILD_ROOT; cd ..
 
