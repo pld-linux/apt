@@ -9,21 +9,21 @@ rpm ftp://ftp.pld.org.pl/dists ra/apt/@ARCH@ base updates supported
 #rpm ftp://ftp.icm.edu.pl/pub/Linux/distributions/pld/dists ra/apt/@ARCH@ base updates supported
 #rpm ftp://ftp.wsisiz.edu.pl/pub/Linux/PLD/dists ra/apt/@ARCH@ base updates supported
 #rpm ftp://ftp.pld.kernel.pl/dists ra/apt/@ARCH@ base updates supported
-#rpm ftp://ftp.task.gda.pl/vol/d31/ftp.pld.org.pl/apt PLD-1.0/@ARCH@ base updates supported
+#rpm ftp://ftp.task.gda.pl/pub/linux/PLD/apt PLD-1.0/@ARCH@ base updates supported
 
 # experimental stuff
 #rpm ftp://ftp.pld.org.pl/dists ra/apt/@ARCH@ test
 #rpm ftp://ftp.icm.edu.pl/pub/Linux/distributions/pld/dists ra/apt/@ARCH@ test
 #rpm ftp://ftp.wsisiz.edu.pl/pub/Linux/PLD/dists ra/apt/@ARCH@ test
 #rpm ftp://ftp.pld.kernel.pl/dists ra/apt/@ARCH@ test
-#rpm ftp://ftp.task.gda.pl/vol/d31/ftp.pld.org.pl/apt PLD-1.0/@ARCH@ test
+#rpm ftp://ftp.task.gda.pl/pub/linux/PLD/apt PLD-1.0/@ARCH@ test
 
 # Uncomment narest locations
 rpm-src ftp://ftp.pld.org.pl/dists ra/apt/@ARCH@ base test updates supported
 #rpm-src ftp://ftp.icm.edu.pl/pub/Linux/distributions/pld/dists ra/apt/@ARCH@ base test supported
 #rpm-src ftp://ftp.wsisiz.edu.pl/pub/Linux/PLD/dists ra/apt/@ARCH@ base test supported
 #rpm-src ftp://ftp.pld.kernel.pl/dists ra/apt/@ARCH@ base test supported
-#rpm-src ftp://ftp.task.gda.pl/vol/d31/ftp.pld.org.pl/apt PLD-1.0/@ARCH@ base test supported
+#rpm-src ftp://ftp.task.gda.pl/pub/linux/PLD/apt PLD-1.0/@ARCH@ base test supported
 
 # Very experimental stuff
 #rpm ftp://ftp.pld.org.pl/dists nest/apt/@ARCH@ base supported
