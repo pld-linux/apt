@@ -1,3 +1,9 @@
+simple-key "pld"
+{
+	Fingerprint "8D4A8A7CD9B6E09787255093E254BE31F9651D5A";
+	Name "PLD Linux Distribution (PLD Linux Distribution GPG key) <feedback@pld.org.pl>";
+}
+
 simple-key "akk"
 { 
 	Fingerprint "B24534AA5D10F86B46EAB46B3EB3759E05BBD9E4";
