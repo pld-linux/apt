@@ -1,0 +1,11 @@
+--- apt-0.5.4cnc4/configure.in.wiget	Tue Jul 30 15:28:36 2002
++++ apt-0.5.4cnc4/configure.in	Tue Jul 30 15:29:10 2002
+@@ -39,7 +39,7 @@
+ AC_CHECK_TOOL(AR,ar,"ar")
+ 
+ dnl CNC:2002-07-08
+-ALL_LINGUAS="pt_BR es_ES it_IT ru"
++ALL_LINGUAS="pt_BR es it ru"
+ AM_GNU_GETTEXT
+ LOCALEDIR="/usr/share/locale"
+ AC_DEFINE_UNQUOTED(LOCALEDIR, "$LOCALEDIR")

@@ -1,0 +1,14 @@
+--- apt-0.5.4cnc4/apt-pkg/rpm/rpmlistparser.cc.wiget	Tue Jul 30 15:17:27 2002
++++ apt-0.5.4cnc4/apt-pkg/rpm/rpmlistparser.cc	Tue Jul 30 15:18:46 2002
+@@ -285,10 +285,10 @@
+ unsigned short rpmListParser::VersionHash()
+ {
+    int Sections[] = {
++	  RPMTAG_EPOCH,
+ 	  RPMTAG_VERSION,
+ 	  RPMTAG_RELEASE,
+ 	  RPMTAG_ARCH,
+-	  RPMTAG_REQUIRENAME,
+ 	  RPMTAG_OBSOLETENAME,
+ 	  RPMTAG_CONFLICTNAME,
+ 	  0
