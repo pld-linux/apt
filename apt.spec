@@ -6,9 +6,21 @@ Version:	0.3.19cnc55
 Release:	1
 License:	GPL
 Group:		Applications/Archiving
+Group(cs):	Aplikace/Archivování
+Group(da):	Programmer/Arkivering
 Group(de):	Applikationen/Archivierung
-Group(es):	Administración
+Group(es):	Aplicaciones/Archivar
+Group(fr):	Applications/Archivage
+Group(is):	Forrit/Şjöppun
+Group(it):	Applicazioni/Archiviazione
+Group(ja):	¥¢¥×¥ê¥±¡¼¥·¥ç¥ó/¥¢¡¼¥«¥¤¥Ö
+Group(no):	Applikasjoner/Arkivering
 Group(pl):	Aplikacje/Archiwizacja
+Group(pt):	Aplicações/Arquivos
+Group(ru):	ğÒÉÌÏÖÅÎÉÑ/áÒÈÉ×ÁÃÉÑ
+Group(sl):	Programi/Arhiviranje
+Group(sv):	Tillämpningar/Arkivering
+Group(uk):	ğÒÉËÌÁÄÎ¦ ğÒÏÇÒÁÍÉ/áÒÈ¦×ÁÃ¦Ñ
 Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
 Source1:	%{name}.conf
 Source2:	%{name}-sources.list
@@ -23,6 +35,7 @@ Patch4:		%{name}-newmethods.patch
 Patch5:		%{name}-pld_man.patch
 Patch6:		%{name}-man_fixes.patch
 Patch7:		%{name}-mirrors.patch
+Patch8:		%{name}-mdfile.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
@@ -58,12 +71,21 @@ Summary:	Development files for APT's libapt-pkg
 Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
 Summary(pt):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Group:		Development/Libraries
-Group(de):	Entwicklung/Libraries
+Group(cs):	Vıvojové prostøedky/Knihovny
+Group(da):	Udvikling/Biblioteker
+Group(de):	Entwicklung/Bibliotheken
 Group(es):	Desarrollo/Bibliotecas
 Group(fr):	Development/Librairies
+Group(is):	Şróunartól/Ağgerğasöfn
+Group(it):	Sviluppo/Librerie
+Group(ja):	³«È¯/¥é¥¤¥Ö¥é¥ê
+Group(no):	Utvikling/Bibliotek
 Group(pl):	Programowanie/Biblioteki
 Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(pt):	Desenvolvimento/Bibliotecas
 Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(sl):	Razvoj/Knji¾nice
+Group(sv):	Utveckling/Bibliotek
 Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 Requires:	rpm-devel
@@ -75,16 +97,16 @@ This package contains the header files and static libraries for
 developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
 
-%description -l es devel
+%description devel -l es
 This package contains the header files and static libraries for
 developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
 
-%description -l pl devel
+%description devel -l pl
 Pakiet zawiera pliki nag³ówkowe potrzebne do tworzenia aplikacji
 korzystaj±cych z biblioteki libapt-pkg.
 
-%description -l pt_BR devel
+%description devel -l pt_BR
 Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
 %prep
@@ -98,6 +120,7 @@ tar xzf docs.tar.gz
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 
 mkdir docs/{pl,pt_BR}
 rm -f po/{POTFILES,Makefile}
