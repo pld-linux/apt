@@ -56,6 +56,7 @@ Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
 Summary(pt):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Group:		Development/Libraries
 Requires:	%{name} = %{version}
+Requires:	libstdc++-devel
 Requires:	rpm-devel
 Obsoletes:	libapt-pkg-devel
 Obsoletes:	libapt-pkg-static
@@ -98,7 +99,7 @@ mv po/de_DE.po po/de.po
 #autoheader
 %{__autoconf}
 CPPFLAGS="-Wno-deprecated"
-CXXFLAGS="%{rpmcflags} -fno-rtti -fno-exceptions"
+CXXFLAGS="%{rpmcflags} -fno-exceptions"
 %configure \
 	--enable-nls \
 	--with-gpm
@@ -113,7 +114,7 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 	$RPM_BUILD_ROOT%{_sysconfdir}/apt
 
 install bin/libapt*.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
-cp -f bin/libapt*.so $RPM_BUILD_ROOT%{_libdir}
+cp -df bin/libapt*.so $RPM_BUILD_ROOT%{_libdir}
 
 install -m755 bin/apt-* bin/gen* bin/hd* \
 	$RPM_BUILD_ROOT%{_bindir}
@@ -131,8 +132,8 @@ done
 install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
 rm -f $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
 rm -f $RPM_BUILD_ROOT%{_libdir}/apt/ssh
-ln -s ./gzip $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
-ln -s ./rsh $RPM_BUILD_ROOT%{_libdir}/apt/ssh
+ln -sf ./gzip $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
+ln -sf ./rsh $RPM_BUILD_ROOT%{_libdir}/apt/ssh
 
 install %{SOURCE1}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
 install %{SOURCE3}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
@@ -140,7 +141,8 @@ install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
 
 sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 
-cd po; %{__make} install DESTDIR=$RPM_BUILD_ROOT; cd ..
+%{__make} install -C po \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %find_lang %{name}
 
