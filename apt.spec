@@ -16,7 +16,7 @@ Source2:	%{name}-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
 Patch0:		%{name}-norequires.patch
-Patch0:		%{name}-pld_user_in_ftp_pass.patch
+Patch1:		%{name}-pld_user_in_ftp_pass.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
