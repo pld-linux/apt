@@ -3,7 +3,7 @@ Version:	0.3.19cnc21
 Release:	1
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
-Summary(pt_BR):Frontend avançado para pacotes rpm e deb
+Summary(pt_BR):	Frontend avançado para pacotes rpm e deb
 Summary(es):	Advanced Packaging Tool frontend for rpm and dpkg
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -137,6 +137,8 @@ install -D rpmpriorities	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
 
 (cd po;make install DESTDIR=$RPM_BUILD_ROOT)
 
+gzip -9fn docs/*.text
+
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
@@ -151,7 +153,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/examples/sources.list
 %{_mandir}/man5/*
 %{_mandir}/man8/*
-#%{_libdir}/libapt-pkg.so.*
 %{_datadir}/locale/*/LC_MESSAGES/%{name}.mo
 %dir %{_sysconfdir}/apt
 %config(noreplace) %{_sysconfdir}/apt/apt.conf 
@@ -179,9 +180,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libapt-pkg.so
 %{_includedir}/apt-pkg
-%doc docs/*.text docs/*.html
+%doc docs/*.text.gz docs/*.html
 
 %files -n libapt-pkg
 %defattr(644,root,root,755)
 %{_libdir}/libapt-pkg.so.*
-#%doc docs/*.text docs/*.html
