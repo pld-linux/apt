@@ -1,11 +1,14 @@
-diff -urN apt-0.3.19cnc38.org/apt-pkg/rpm/rpmlistparser.cc apt-0.3.19cnc38/apt-pkg/rpm/rpmlistparser.cc
---- apt-0.3.19cnc38.org/apt-pkg/rpm/rpmlistparser.cc	Thu Apr 19 00:38:38 2001
-+++ apt-0.3.19cnc38/apt-pkg/rpm/rpmlistparser.cc	Thu Apr 19 00:38:54 2001
-@@ -348,7 +348,6 @@
+--- apt-0.5.4cnc4/apt-pkg/rpm/rpmlistparser.cc.wiget	Tue Jul 30 15:17:27 2002
++++ apt-0.5.4cnc4/apt-pkg/rpm/rpmlistparser.cc	Tue Jul 30 15:18:46 2002
+@@ -285,10 +285,10 @@
  unsigned short rpmListParser::VersionHash()
  {
-    int Sections[] ={
--      RPMTAG_REQUIRENAME,
-       RPMTAG_OBSOLETENAME,
-       RPMTAG_CONFLICTNAME,
+    int Sections[] = {
++	  RPMTAG_EPOCH,
+ 	  RPMTAG_VERSION,
+ 	  RPMTAG_RELEASE,
+ 	  RPMTAG_ARCH,
+-	  RPMTAG_REQUIRENAME,
+ 	  RPMTAG_OBSOLETENAME,
+ 	  RPMTAG_CONFLICTNAME,
  	  0
