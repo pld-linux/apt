@@ -1,42 +1,42 @@
-diff -ur apt-0.3.19cnc52.old/cmdline/apt-get.cc apt-0.3.19cnc52/cmdline/apt-get.cc
---- apt-0.3.19cnc52.old/cmdline/apt-get.cc	Wed Aug  1 23:57:05 2001
-+++ apt-0.3.19cnc52/cmdline/apt-get.cc	Fri Oct 18 11:01:34 2002
-@@ -1404,7 +1404,7 @@
- 	 c1out << endl;
- 	 c1out << _("Since you only requested a single operation it is extremely likely that") << endl;
- 	 c1out << _("the package is simply not installable and a bug report against") << endl;
--	 c1out << _("that package should be filed.") << endl;
-+	 c1out << _("that package should be filled.") << endl;
+diff -Nur apt-0.5.4cnc7.orig/cmdline/apt-get.cc apt-0.5.4cnc7/cmdline/apt-get.cc
+--- apt-0.5.4cnc7.orig/cmdline/apt-get.cc	Thu Aug  8 22:07:33 2002
++++ apt-0.5.4cnc7/cmdline/apt-get.cc	Tue Dec 10 17:10:42 2002
+@@ -1515,7 +1515,7 @@
+ 	 c1out << 
+ 	  _("Since you only requested a single operation it is extremely likely that\n"
+ 	    "the package is simply not installable and a bug report against\n" 
+-	    "that package should be filed.") << endl;
++	    "that package should be filled.") << endl;
        }
  
        c1out << _("The following information may help to resolve the situation:") << endl;
-diff -ur apt-0.3.19cnc52.old/po/apt.pot apt-0.3.19cnc52/po/apt.pot
---- apt-0.3.19cnc52.old/po/apt.pot	Thu Jan 11 03:03:27 2001
-+++ apt-0.3.19cnc52/po/apt.pot	Fri Oct 18 11:01:36 2002
-@@ -436,7 +436,7 @@
+diff -Nur apt-0.5.4cnc7.orig/po/apt.pot apt-0.5.4cnc7/po/apt.pot
+--- apt-0.5.4cnc7.orig/po/apt.pot	Thu Sep  5 00:54:05 2002
++++ apt-0.5.4cnc7/po/apt.pot	Tue Dec 10 17:10:55 2002
+@@ -1350,7 +1350,7 @@
+ msgid ""
+ "Since you only requested a single operation it is extremely likely that\n"
+ "the package is simply not installable and a bug report against\n"
+-"that package should be filed."
++"that package should be filled."
  msgstr ""
  
- #: cmdline/apt-get.cc:1383
--msgid "that package should be filed."
-+msgid "that package should be filled."
+ #: cmdline/apt-get.cc:1515
+diff -Nur apt-0.5.4cnc7.orig/po/de_DE.po apt-0.5.4cnc7/po/de_DE.po
+--- apt-0.5.4cnc7.orig/po/de_DE.po	Thu Sep  5 00:54:05 2002
++++ apt-0.5.4cnc7/po/de_DE.po	Tue Dec 10 17:11:17 2002
+@@ -1378,7 +1378,7 @@
+ msgid ""
+ "Since you only requested a single operation it is extremely likely that\n"
+ "the package is simply not installable and a bug report against\n"
+-"that package should be filed."
++"that package should be filled."
  msgstr ""
  
- #: cmdline/apt-get.cc:1386
-diff -ur apt-0.3.19cnc52.old/po/cat-id-tbl.c apt-0.3.19cnc52/po/cat-id-tbl.c
---- apt-0.3.19cnc52.old/po/cat-id-tbl.c	Thu Jan 11 03:03:27 2001
-+++ apt-0.3.19cnc52/po/cat-id-tbl.c	Fri Oct 18 11:01:33 2002
-@@ -116,7 +116,7 @@
-   {"or been moved out of Incoming.", 100},
-   {"Since you only requested a single operation it is extremely likely that", 101},
-   {"the package is simply not installable and a bug report against", 102},
--  {"that package should be filed.", 103},
-+  {"that package should be filled.", 103},
-   {"The following information may help to resolve the situation:", 104},
-   {"Sorry, broken packages", 105},
-   {"The following extra packages will be installed:", 106},
-diff -ur apt-0.3.19cnc52.old/po/es_ES.po apt-0.3.19cnc52/po/es_ES.po
---- apt-0.3.19cnc52.old/po/es_ES.po	Tue Jan 16 20:28:52 2001
-+++ apt-0.3.19cnc52/po/es_ES.po	Fri Oct 18 11:01:35 2002
+ #: cmdline/apt-get.cc:1515
+diff -Nur apt-0.5.4cnc7.orig/po/es_ES.po apt-0.5.4cnc7/po/es_ES.po
+--- apt-0.5.4cnc7.orig/po/es_ES.po	Tue Jul 23 19:54:53 2002
++++ apt-0.5.4cnc7/po/es_ES.po	Tue Dec 10 17:11:29 2002
 @@ -435,7 +435,7 @@
  msgstr "el paquete simplemente no se pueda instalar y se deba informar"
  
@@ -46,9 +46,9 @@ diff -ur apt-0.3.19cnc52.old/po/es_ES.po apt-0.3.19cnc52/po/es_ES.po
  msgstr "de un error acerca de este paquete."
  
  #: cmdline/apt-get.cc:1386
-diff -ur apt-0.3.19cnc52.old/po/it_IT.po apt-0.3.19cnc52/po/it_IT.po
---- apt-0.3.19cnc52.old/po/it_IT.po	Thu Mar 22 13:01:47 2001
-+++ apt-0.3.19cnc52/po/it_IT.po	Fri Oct 18 11:01:33 2002
+diff -Nur apt-0.5.4cnc7.orig/po/it_IT.po apt-0.5.4cnc7/po/it_IT.po
+--- apt-0.5.4cnc7.orig/po/it_IT.po	Tue Jul 23 19:54:53 2002
++++ apt-0.5.4cnc7/po/it_IT.po	Tue Dec 10 17:11:34 2002
 @@ -435,7 +435,7 @@
  msgstr "il pacchetto sia semplicemente non installabile e"
  
@@ -58,15 +58,27 @@ diff -ur apt-0.3.19cnc52.old/po/it_IT.po apt-0.3.19cnc52/po/it_IT.po
  msgstr "che debba essere inviato un bug report per il pacchetto."
  
  #: cmdline/apt-get.cc:1386
-diff -ur apt-0.3.19cnc52.old/po/pt_BR.po apt-0.3.19cnc52/po/pt_BR.po
---- apt-0.3.19cnc52.old/po/pt_BR.po	Thu Jul 12 23:47:33 2001
-+++ apt-0.3.19cnc52/po/pt_BR.po	Fri Oct 18 11:01:35 2002
-@@ -448,7 +448,7 @@
+diff -Nur apt-0.5.4cnc7.orig/po/pt_BR.po apt-0.5.4cnc7/po/pt_BR.po
+--- apt-0.5.4cnc7.orig/po/pt_BR.po	Tue Jul 23 19:54:53 2002
++++ apt-0.5.4cnc7/po/pt_BR.po	Tue Dec 10 17:11:40 2002
+@@ -1037,7 +1037,7 @@
  msgstr "o pacote simplesmente nЦo esteja instalado e um relatСrio de bug"
  
- #: cmdline/apt-get.cc:1383
+ #: cmdline/apt-get.cc:1424
 -msgid "that package should be filed."
 +msgid "that package should be filled."
  msgstr "deste pacote deve ser preenchido."
  
- #: cmdline/apt-get.cc:1386
+ #: cmdline/apt-get.cc:1427
+diff -Nur apt-0.5.4cnc7.orig/po/ru.po apt-0.5.4cnc7/po/ru.po
+--- apt-0.5.4cnc7.orig/po/ru.po	Tue Jul 23 19:54:53 2002
++++ apt-0.5.4cnc7/po/ru.po	Tue Dec 10 17:11:44 2002
+@@ -1040,7 +1040,7 @@
+ msgstr "невозможно установить и требуется отправить сообщение об ошибке"
+ 
+ #: cmdline/apt-get.cc:1413
+-msgid "that package should be filed."
++msgid "that package should be filled."
+ msgstr "с этим пакетом разработчикам."
+ 
+ #: cmdline/apt-get.cc:1416

@@ -1,92 +1,103 @@
-diff -ur apt-0.3.19cnc52/tools/genpkglist.cc apt-0.3.19cnc52-/tools/genpkglist.cc
---- apt-0.3.19cnc52/tools/genpkglist.cc	Thu Jul 12 23:47:33 2001
-+++ apt-0.3.19cnc52-/tools/genpkglist.cc	Wed Apr 24 15:50:01 2002
-@@ -139,6 +139,7 @@
-    ~CachedMD5();
- };
+diff -Nur apt-0.5.4cnc7.orig/tools/cached_md5.cc apt-0.5.4cnc7/tools/cached_md5.cc
+--- apt-0.5.4cnc7.orig/tools/cached_md5.cc	Sat Jul 27 01:16:34 2002
++++ apt-0.5.4cnc7/tools/cached_md5.cc	Tue Dec 10 16:59:14 2002
+@@ -25,13 +25,15 @@
  
-+string cache_dir;
+ extern const char *__progname;
  
++extern string cache_dir;
++
  CachedMD5::CachedMD5(string DirName)
  {
-@@ -153,7 +154,7 @@
-         if (buf[i]=='/')
-  	   buf[i]='_';
+    string fname = DirName;
+    for (string::iterator i = fname.begin(); i != fname.end(); ++i)
+       if ('/' == *i)
+ 	 *i = '_';
+-   CacheFileName = _config->FindDir("Dir::Cache", "/var/cache/apt") + '/' +
++   CacheFileName = cache_dir + '/' +
+ 		   __progname + '/' + fname + ".md5cache";
  
--    string cachedir = _config->FindDir("Dir::Cache") + "/genpkglist";
-+    string cachedir = cache_dir + "/genpkglist";
-     filename = strdup(string(cachedir+string(buf)).c_str());
- 
-     f = fopen(filename, "r");
-@@ -501,6 +502,7 @@
+    FILE *f = fopen(CacheFileName.c_str(), "r");
+diff -Nur apt-0.5.4cnc7.orig/tools/genpkglist.cc apt-0.5.4cnc7/tools/genpkglist.cc
+--- apt-0.5.4cnc7.orig/tools/genpkglist.cc	Sat Jul 27 01:22:48 2002
++++ apt-0.5.4cnc7/tools/genpkglist.cc	Tue Dec 10 17:04:04 2002
+@@ -340,6 +340,7 @@
     cerr << "options:" << endl;
     cerr << " --index <file>  file to write srpm index data to" << endl;
     cerr << " --info <file>   file to read update info from" << endl;
 +   cerr << " --cache-dir <dir>   use named directory for md5 cache" << endl;
-    cerr << " --bloat         do not strip the package file list. Needed for some\ndistributions that use non-automatically generated file dependencies" << endl;
- }
+    cerr << " --bloat         do not strip the package file list. Needed for some" << endl;
+    cerr << "                 distributions that use non-automatically generated" << endl;
+    cerr << "                 file dependencies" << endl;
+@@ -431,6 +432,7 @@
+ // end of new stuff from glibc
+ #endif /* !HAVE_SCANDIR */
  
-@@ -607,6 +609,11 @@
++string cache_dir;
+ 
+ int main(int argc, char ** argv) 
+ {
+@@ -449,7 +451,12 @@
     int i;
     bool fullFileList = false;
-    
+    bool progressBar = false;
+-   
++ 
 +   if (getenv("TMPDIR"))
-+   	cache_dir = getenv("TMPDIR");
++      cache_dir = getenv("TMPDIR");
 +   else
-+   	cache_dir = "/tmp";
-+	
++      cache_dir = "/tmp";
++
     putenv("LC_ALL=");
     for (i = 1; i < argc; i++) {
        if (strcmp(argv[i], "--index") == 0) {
-@@ -617,6 +624,14 @@
+@@ -460,6 +467,14 @@
  	    cout << "genpkglist: filename missing for option --index"<<endl;
  	    exit(1);
  	 }
 +      } else if (strcmp(argv[i], "--cache-dir") == 0) {
 +	 i++;
 +	 if (i < argc) {
-+	    cache_dir = argv[i];
++            cache_dir = argv[i];
 +	 } else {
-+	    cout << "genpkglist: filename missing for option --cache-dir"<<endl;
++            cout << "genpkglist: filename missing for option --cache-dir"<<endl;
 +	    exit(1);
 +	 }
        } else if (strcmp(argv[i], "--info") == 0) {
  	 i++;
  	 if (i < argc) {
-diff -ur apt-0.3.19cnc52/tools/gensrclist.cc apt-0.3.19cnc52-/tools/gensrclist.cc
---- apt-0.3.19cnc52/tools/gensrclist.cc	Thu Jul 12 23:47:33 2001
-+++ apt-0.3.19cnc52-/tools/gensrclist.cc	Wed Apr 24 15:52:57 2002
-@@ -90,6 +90,7 @@
-    ~CachedMD5();
- };
+diff -Nur apt-0.5.4cnc7.orig/tools/gensrclist.cc apt-0.5.4cnc7/tools/gensrclist.cc
+--- apt-0.5.4cnc7.orig/tools/gensrclist.cc	Sat Jul 27 01:22:48 2002
++++ apt-0.5.4cnc7/tools/gensrclist.cc	Tue Dec 10 17:07:40 2002
+@@ -116,7 +116,7 @@
  
-+string cache_dir = "/var/cache/apt/gensrclist/";
- 
- CachedMD5::CachedMD5(string DirName)
+ void usage()
  {
-@@ -103,7 +104,7 @@
-     for (i = 0; buf[i]; i++)
-         if (buf[i]=='/')
-  	   buf[i]='_';
--    filename = strdup(string("/var/cache/apt/gensrclist/"+string(buf)).c_str());
-+    filename = strdup(string(cache_dir + "/" + string(buf)).c_str());
+-   cerr << "usage: gensrclist [<options>] <dir> <suffix> <srpm index>" << endl;
++   cerr << "usage: gensrclist [--cache-dir <dir>] [<options>] <dir> <suffix> <srpm index>" << endl;
+    cerr << "options:" << endl;
+ //   cerr << " --mapi         ???????????????????" << endl;
+    cerr << " --progress     show a progress bar" << endl;
+@@ -124,6 +124,8 @@
+    cerr << "                are in the same directory level"<<endl;
+ }
  
-     f = fopen(filename, "r");
-     if (!f) {
-@@ -243,8 +244,15 @@
-    bool mapi;
-    
++string cache_dir = "/var/cache/apt"
++
+ int main(int argc, char ** argv) 
+ {
+    char buf[300];
+@@ -143,6 +145,13 @@
+    char *arg_dir, *arg_suffix, *arg_srpmindex;
+ 
     putenv("LC_ALL=");
 +
 +   if (argv[1] && argv[2] && strcmp(argv[1], "--cache-dir") == 0) {
-+    	cache_dir = argv[2];
-+	argv += 2;
-+	argc -= 2;
++       cache_dir = argv[2];
++       argv += 2;
++       argc -= 2;
 +   }
-+   
-    if (argc < 4 || argc > 5) {
--      cerr << "usage: gensrclist <dir> <suffix> <srpm index>" << endl;
-+      cerr << "usage: gensrclist [--cache-dir <dir>] <dir> <suffix> <srpm index>" << endl;
-       exit(1);
-    }
-    
++
+    for (i = 1; i < argc; i++) {
+       if (strcmp(argv[i], "--mapi") == 0) {
+ 	 mapi = true;
