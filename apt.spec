@@ -2,27 +2,24 @@ Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.3.19cnc52
-Release:	12
+Version:	0.5.4cnc7
+Release:	0.9
 License:	GPL
 Group:		Applications/Archiving
-Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
+Source0:	http://moin.conectiva.com.br/files/AptRpm/attachments/%{name}-%{version}.tar.bz2
 Source1:	%{name}.conf
 Source2:	%{name}-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
 Source5:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-pl-man-pages.tar.bz2
-Patch0:		%{name}-norequires.patch
-Patch1:		%{name}-FHS.patch
-Patch2:		%{name}-no_PARALLEL_RUN.patch
-Patch3:		%{name}-ac_fixes.patch
-Patch4:		%{name}-newmethods.patch
-Patch5:		%{name}-pld_man.patch
-Patch6:		%{name}-man_fixes.patch
-Patch7:		%{name}-md5-cache-dir-option.patch
-Patch8:		%{name}-es_it.patch
-Patch9:		%{name}-filed.patch
-URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
+Patch0:		%{name}-no_PARALLEL_RUN.patch
+Patch1:		%{name}-ac_fixes.patch
+Patch2:		%{name}-pld_man.patch
+Patch3:		%{name}-man_fixes.patch
+Patch4:		%{name}-md5-cache-dir-option.patch
+Patch5:		%{name}-es_it.patch
+Patch6:		%{name}-filed.patch
+URL:		http://moin.conectiva.com.br/files/AptRpm/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
@@ -83,30 +80,28 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %prep
 %setup -q -a5
 %patch0 -p1
-tar xzf docs.tar.gz
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
+%patch5 -p0
 %patch6 -p1
-%patch7 -p1
-%patch8 -p0
-%patch9 -p1
-
-mkdir docs/{pl,pt_BR}
-rm -f po/{POTFILES,Makefile}
 
 %build
 mv po/es_ES.po po/es.po
 mv po/it_IT.po po/it.po
+mv po/de_DE.po po/de.po
+
 %{__aclocal} -I buildlib
+#need patching
+#autoheader
 %{__autoconf}
+CPPFLAGS="-Wno-deprecated"
 CXXFLAGS="%{rpmcflags} -fno-rtti -fno-exceptions"
 %configure \
 	--enable-nls \
 	--with-gpm
-%{__make}
+%{__make} CC="%{__cc}"  CXX="%{__cxx}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -116,22 +111,27 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 	$RPM_BUILD_ROOT{%{_mandir}/{,pl/,pt_BR/}man{5,8},%{_bindir}} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/apt
 
-install bin/libapt-pkg.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
-cp -f bin/libapt-pkg.so $RPM_BUILD_ROOT%{_libdir}
+install bin/libapt*.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
+cp -f bin/libapt*.so $RPM_BUILD_ROOT%{_libdir}
 
-install bin/{apt-{get,cache,config,cdrom},genpkglist,gensrclist} \
-	tools/genbasedir $RPM_BUILD_ROOT%{_bindir}
+install -m755 bin/apt-* bin/gen* bin/hd* \
+	$RPM_BUILD_ROOT%{_bindir}
+install -m755 tools/genbasedir $RPM_BUILD_ROOT%{_bindir}	
 
 install apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
 
 for a in "" pl pt_BR ; do
 	if ls doc/$a/*.5 >/dev/null 2>&1 ; then
-		install doc/$a/*.5 $RPM_BUILD_ROOT/%{_mandir}/$a/man5
+		install -m644 doc/*.5 $RPM_BUILD_ROOT%{_mandir}/$a/man5
 	fi
-	install doc/$a/*.8 $RPM_BUILD_ROOT/%{_mandir}/$a/man8
+	install -m644 doc/$a/*.8 $RPM_BUILD_ROOT%{_mandir}/$a/man8
 done
 
 install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
+rm -f $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
+rm -f $RPM_BUILD_ROOT%{_libdir}/apt/ssh
+ln -s ./gzip $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
+ln -s ./rsh $RPM_BUILD_ROOT%{_libdir}/apt/ssh
 
 install %{SOURCE1}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
 install %{SOURCE3}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
@@ -140,7 +140,7 @@ install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
 
 sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 
-cd po; make install DESTDIR=$RPM_BUILD_ROOT; cd ..
+cd po; %{__make} install DESTDIR=$RPM_BUILD_ROOT; cd ..
 
 %find_lang %{name}
 
@@ -152,7 +152,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc docs/*.text docs/examples/* README.RPM TODO
+%doc doc/examples/* README.RPM TODO
 %attr(755,root,root) %{_bindir}/*
 %dir %{_sysconfdir}/apt
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/apt.conf
@@ -163,12 +163,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/apt/*
 %{_mandir}/man[58]/*
 %lang(pl) %{_mandir}/pl/man8/*
-%lang(pt) %{_mandir}/pt_BR/man[58]/*
+#%lang(pt) %{_mandir}/pt_BR/man[58]/*
 /var/cache/apt
 /var/lib/apt
-%attr(755,root,root) %{_libdir}/libapt-pkg.so.*.*.*
+%attr(755,root,root) %{_libdir}/libapt*.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
-%{_libdir}/libapt-pkg.so
+%{_libdir}/libapt*.so
 %{_includedir}/apt-pkg
