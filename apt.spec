@@ -1,9 +1,11 @@
+# TODO:
+# - build python bindings
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl):	Zaawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.5.4cnc7
-Release:	0.99
+Version:	0.5.5cnc3
+Release:	0.1
 License:	GPL
 Group:		Applications/Archiving
 Source0:	http://moin.conectiva.com.br/files/AptRpm/attachments/%{name}-%{version}.tar.bz2
@@ -84,9 +86,10 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+# use -o Cache::Dir=foo instead
+#%%patch4 -p1
 %patch5 -p1
-%patch6 -p1
+%patch6 -p1 -b .wiget
 %patch7 -p1
 
 %build
@@ -111,7 +114,8 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 	$RPM_BUILD_ROOT/var/lib/apt/lists/partial \
 	$RPM_BUILD_ROOT{%{_includedir}/apt-pkg,%{_libdir}/apt} \
 	$RPM_BUILD_ROOT{%{_mandir}/{,pl/,pt_BR/}man{5,8},%{_bindir}} \
-	$RPM_BUILD_ROOT%{_sysconfdir}/apt
+	$RPM_BUILD_ROOT{%{_sysconfdir}/apt,%{_datadir}}
+
 
 install bin/libapt*.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
 cp -df bin/libapt*.so $RPM_BUILD_ROOT%{_libdir}
@@ -141,10 +145,11 @@ install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
 
 sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 
-%{__make} install -C po \
-	DESTDIR=$RPM_BUILD_ROOT
+cp -a locale $RPM_BUILD_ROOT%{_datadir}/
 
 %find_lang %{name}
+%find_lang libapt-pkg3.3
+cat libapt-pkg3.3.lang >> %{name}.lang
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -154,7 +159,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc doc/examples/* README.RPM TODO
+%doc docs/examples/* TODO
 %attr(755,root,root) %{_bindir}/*
 %dir %{_sysconfdir}/apt
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/apt.conf
@@ -171,5 +176,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%%doc doc/libapt-pkg2_to_3.txt 
 %{_libdir}/libapt*.so
 %{_includedir}/apt-pkg
