@@ -146,9 +146,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/*.gz docs/examples/*.gz *.gz
 %attr(755,root,root) %{_bindir}/*
 %dir %{_sysconfdir}/apt
-%config(noreplace) %{_sysconfdir}/apt/apt.conf 
-%config(noreplace) %{_sysconfdir}/apt/sources.list
-%config(noreplace) %{_sysconfdir}/apt/vendors.list
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/apt.conf 
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/sources.list
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/vendors.list
 %config %{_sysconfdir}/apt/rpmpriorities
 %dir %{_libdir}/apt
 %attr(755,root,root) %{_libdir}/apt/*
