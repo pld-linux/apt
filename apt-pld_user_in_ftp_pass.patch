@@ -1,11 +1,11 @@
---- apt-0.3.19cnc38/methods/ftp.cc~	Tue Feb 20 19:20:02 2001
-+++ apt-0.3.19cnc38/methods/ftp.cc	Fri Apr 27 11:48:50 2001
-@@ -176,7 +176,7 @@
-    if (0) //akk
-    	Pass = "apt_get_ftp_2.0@debian.linux.user";
-    else
--	Pass = "apt_get_ftp_2.0@conectiva.linux.user";
-+	Pass = "apt_get_ftp_2.0@pld.linux.user";
+--- apt-0.5.4cnc7/methods/ftp.cc.orig	Thu Jul 25 20:07:19 2002
++++ apt-0.5.4cnc7/methods/ftp.cc	Tue Dec 10 20:48:50 2002
+@@ -185,7 +185,7 @@
+    
+    // Setup the variables needed for authentication
+    string User = "anonymous";
+-   string Pass = "apt_get_ftp_2.1@debian.linux.user";
++   string Pass = "apt_get_ftp@pld.linux.user";
  
     // Fill in the user/pass
     if (ServerName.User.empty() == false)

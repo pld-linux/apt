@@ -82,7 +82,7 @@ diff -Nur apt-0.5.4cnc7.orig/tools/gensrclist.cc apt-0.5.4cnc7/tools/gensrclist.
     cerr << "                are in the same directory level"<<endl;
  }
  
-+string cache_dir = "/var/cache/apt"
++string cache_dir = "/var/cache/apt";
 +
  int main(int argc, char ** argv) 
  {

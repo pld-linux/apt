@@ -3,7 +3,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.5.4cnc7
-Release:	0.9
+Release:	0.99
 License:	GPL
 Group:		Applications/Archiving
 Source0:	http://moin.conectiva.com.br/files/AptRpm/attachments/%{name}-%{version}.tar.bz2
@@ -19,6 +19,7 @@ Patch3:		%{name}-man_fixes.patch
 Patch4:		%{name}-md5-cache-dir-option.patch
 Patch5:		%{name}-es_it.patch
 Patch6:		%{name}-filed.patch
+Patch7:		%{name}-pld_user_in_ftp_pass.patch
 URL:		http://moin.conectiva.com.br/files/AptRpm/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -85,6 +86,7 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 
 %build
 mv po/es_ES.po po/es.po
@@ -135,7 +137,6 @@ ln -s ./rsh $RPM_BUILD_ROOT%{_libdir}/apt/ssh
 install %{SOURCE1}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
 install %{SOURCE3}   	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
-# bzip2 -dc %{SOURCE5} | tar xf - -C $RPM_BUILD_ROOT%{_mandir}
 
 sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 
@@ -162,7 +163,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/apt/*
 %{_mandir}/man[58]/*
 %lang(pl) %{_mandir}/pl/man8/*
-#%lang(pt) %{_mandir}/pt_BR/man[58]/*
 /var/cache/apt
 /var/lib/apt
 %attr(755,root,root) %{_libdir}/libapt*.so.*.*.*
