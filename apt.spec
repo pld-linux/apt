@@ -37,6 +37,20 @@ kolejno¶ci instalacji, mo¿liwo¶æ ustawienia kilku ¼róde³ pakietów itp.
 Um porte das ferramentas apt do Debian para distribuições baseadas no
 RPM. Sob desenvolvimento, use por sua própria conta e risco.
 
+%package -n libapt-pkg
+Summary:        libapt-pkg library
+Summary(pl):    Biblioteka libapt-pkg
+Group:          Libraries
+Group(de):      Libraries
+Group(fr):      Librairies
+Group(pl):      Biblioteki
+
+%description -n libapt-pkg
+libapt-pkg library
+
+%description -l pl -n libapt-pkg
+Biblioteka libapt-pkg.
+
 %package -n libapt-pkg-devel
 Summary:	Development files for APT's libapt-pkg
 Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
@@ -67,20 +81,6 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 This package contains the header files and static libraries for
 developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
-
-%package -n libapt-pkg
-Summary:	libapt-pkg library
-Summary(pl):	Biblioteka libapt-pkg
-Group:		Libraries
-Group(de):	Libraries
-Group(fr):	Librairies
-Group(pl):	Biblioteki
-
-%description -n libapt-pkg
-libapt-pkg library
-
-%description -l pl -n libapt-pkg
-Biblioteka libapt-pkg.
 
 %prep
 %setup -q
@@ -175,12 +175,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/gensrclist
 %attr(755,root,root) %{_bindir}/genbasedir
 
+%files -n libapt-pkg
+%defattr(644,root,root,755)
+%{_libdir}/libapt-pkg.so.*
+
 %files -n libapt-pkg-devel
 %defattr(644,root,root,755)
 %{_libdir}/libapt-pkg.so
 %{_includedir}/apt-pkg
 %doc docs/*.text.gz docs/*.html
-
-%files -n libapt-pkg
-%defattr(644,root,root,755)
-%{_libdir}/libapt-pkg.so.*
