@@ -18,6 +18,8 @@ Source4:	rpmpriorities
 Patch0:		%{name}-norequires.patch
 Patch1:		%{name}-pld_user_in_ftp_pass.patch
 Patch2:		%{name}-FHS.patch
+Patch3:		%{name}-no_PARALLEL_RUN.patch
+Patch4:		%{name}-ac_fixes.patch
 URL:		http://bazar.conectiva.com.br/~godoy/apt-howto/
 Requires:	gnupg
 Obsoletes:	libapt-pkg
@@ -84,8 +86,13 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %patch1 -p1
 tar xzf docs.tar.gz
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
+
+rm -f po/{POTFILES,Makefile}
 
 %build
+aclocal -I buildlib
 autoconf
 %configure \
 	--enable-nls \
