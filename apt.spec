@@ -89,7 +89,7 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
 %prep
 %setup -q -a5
-#%patch0 -p1
+%patch0 -p1
 tar xzf docs.tar.gz
 %patch1 -p1
 %patch2 -p1
