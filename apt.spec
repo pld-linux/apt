@@ -3,8 +3,8 @@ Summary(es):	Advanced Packaging Tool frontend for rpm and dpkg
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.3.19cnc50
-Release:	3
+Version:	0.3.19cnc52
+Release:	1
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
