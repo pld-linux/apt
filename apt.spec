@@ -1,5 +1,4 @@
 Summary:	Debian's Advanced Packaging Tool with RPM support
-Summary(es):	Advanced Packaging Tool frontend for rpm and dpkg
 Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
@@ -51,7 +50,6 @@ RPM. Sob desenvolvimento, use por sua própria conta e risco.
 
 %package devel
 Summary:	Development files for APT's libapt-pkg
-Summary(es):	Development files for APT's libapt-pkg
 Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
 Summary(pt):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Group:		Development/Libraries
