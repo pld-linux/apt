@@ -3,7 +3,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc52
-Release:	7
+Release:	8
 License:	GPL
 Group:		Applications/Archiving
 Source0:	ftp://ftp.conectiva.com/pub/conectiva/EXPERIMENTAL/apt/%{name}-%{version}.tar.gz
@@ -116,10 +116,10 @@ install bin/{apt-{get,cache,config,cdrom},genpkglist,gensrclist} \
 install apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
 
 for a in "" pl pt_BR ; do
-	if ls doc/*.5 >/dev/null 2>&1 ; then
-		install doc/*.5 $RPM_BUILD_ROOT/%{_mandir}/$a/man5
+	if ls doc/$a/*.5 >/dev/null 2>&1 ; then
+		install doc/$a/*.5 $RPM_BUILD_ROOT/%{_mandir}/$a/man5
 	fi
-	install doc/*.8 $RPM_BUILD_ROOT/%{_mandir}/$a/man8
+	install doc/$a/*.8 $RPM_BUILD_ROOT/%{_mandir}/$a/man8
 done
 
 install  bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
