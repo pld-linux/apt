@@ -123,7 +123,7 @@ cp -df bin/libapt*.so $RPM_BUILD_ROOT%{_libdir}
 
 install -m755 bin/apt-* bin/gen* bin/hd* \
 	$RPM_BUILD_ROOT%{_bindir}
-install -m755 tools/genbasedir $RPM_BUILD_ROOT%{_bindir}	
+install -m755 tools/genbasedir $RPM_BUILD_ROOT%{_bindir}
 
 install apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
 
@@ -177,6 +177,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc doc/libapt-pkg2_to_3.txt 
+%doc doc/libapt-pkg2_to_3.txt
 %{_libdir}/libapt*.so
 %{_includedir}/apt-pkg
