@@ -2,7 +2,7 @@ Name:		apt
 Version:	0.3.19cnc21
 Release:	1
 Summary:	Debian's Advanced Packaging Tool with RPM support
-Summary(pl):	Zawansowane Narzêdzie do Zarz±dzania Pakietami
+Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt_BR):Frontend avançado para pacotes rpm e deb
 Summary(es):	Advanced Packaging Tool frontend for rpm and dpkg
 Group:		Applications/Archiving
@@ -28,8 +28,8 @@ upgrade packages. APT features complete installation ordering,
 multiple source capability and several other unique features.
 
 %description -l pl
-Port Debianowego narzêdzia apt dla dystrybucji bazuj±cych na zarz±dcy
-pakietów RPM. apt dostarcza narzêdzie apt-get, który umo¿liwia prost±
+Port debianowego narzêdzia APT dla dystrybucji bazuj±cych na zarz±dcy
+pakietów RPM. APT dostarcza narzêdzie apt-get, które umo¿liwia prost±
 bezpieczn± instalacjê i aktualizacjê pakietów. Mo¿liwo¶ci APT to wybór
 kolejno¶ci instalacji, mo¿liwo¶æ ustawienia kilku ¼róde³ pakietów itp.
 
@@ -39,13 +39,13 @@ RPM. Sob desenvolvimento, use por sua própria conta e risco.
 
 %package -n libapt-pkg-devel
 Summary:	Development files for APT's libapt-pkg
-Summary(pl):	Pliki developerskie dla APT libapt-pkg
-Summary(pt_BR):Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
+Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
+Summary(pt_BR):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Summary(es):	Development files for APT's libapt-pkg
 Group:		Development
 Group(de):	Entwicklung
 Group(pl):	Programowanie
-Group(pt_BR):Desenvolvimento
+Group(pt_BR):	Desenvolvimento
 Group(de):	Applikationen/Archivierung
 Group(es):	Desarrollo
 Group(pl):	Aplikacje/Archiwizacja
@@ -68,19 +68,19 @@ This package contains the header files and static libraries for
 developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
 
-%package -n libapt-pkg-static
-Summary:	Static libapt-pkg library
-Summary(pl):	Statyczna biblioteka libapt-pkg
+%package -n libapt-pkg
+Summary:	libapt-pkg library
+Summary(pl):	Biblioteka libapt-pkg
 Group:		Libraries
 Group(de):	Libraries
 Group(fr):	Librairies
 Group(pl):	Biblioteki
 
-%description -n libapt-pkg-static
-Static libapt-pkg library
+%description -n libapt-pkg
+libapt-pkg library
 
-%description -l pl -n libapt-pkg-static
-Statyczna biblioteka libapt-pkg.
+%description -l pl -n libapt-pkg
+Biblioteka libapt-pkg.
 
 %prep
 %setup -q
@@ -96,8 +96,8 @@ tar xzf docs.tar.gz
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_localstatedir}/cache/%{name}/archives/partial
-install -d $RPM_BUILD_ROOT%{_localstatedir}/state/%{name}/lists/partial
+install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial
+install -d $RPM_BUILD_ROOT/var/state/apt/lists/partial
 
 install -d $RPM_BUILD_ROOT%{_libdir}/
 cp -a	bin/libapt-pkg.so.*	$RPM_BUILD_ROOT%{_libdir}/
@@ -151,19 +151,19 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/examples/sources.list
 %{_mandir}/man5/*
 %{_mandir}/man8/*
-%{_libdir}/libapt-pkg.so.*
+#%{_libdir}/libapt-pkg.so.*
 %{_datadir}/locale/*/LC_MESSAGES/%{name}.mo
 %dir %{_sysconfdir}/apt
 %config(noreplace) %{_sysconfdir}/apt/apt.conf 
 %config(noreplace) %{_sysconfdir}/apt/sources.list
 %config(noreplace) %{_sysconfdir}/apt/vendors.list
 %config %{_sysconfdir}/apt/rpmpriorities
-%dir %{_localstatedir}/cache/apt
-%dir %{_localstatedir}/cache/apt/archives       
-%dir %{_localstatedir}/cache/apt/archives/partial
-%dir %{_localstatedir}/state/apt
-%dir %{_localstatedir}/state/apt/lists
-%dir %{_localstatedir}/state/apt/lists/partial
+%dir /var/cache/apt
+%dir /var/cache/apt/archives       
+%dir /var/cache/apt/archives/partial
+%dir /var/state/apt
+%dir /var/state/apt/lists
+%dir /var/state/apt/lists/partial
 %defattr(755,root,root)
 %dir %{_libdir}/apt
 %config %verify(not mode) %{_libdir}/apt/*
@@ -179,8 +179,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libapt-pkg.so
 %{_includedir}/apt-pkg
+%doc docs/*.text docs/*.html
 
-%files -n libapt-pkg-static
+%files -n libapt-pkg
 %defattr(644,root,root,755)
-%{_libdir}/libapt-pkg.a
-%doc docs/*.text.gz docs/*.html
+%{_libdir}/libapt-pkg.so.*
+#%doc docs/*.text docs/*.html
