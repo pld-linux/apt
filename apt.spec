@@ -3,7 +3,7 @@ Summary(pl):	Zawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.3.19cnc52
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Archiving
 Group(de):	Applikationen/Archivierung
@@ -55,8 +55,12 @@ Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
 Summary(pt):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Group:		Development/Libraries
 Group(de):	Entwicklung/Libraries
+Group(es):	Desarrollo/Bibliotecas
 Group(fr):	Development/Librairies
 Group(pl):	Programowanie/Biblioteki
+Group(pt_BR):	Desenvolvimento/Bibliotecas
+Group(ru):	òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(uk):	òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 Requires:	rpm-devel
 Obsoletes:	libapt-pkg-devel
@@ -93,6 +97,7 @@ rm -f po/{POTFILES,Makefile}
 %build
 aclocal -I buildlib
 autoconf
+CXXFLAGS="%{rpmcflags} -fno-rtti -fno-exceptions"
 %configure \
 	--enable-nls \
 	--with-gpm
