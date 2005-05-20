@@ -5,7 +5,7 @@ Summary(pl):	Zaawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.5.15cnc7
-Release:	0.1
+Release:	1
 License:	GPL
 Group:		Applications/Archiving
 #Source0:	https://moin.conectiva.com.br/AptRpm?action=AttachFile&do=get&target=apt-0.5.15cnc7.tar.bz2
@@ -17,14 +17,12 @@ Source3:	vendors.list
 Source4:	rpmpriorities
 Source5:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-pl-man-pages.tar.bz2
 # Source5-md5:	a3e9b7fd3dbf243d63cbfcc78cb20c1c
-Patch0:		%{name}-no_PARALLEL_RUN.patch
-Patch1:		%{name}-ac_fixes.patch
-Patch2:		%{name}-pld_man.patch
-Patch3:		%{name}-man_fixes.patch
-Patch5:		%{name}-es_it.patch
-Patch6:		%{name}-filed.patch
-Patch7:		%{name}-pld_user_in_ftp_pass.patch
-Patch8:		%{name}-assert.patch
+Patch0:		%{name}-ac_fixes.patch
+Patch1:		%{name}-pld_man.patch
+Patch2:		%{name}-man_fixes.patch
+Patch3:		%{name}-es_it.patch
+Patch4:		%{name}-filed.patch
+Patch5:		%{name}-pld_user_in_ftp_pass.patch
 URL:		http://moin.conectiva.com.br/AptRpm/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -84,16 +82,16 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
 
 %build
 mv po/es_ES.po po/es.po
 mv po/it_IT.po po/it.po
 mv po/de_DE.po po/de.po
 
+%{__libtoolize}
+%{__gettextize}
 %{__aclocal} -I buildlib
 #need patching
 #autoheader
@@ -113,28 +111,15 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 	$RPM_BUILD_ROOT{%{_mandir}/{,pl/,pt_BR/}man{5,8},%{_bindir}} \
 	$RPM_BUILD_ROOT{%{_sysconfdir}/apt,%{_datadir}}
 
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
-install bin/libapt*.so.*.*.* $RPM_BUILD_ROOT%{_libdir}
-cp -df bin/libapt*.so $RPM_BUILD_ROOT%{_libdir}
+install -m644 doc/pl/*.8 $RPM_BUILD_ROOT%{_mandir}/pl/man8
 
-install -m755 bin/apt-* bin/gen* bin/hd* \
-	$RPM_BUILD_ROOT%{_bindir}
-install -m755 tools/genbasedir $RPM_BUILD_ROOT%{_bindir}
-
-install apt-pkg/{*.h,*/*.h} $RPM_BUILD_ROOT%{_includedir}/apt-pkg
-
-for a in "" pl ; do
-	if ls doc/$a/*.5 >/dev/null 2>&1 ; then
-		install -m644 doc/*.5 $RPM_BUILD_ROOT%{_mandir}/$a/man5
-	fi
-	install -m644 doc/$a/*.8 $RPM_BUILD_ROOT%{_mandir}/$a/man8
-done
-
-install bin/methods/* $RPM_BUILD_ROOT%{_libdir}/apt
-rm -f $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
-rm -f $RPM_BUILD_ROOT%{_libdir}/apt/ssh
-ln -sf ./gzip $RPM_BUILD_ROOT%{_libdir}/apt/bzip2
-ln -sf ./rsh $RPM_BUILD_ROOT%{_libdir}/apt/ssh
+rm -f $RPM_BUILD_ROOT%{_libdir}/apt/methods/bzip2
+rm -f $RPM_BUILD_ROOT%{_libdir}/apt/methods/ssh
+ln -sf ./gzip $RPM_BUILD_ROOT%{_libdir}/apt/methods/bzip2
+ln -sf ./rsh $RPM_BUILD_ROOT%{_libdir}/apt/methods/ssh
 
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
 install %{SOURCE3}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
@@ -142,11 +127,7 @@ install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
 
 sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
 
-cp -a locale $RPM_BUILD_ROOT%{_datadir}/
-
 %find_lang %{name}
-%find_lang libapt-pkg3.3
-cat libapt-pkg3.3.lang >> %{name}.lang
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -156,7 +137,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc docs/examples/* TODO
+%doc doc/examples/* TODO
 %attr(755,root,root) %{_bindir}/*
 %dir %{_sysconfdir}/apt
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/apt.conf
@@ -173,6 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc doc/libapt-pkg2_to_3.txt
 %{_libdir}/libapt*.so
+%{_libdir}/libapt*.a
+%{_libdir}/libapt*.la
 %{_includedir}/apt-pkg
