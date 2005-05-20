@@ -10,7 +10,7 @@ License:	GPL
 Group:		Applications/Archiving
 #Source0:	https://moin.conectiva.com.br/AptRpm?action=AttachFile&do=get&target=apt-0.5.15cnc7.tar.bz2
 Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	09eb49394c0c3f6ae5dbbb52146da579
+# Source0-md5:	9e44ec1503fa96832bbd9b532543e4de
 Source1:	%{name}.conf
 Source2:	%{name}-sources.list
 Source3:	vendors.list
