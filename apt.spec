@@ -4,12 +4,13 @@ Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl):	Zaawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.5.5cnc4.1
-Release:	0.2
+Version:	0.5.15cnc7
+Release:	0.1
 License:	GPL
 Group:		Applications/Archiving
-Source0:	http://moin.conectiva.com.br/files/AptRpm/attachments/%{name}-%{version}.tar.bz2
-# Source0-md5:	cde405f21583ea6f8e012dc3d62412aa
+#Source0:	https://moin.conectiva.com.br/AptRpm?action=AttachFile&do=get&target=apt-0.5.15cnc7.tar.bz2
+Source0:	%{name}-%{version}.tar.bz2
+# Source0-md5:	09eb49394c0c3f6ae5dbbb52146da579
 Source1:	%{name}.conf
 Source2:	%{name}-sources.list
 Source3:	vendors.list
@@ -24,7 +25,7 @@ Patch5:		%{name}-es_it.patch
 Patch6:		%{name}-filed.patch
 Patch7:		%{name}-pld_user_in_ftp_pass.patch
 Patch8:		%{name}-assert.patch
-URL:		http://moin.conectiva.com.br/files/AptRpm/
+URL:		http://moin.conectiva.com.br/AptRpm/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
