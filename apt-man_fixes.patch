@@ -1,72 +1,3 @@
-diff -Nur apt-0.5.4cnc7.orig/doc/apt-cache.8.sgml apt-0.5.4cnc7/doc/apt-cache.8.sgml
---- apt-0.5.4cnc7.orig/doc/apt-cache.8.sgml	Thu Jul 25 20:07:18 2002
-+++ apt-0.5.4cnc7/doc/apt-cache.8.sgml	Tue Dec 10 16:41:34 2002
-@@ -67,7 +67,7 @@
-      
-      <VarListEntry><Term>gencaches</Term>
-      <ListItem><Para>
--     <literal/gencaches/ performs the same opration as 
-+     <literal/gencaches/ performs the same operation as 
-      <command/apt-get check/. It builds the source and package caches from 
-      the sources in &sources-list; and from <filename>/var/lib/dpkg/status</>.
-      </VarListEntry>
-@@ -152,7 +152,7 @@
-        <listitem><para>
-        <literal/Missing/ is the number of package names that were referenced in
-        a dependency but were not provided by any package. Missing packages may 
--       be in evidence if a full distribution is not accesssed, or if a package
-+       be in evidence if a full distribution is not accessed, or if a package
-        (real or virtual) has been dropped from the distribution. Usually they
-        are referenced from Conflicts statements.
-        </listitem>
-@@ -208,7 +208,7 @@
-      <VarListEntry><Term>search</Term>
-      <ListItem><Para>
-      <literal/search/ performs a full text search on all available package 
--     files for the regex pattern given. It searchs the package names and the 
-+     files for the regex pattern given. It searches the package names and the 
-      descriptions for an occurance of the string and prints out the package 
-      name and the short description. If <option/--full/ is given then output 
-      identical to <literal/show/ is produced for each matched package and 
-@@ -230,14 +230,14 @@
-      This command prints the name of each package in the system. The optional
-      argument is a prefix match to filter the name list. The output is suitable
-      for use in a shell tab complete function and the output is generated 
--     extremly quickly. This command is best used with the 
-+     extremely quickly. This command is best used with the 
-      <option/--generate/ option.
-      </VarListEntry>
-      
-      <VarListEntry><Term>dotty</Term>
-      <ListItem><Para>
-      <literal/dotty/ takes a list of packages on the command line and 
--     gernerates output suitable for use by dotty from the 
-+     generates output suitable for use by dotty from the 
-      <ulink url="http://www.research.att.com/sw/tools/graphviz/">GraphViz</>
-      package. The result will be a set of nodes and edges representing the 
-      relationships between the packages. By default the given packages will 
-@@ -246,10 +246,10 @@
-      <literal>APT::Cache::GivenOnly</> option.
- 
-      <para>
--     The resulting nodes will have several shapse, normal packages are boxes,
-+     The resulting nodes will have several shapes, normal packages are boxes,
-      pure provides are triangles, mixed provides are diamonds, 
-      hexagons are missing packages. Orange boxes mean recursion was stopped 
--     [leaf packages], blue lines are prre-depends, green lines are conflicts.
-+     [leaf packages], blue lines are pre-depends, green lines are conflicts.
- 
-      <para>
-      Caution, dotty cannot graph larger sets of packages.
-@@ -287,7 +287,7 @@
-      <VarListEntry><term><option/-q/</><term><option/--quiet/</>
-      <ListItem><Para>
-      Quiet; produces output suitable for logging, omitting progress indicators.
--     More qs will produce more quite up to a maximum of 2. You can also use
-+     More qs will produce more quiet up to a maximum of 2. You can also use
-      <option/-q=#/ to set the quiet level, overriding the configuration file.
-      Configuration Item: <literal/quiet/.
-      </VarListEntry>
 diff -Nur apt-0.5.4cnc7.orig/doc/apt-cdrom.8.sgml apt-0.5.4cnc7/doc/apt-cdrom.8.sgml
 --- apt-0.5.4cnc7.orig/doc/apt-cdrom.8.sgml	Tue Jul 23 19:54:52 2002
 +++ apt-0.5.4cnc7/doc/apt-cdrom.8.sgml	Tue Dec 10 16:43:13 2002
@@ -179,24 +110,15 @@ diff -Nur apt-0.5.4cnc7.orig/doc/apt.conf.5.sgml apt-0.5.4cnc7/doc/apt.conf.5.sg
  
       <VarListEntry><Term>Immediate-Configure</Term>
       <ListItem><Para>
--     Disable Immedate Configuration; This dangerous option disables some
-+     Disable Immedate Configuration; this dangerous option disables some
+-     Disable Immediate Configuration; This dangerous option disables some
++     Disable Immediate Configuration; this dangerous option disables some
       of APT's ordering code to cause it to make fewer dpkg calls. Doing
       so may be necessary on some extremely slow single user systems but 
       is very dangerous and may cause package install scripts to fail or worse.
-@@ -187,7 +187,7 @@
-      meaning to use no proxies. The <envar/http_proxy/ environment variable
-      will override all settings.
-      <para>
--     Three settings are provided for cache control with HTTP/1.1 complient 
-+     Three settings are provided for cache control with HTTP/1.1 compliant 
-      proxy caches. <literal/No-Cache/ tells the proxy to not use its cached 
-      response under any circumstances, <literal/Max-Age/ is sent only for 
-      index files and tells the cache to refresh its object if it is older than 
 diff -Nur apt-0.5.4cnc7.orig/doc/apt.ent apt-0.5.4cnc7/doc/apt.ent
 --- apt-0.5.4cnc7.orig/doc/apt.ent	Tue Dec 10 16:22:06 2002
 +++ apt-0.5.4cnc7/doc/apt.ent	Tue Dec 10 16:44:47 2002
-@@ -121,14 +121,14 @@
+@@ -121,15 +121,15 @@
  
       <VarListEntry><term><option/-c/</><term><option/--config-file/</>
       <ListItem><Para>
@@ -204,12 +126,13 @@ diff -Nur apt-0.5.4cnc7.orig/doc/apt.ent apt-0.5.4cnc7/doc/apt.ent
 +     Configuration File; specify a configuration file to use. 
       The program will read the default configuration file and then this 
       configuration file. See &apt-conf; for syntax information.     
+      </Para></ListItem>
       </VarListEntry>
       
       <VarListEntry><term><option/-o/</><term><option/--option/</>
       <ListItem><Para>
--     Set a Configuration Option; This will set an arbitary configuration 
+-     Set a Configuration Option; This will set an arbitrary configuration 
 +     Set a Configuration Option; this will set an arbitrary configuration 
       option. The syntax is <option>-o Foo::Bar=bar</>.
+      </Para></ListItem>
       </VarListEntry>
- ">

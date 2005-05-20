@@ -1,10 +1,10 @@
 --- apt-0.5.4cnc7/methods/ftp.cc.orig	Thu Jul 25 20:07:19 2002
 +++ apt-0.5.4cnc7/methods/ftp.cc	Tue Dec 10 20:48:50 2002
 @@ -185,7 +185,7 @@
-    
     // Setup the variables needed for authentication
     string User = "anonymous";
--   string Pass = "apt_get_ftp_2.1@debian.linux.user";
+    // CNC:2003-06-16
+-   string Pass = "apt_get_ftp_2.1@rpm.linux.user";
 +   string Pass = "apt_get_ftp@pld.linux.user";
  
     // Fill in the user/pass

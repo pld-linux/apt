@@ -106,10 +106,10 @@
 --- apt-0.3.19cnc52/configure.in~	Thu Aug  2 18:28:45 2001
 +++ apt-0.3.19cnc52/configure.in	Wed Aug 15 03:40:32 2001
 @@ -203,7 +203,6 @@
- dnl Check for YODL
- dnl AC_CHECK_PROG(YODL_MAN,yodl2man,"yes","")
+ AM_GNU_GETTEXT_VERSION([0.11.4])
+ AM_GNU_GETTEXT
  
--ah_NUM_PROCS
+-dnl ah_NUM_PROCS
  rc_GLIBC_VER
  rc_LIBSTDCPP_VER
- ah_GCC3DEP
+ dnl ah_GCC3DEP
