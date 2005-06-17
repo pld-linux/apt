@@ -5,7 +5,7 @@ Summary(pl):	Zaawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.5.15cnc7
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Archiving
 #Source0:	https://moin.conectiva.com.br/AptRpm?action=AttachFile&do=get&target=apt-0.5.15cnc7.tar.bz2
@@ -30,7 +30,7 @@ BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
 BuildRequires:	gpm-devel
 BuildRequires:	popt-devel
-BuildRequires:	rpm-devel >= 3.0.6-2
+BuildRequires:	rpm-devel >= 4.4.1
 BuildRequires:	zlib-devel
 Requires:	gnupg
 Requires:	rpm
