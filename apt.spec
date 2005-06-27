@@ -26,12 +26,13 @@ Patch5:		%{name}-pld_user_in_ftp_pass.patch
 URL:		http://moin.conectiva.com.br/AptRpm/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	bzip2-devel
+BuildRequires:	docbook-dtd31-sgml
+BuildRequires:	docbook-utils
 BuildRequires:	gettext-devel
 BuildRequires:	gpm-devel
-BuildRequires:	popt-devel
+BuildRequires:	libstdc++-devel
+BuildRequires:	libtool
 BuildRequires:	rpm-devel >= 4.4.1
-BuildRequires:	zlib-devel
 Requires:	gnupg
 Requires:	rpm
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -140,9 +141,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/examples/* TODO
 %attr(755,root,root) %{_bindir}/*
 %dir %{_sysconfdir}/apt
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/apt.conf
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/sources.list
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/apt/vendors.list
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apt/apt.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apt/sources.list
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apt/vendors.list
 %config %{_sysconfdir}/apt/rpmpriorities
 %dir %{_libdir}/apt
 %attr(755,root,root) %{_libdir}/apt/*
