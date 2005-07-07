@@ -115,7 +115,7 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install -m644 doc/pl/*.8 $RPM_BUILD_ROOT%{_mandir}/pl/man8
+install doc/pl/*.8 $RPM_BUILD_ROOT%{_mandir}/pl/man8
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/apt/methods/bzip2
 rm -f $RPM_BUILD_ROOT%{_libdir}/apt/methods/ssh
