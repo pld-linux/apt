@@ -23,7 +23,8 @@ Patch2:		%{name}-man_fixes.patch
 Patch3:		%{name}-es_it.patch
 Patch4:		%{name}-filed.patch
 Patch5:		%{name}-pld_user_in_ftp_pass.patch
-URL:		http://moin.conectiva.com.br/AptRpm/
+# do not add slash in URL
+URL:		http://moin.conectiva.com.br/AptRpm
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	docbook-dtd31-sgml
