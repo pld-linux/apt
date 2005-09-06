@@ -32,7 +32,6 @@ BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils
 BuildRequires:	gettext-devel
 BuildRequires:	gpm-devel
-BuildRequires:	libmagic-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	rpm-devel >= 4.4.1
