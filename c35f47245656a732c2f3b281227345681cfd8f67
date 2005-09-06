@@ -1,0 +1,1 @@
+- upgraded to cnc36, removed libapt-* subpackages (as is in original spec)
