@@ -1,0 +1,1 @@
+- fix attr to %{_libdir}/apt/*
