@@ -1,0 +1,2 @@
+- added %verify(not size mtime md5) to %{_sysconfdir}/apt/apt.conf,
+  %{_sysconfdir}/apt/sources.list and %{_sysconfdir}/apt/vendors.list
