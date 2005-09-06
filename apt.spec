@@ -1,11 +1,12 @@
 # TODO:
 # - build python bindings
+# - use system lua
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl):	Zaawansowane narzêdzie do zarz±dzania pakietami
 Summary(pt):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.5.15cnc7
-Release:	3
+Release:	4
 License:	GPL
 Group:		Applications/Archiving
 #Source0:	https://moin.conectiva.com.br/AptRpm?action=AttachFile&do=get&target=apt-0.5.15cnc7.tar.bz2
@@ -31,6 +32,7 @@ BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils
 BuildRequires:	gettext-devel
 BuildRequires:	gpm-devel
+BuildRequires:	libmagic-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
 BuildRequires:	rpm-devel >= 4.4.1
@@ -87,11 +89,11 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 %patch4 -p1
 %patch5 -p1
 
-%build
 mv po/es_ES.po po/es.po
 mv po/it_IT.po po/it.po
 mv po/de_DE.po po/de.po
 
+%build
 %{__libtoolize}
 %{__gettextize}
 %{__aclocal} -I buildlib
