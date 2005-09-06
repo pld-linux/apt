@@ -1,0 +1,2 @@
+- updated to 0.3.19cnc45,
+- insert %{_target_cpu} into paths in sources.list.
