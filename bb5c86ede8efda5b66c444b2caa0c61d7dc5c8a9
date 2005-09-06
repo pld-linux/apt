@@ -1,0 +1,3 @@
+- release 12: new apt-sources.list default configuration file:
+  - uncommented base and updates-security repository,
+  - added commented updates-general repository.
