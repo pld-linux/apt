@@ -1,0 +1,2 @@
+- fix Requires in devel subpackage; fix installing libapt-pkg.so; fix
+  %post/%postun scripts; fix files in libapt-pkg subpackage; Release 2
