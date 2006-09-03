@@ -37,8 +37,8 @@ BuildRequires:	libtool
 BuildRequires:	rpm-devel >= 4.4.1
 Requires:	gnupg
 Requires:	rpm
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	libapt-pkg
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 A port of Debian's apt tools for RPM based distributions. It provides
@@ -61,7 +61,7 @@ Summary:	Development files for APT's libapt-pkg
 Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
 Summary(pt):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Group:		Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
 Requires:	rpm-devel
 Obsoletes:	libapt-pkg-devel
