@@ -2,8 +2,8 @@
 # - build python bindings
 # - use system lua
 Summary:	Debian's Advanced Packaging Tool with RPM support
-Summary(pl):	Zaawansowane narzêdzie do zarz±dzania pakietami
-Summary(pt):	Frontend avançado para pacotes rpm e deb
+Summary(pl.UTF-8):   Zaawansowane narzÄ™dzie do zarzÄ…dzania pakietami
+Summary(pt.UTF-8):   Frontend avanÃ§ado para pacotes rpm e deb
 Name:		apt
 Version:	0.5.15cnc7
 Release:	5
@@ -46,20 +46,20 @@ the apt-get utility that provides a simpler, safer way to install and
 upgrade packages. APT features complete installation ordering,
 multiple source capability and several other unique features.
 
-%description -l pl
-Port debianowego narzêdzia APT dla dystrybucji bazuj±cych na zarz±dcy
-pakietów RPM. APT dostarcza narzêdzie apt-get, które umo¿liwia prost±,
-bezpieczn± instalacjê i aktualizacjê pakietów. Mo¿liwo¶ci APT to wybór
-kolejno¶ci instalacji, mo¿liwo¶æ ustawienia kilku ¼róde³ pakietów itp.
+%description -l pl.UTF-8
+Port debianowego narzÄ™dzia APT dla dystrybucji bazujÄ…cych na zarzÄ…dcy
+pakietÃ³w RPM. APT dostarcza narzÄ™dzie apt-get, ktÃ³re umoÅ¼liwia prostÄ…,
+bezpiecznÄ… instalacjÄ™ i aktualizacjÄ™ pakietÃ³w. MoÅ¼liwoÅ›ci APT to wybÃ³r
+kolejnoÅ›ci instalacji, moÅ¼liwoÅ›Ä‡ ustawienia kilku ÅºrÃ³deÅ‚ pakietÃ³w itp.
 
-%description -l pt_BR
-Um porte das ferramentas apt do Debian para distribuições baseadas no
-RPM. Sob desenvolvimento, use por sua própria conta e risco.
+%description -l pt_BR.UTF-8
+Um porte das ferramentas apt do Debian para distribuiÃ§Ãµes baseadas no
+RPM. Sob desenvolvimento, use por sua prÃ³pria conta e risco.
 
 %package devel
 Summary:	Development files for APT's libapt-pkg
-Summary(pl):	Pliki nag³ówkowe dla libapt-pkg
-Summary(pt):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe dla libapt-pkg
+Summary(pt.UTF-8):   Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
@@ -72,11 +72,11 @@ This package contains the header files and static libraries for
 developing with APT's libapt-pkg package manipulation library,
 modified for RPM.
 
-%description devel -l pl
-Pakiet zawiera pliki nag³ówkowe potrzebne do tworzenia aplikacji
-korzystaj±cych z biblioteki libapt-pkg.
+%description devel -l pl.UTF-8
+Pakiet zawiera pliki nagÅ‚Ã³wkowe potrzebne do tworzenia aplikacji
+korzystajÄ…cych z biblioteki libapt-pkg.
 
-%description devel -l pt_BR
+%description devel -l pt_BR.UTF-8
 Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
 %prep
