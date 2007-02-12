@@ -2,8 +2,8 @@
 # - build python bindings
 # - use system lua
 Summary:	Debian's Advanced Packaging Tool with RPM support
-Summary(pl.UTF-8):   Zaawansowane narzędzie do zarządzania pakietami
-Summary(pt.UTF-8):   Frontend avançado para pacotes rpm e deb
+Summary(pl.UTF-8):	Zaawansowane narzędzie do zarządzania pakietami
+Summary(pt.UTF-8):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.5.15cnc7
 Release:	5
@@ -58,8 +58,8 @@ RPM. Sob desenvolvimento, use por sua própria conta e risco.
 
 %package devel
 Summary:	Development files for APT's libapt-pkg
-Summary(pl.UTF-8):   Pliki nagłówkowe dla libapt-pkg
-Summary(pt.UTF-8):   Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
+Summary(pl.UTF-8):	Pliki nagłówkowe dla libapt-pkg
+Summary(pt.UTF-8):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
