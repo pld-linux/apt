@@ -6,7 +6,7 @@ Summary(pl.UTF-8):	Zaawansowane narzędzie do zarządzania pakietami
 Summary(pt.UTF-8):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.5.15cnc7
-Release:	5
+Release:	6
 License:	GPL
 Group:		Applications/Archiving
 #Source0:	https://moin.conectiva.com.br/AptRpm?action=AttachFile&do=get&target=apt-0.5.15cnc7.tar.bz2
