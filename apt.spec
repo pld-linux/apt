@@ -5,27 +5,25 @@ Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl.UTF-8):	Zaawansowane narzędzie do zarządzania pakietami
 Summary(pt.UTF-8):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.5.15cnc7
-Release:	6
+Version:	0.5.15lorg3.2
+Release:	0.1
 License:	GPL
 Group:		Applications/Archiving
-#Source0:	https://moin.conectiva.com.br/AptRpm?action=AttachFile&do=get&target=apt-0.5.15cnc7.tar.bz2
-Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	9e44ec1503fa96832bbd9b532543e4de
+Source0:	http://apt-rpm.org/releases/%{name}-%{version}.tar.bz2
+# Source0-md5:	ce05fcc7e0e614fa6e2175008945bb59
 Source1:	%{name}.conf
 Source2:	%{name}-sources.list
 Source3:	vendors.list
 Source4:	rpmpriorities
 Source5:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-pl-man-pages.tar.bz2
 # Source5-md5:	a3e9b7fd3dbf243d63cbfcc78cb20c1c
-Patch0:		%{name}-ac_fixes.patch
+#Patch0:		%{name}-ac_fixes.patch
 Patch1:		%{name}-pld_man.patch
 Patch2:		%{name}-man_fixes.patch
-Patch3:		%{name}-es_it.patch
+#Patch3:		%{name}-es_it.patch
 Patch4:		%{name}-filed.patch
 Patch5:		%{name}-pld_user_in_ftp_pass.patch
-# do not add slash in URL
-URL:		http://moin.conectiva.com.br/AptRpm
+URL:		http://apt-rpm.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	docbook-dtd31-sgml
@@ -81,16 +79,16 @@ Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
 %prep
 %setup -q -a5
-%patch0 -p1
+#%patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
+#%patch3 -p1
 %patch4 -p1
 %patch5 -p1
 
-mv po/es_ES.po po/es.po
-mv po/it_IT.po po/it.po
-mv po/de_DE.po po/de.po
+mv po/es{_ES,}.po
+mv po/it{_IT,}.po
+mv po/de{_DE,}.po
 
 %build
 %{__libtoolize}
@@ -101,7 +99,7 @@ mv po/de_DE.po po/de.po
 %{__autoconf}
 CPPFLAGS="-Wno-deprecated"
 CXXFLAGS="%{rpmcflags} -fno-exceptions"
-%configure \
+bash %configure \
 	--enable-nls \
 	--with-gpm
 %{__make} CC="%{__cc}" CXX="%{__cxx}"
