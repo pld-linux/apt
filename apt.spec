@@ -5,12 +5,12 @@ Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl.UTF-8):	Zaawansowane narzędzie do zarządzania pakietami
 Summary(pt.UTF-8):	Frontend avançado para pacotes rpm e deb
 Name:		apt
-Version:	0.5.15lorg3.2
+Version:	0.5.15lorg3.94a
 Release:	0.1
 License:	GPL
 Group:		Applications/Archiving
-Source0:	http://apt-rpm.org/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	ce05fcc7e0e614fa6e2175008945bb59
+Source0:	http://apt-rpm.org/testing/%{name}-%{version}.tar.bz2
+# Source0-md5:	c1f3702c0a91a31132c1019d559e2ae3
 Source1:	%{name}.conf
 Source2:	%{name}-sources.list
 Source3:	vendors.list
