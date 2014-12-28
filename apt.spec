@@ -28,7 +28,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	gpm-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
