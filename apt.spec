@@ -1,6 +1,9 @@
 # TODO:
-# - build python bindings
 # - use system lua
+#
+# Conditional build:
+%bcond_without	python	# Python binding
+#
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl.UTF-8):	Zaawansowane narzędzie do zarządzania pakietami
 Summary(pt.UTF-8):	Frontend avançado para pacotes rpm e deb
@@ -39,6 +42,11 @@ BuildRequires:	readline-devel
 BuildRequires:	rpm-devel >= 5
 BuildRequires:	sqlite3-devel
 BuildRequires:	zlib-devel
+%if %{with python}
+BuildRequires:	python-devel >= 2
+BuildRequires:	rpm-pythonprov
+BuildRequires:	swig-python
+%endif
 Requires:	gnupg
 Requires:	libxml2 >= 1:2.6
 Requires:	rpm
@@ -97,6 +105,18 @@ Static libapt-pkg library.
 %description static -l pl.UTF-8
 Statyczna biblioteka libapt-pkg.
 
+%package -n python-apt
+Summary:	Python bindings for libapt-pkg library
+Summary(pl.UTF-8):	Wiązania Pythona do biblioteki libapt-pkg
+Group:		Libraries/Python
+Requires:	%{name} = %{version}-%{release}
+
+%description -n python-apt
+Python bindings for libapt-pkg library.
+
+%description -n python-apt -l pl.UTF-8
+Wiązania Pythona do biblioteki libapt-pkg.
+
 %prep
 %setup -q -a5
 %patch0 -p1
@@ -106,6 +126,9 @@ Statyczna biblioteka libapt-pkg.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+
+# swig rebuild doesn't work (plain swig cannot cope with class Class::SubClass { })
+#%{__rm} python/{apt.py,apt_wrap.cxx}
 
 %build
 %{__gettextize}
@@ -119,6 +142,12 @@ bash %configure
 
 %{__make}
 
+%if %{with python}
+%{__make} -C python \
+	CC="%{__cxx} %{rpmcxxflags} %{rpmcppflags}" \
+	PYTHON="%{__python}"
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
@@ -129,6 +158,15 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+%if %{with python}
+install -d $RPM_BUILD_ROOT%{py_sitedir}
+install python/_apt.so $RPM_BUILD_ROOT%{py_sitedir}
+cp -p python/apt.py $RPM_BUILD_ROOT%{py_sitedir}
+%py_comp $RPM_BUILD_ROOT%{py_sitedir}
+%py_ocomp $RPM_BUILD_ROOT%{py_sitedir}
+%py_postclean
+%endif
 
 install doc/pl/*.8 $RPM_BUILD_ROOT%{_mandir}/pl/man8
 
@@ -206,3 +244,10 @@ rm -rf $RPM_BUILD_ROOT
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libapt-pkg.a
+
+%if %{with python}
+%files -n python-apt
+%defattr(644,root,root,755)
+%attr(755,root,root) %{py_sitedir}/_apt.so
+%{py_sitedir}/apt.py[co]
+%endif

@@ -18,3 +18,41 @@
  	 }
  	 if (KeyList.empty())
  	    KeyList = KeyID;
+--- apt-0.5.15lorg3.94a/python/apt_wrap.cxx.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/python/apt_wrap.cxx	2015-02-08 21:21:33.543740596 +0100
+@@ -17503,7 +17503,7 @@
+     
+     if(!PyArg_ParseTuple(args,(char *)"Oss:GlobalError_Errno",&obj0,&arg2,&arg3)) goto fail;
+     if ((SWIG_ConvertPtr(obj0,(void **) &arg1, SWIGTYPE_p_GlobalError,SWIG_POINTER_EXCEPTION | 0 )) == -1) SWIG_fail;
+-    result = (bool)(arg1)->Errno((char const *)arg2,(char const *)arg3);
++    result = (bool)(arg1)->Errno((char const *)arg2,"%s",(char const *)arg3);
+     
+     resultobj = PyInt_FromLong((long)result);
+     return resultobj;
+@@ -17522,7 +17522,7 @@
+     
+     if(!PyArg_ParseTuple(args,(char *)"Oss:GlobalError_WarningE",&obj0,&arg2,&arg3)) goto fail;
+     if ((SWIG_ConvertPtr(obj0,(void **) &arg1, SWIGTYPE_p_GlobalError,SWIG_POINTER_EXCEPTION | 0 )) == -1) SWIG_fail;
+-    result = (bool)(arg1)->WarningE((char const *)arg2,(char const *)arg3);
++    result = (bool)(arg1)->WarningE((char const *)arg2,"%s",(char const *)arg3);
+     
+     resultobj = PyInt_FromLong((long)result);
+     return resultobj;
+@@ -17540,7 +17540,7 @@
+     
+     if(!PyArg_ParseTuple(args,(char *)"Os:GlobalError_Error",&obj0,&arg2)) goto fail;
+     if ((SWIG_ConvertPtr(obj0,(void **) &arg1, SWIGTYPE_p_GlobalError,SWIG_POINTER_EXCEPTION | 0 )) == -1) SWIG_fail;
+-    result = (bool)(arg1)->Error((char const *)arg2);
++    result = (bool)(arg1)->Error("%s",(char const *)arg2);
+     
+     resultobj = PyInt_FromLong((long)result);
+     return resultobj;
+@@ -17558,7 +17558,7 @@
+     
+     if(!PyArg_ParseTuple(args,(char *)"Os:GlobalError_Warning",&obj0,&arg2)) goto fail;
+     if ((SWIG_ConvertPtr(obj0,(void **) &arg1, SWIGTYPE_p_GlobalError,SWIG_POINTER_EXCEPTION | 0 )) == -1) SWIG_fail;
+-    result = (bool)(arg1)->Warning((char const *)arg2);
++    result = (bool)(arg1)->Warning("%s",(char const *)arg2);
+     
+     resultobj = PyInt_FromLong((long)result);
+     return resultobj;
