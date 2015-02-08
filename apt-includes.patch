@@ -1,0 +1,40 @@
+--- apt-0.5.15lorg3.94a/apt-pkg/pkgcache.h.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/pkgcache.h	2015-02-05 21:12:53.014640035 +0100
+@@ -25,6 +25,7 @@
+ 
+ #include <string>
+ #include <time.h>
++#include <sys/types.h>
+ #include <apt-pkg/mmap.h>
+ 
+ using std::string;
+--- apt-0.5.15lorg3.94a/apt-pkg/contrib/progress.h.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/contrib/progress.h	2015-02-05 21:18:21.347959589 +0100
+@@ -28,6 +28,7 @@
+ #include <map>
+ #include <string>
+ #include <sys/time.h>
++#include <sys/types.h>
+ 
+ using std::string;
+ using std::map;
+--- apt-0.5.15lorg3.94a/apt-pkg/srcrecords.h.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/srcrecords.h	2015-02-08 16:17:47.344505476 +0100
+@@ -19,6 +19,7 @@
+ 
+ #include <string>
+ #include <vector>    
++#include <sys/types.h>
+ 
+ using std::string;
+ using std::vector;
+--- apt-0.5.15lorg3.94a/methods/http.cc.orig	2015-02-08 17:06:09.701050343 +0100
++++ apt-0.5.15lorg3.94a/methods/http.cc	2015-02-08 17:06:11.574383597 +0100
+@@ -38,6 +38,7 @@
+ #include <stdio.h>
+ #include <errno.h>
+ #include <string.h>
++#include <algorithm>
+ #include <iostream>
+ #include <map>
+ 

@@ -10,16 +10,3 @@ diff -Nur apt-0.5.4cnc7.orig/doc/apt.ent apt-0.5.4cnc7/doc/apt.ent
  <!ENTITY configureindex "<filename>&docdir;examples/configure-index.gz</>">
  <!ENTITY aptconfdir "<filename>/etc/apt.conf</>">
  <!ENTITY statedir "/var/lib/apt">
-diff -Nur apt-0.5.4cnc7.orig/doc/fr/apt.ent.fr apt-0.5.4cnc7/doc/fr/apt.ent.fr
---- apt-0.5.4cnc7.orig/doc/fr/apt.ent.fr	Tue Jul 23 19:54:52 2002
-+++ apt-0.5.4cnc7/doc/fr/apt.ent.fr	Tue Dec 10 16:21:02 2002
-@@ -1,7 +1,7 @@
- <!-- -*- mode: sgml; mode: fold -*- -->
- <!-- translation of version 1.9 -->
- <!-- Some common paths.. -->
--<!ENTITY docdir "/usr/share/doc/apt/">
-+<!ENTITY docdir "/usr/share/doc/apt*/">
- <!ENTITY configureindex "<filename>&docdir;examples/configure-index.gz</>">
- <!ENTITY aptconfdir "<filename>/etc/apt.conf</>">
- <!ENTITY statedir "/var/lib/apt">
- 

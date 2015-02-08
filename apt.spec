@@ -7,7 +7,7 @@ Summary(pt.UTF-8):	Frontend avançado para pacotes rpm e deb
 Name:		apt
 Version:	0.5.15lorg3.94a
 Release:	0.1
-License:	GPL
+License:	GPL v2+
 Group:		Applications/Archiving
 Source0:	http://apt-rpm.org/testing/%{name}-%{version}.tar.bz2
 # Source0-md5:	c1f3702c0a91a31132c1019d559e2ae3
@@ -17,23 +17,30 @@ Source3:	vendors.list
 Source4:	rpmpriorities
 Source5:	http://www.mif.pg.gda.pl/homepages/ankry/man-PLD/%{name}-pl-man-pages.tar.bz2
 # Source5-md5:	a3e9b7fd3dbf243d63cbfcc78cb20c1c
-#Patch0:		%{name}-ac_fixes.patch
+Patch0:		%{name}-rpm5.patch
 Patch1:		%{name}-pld_man.patch
 Patch2:		%{name}-man_fixes.patch
-#Patch3:		%{name}-es_it.patch
+Patch3:		%{name}-includes.patch
 Patch4:		%{name}-filed.patch
 Patch5:		%{name}-pld_user_in_ftp_pass.patch
+Patch6:		%{name}-format.patch
 URL:		http://apt-rpm.org/
-BuildRequires:	autoconf
-BuildRequires:	automake
+BuildRequires:	autoconf >= 2.59
+BuildRequires:	automake >= 1:1.9.5
+BuildRequires:	bzip2-devel
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils
-BuildRequires:	gettext-tools
-BuildRequires:	gpm-devel
+BuildRequires:	gettext-tools >= 0.14.5
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool
-BuildRequires:	rpm-devel >= 4.4.1
+BuildRequires:	libxml2-devel >= 1:2.6
+BuildRequires:	ncurses-devel
+BuildRequires:	readline-devel
+BuildRequires:	rpm-devel >= 5
+BuildRequires:	sqlite3-devel
+BuildRequires:	zlib-devel
 Requires:	gnupg
+Requires:	libxml2 >= 1:2.6
 Requires:	rpm
 Obsoletes:	libapt-pkg
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -61,9 +68,9 @@ Summary(pt.UTF-8):	Arquivos de desenvolvimento para a biblioteca libapt-pkg do A
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
-Requires:	rpm-devel
+Requires:	libxml2-devel >= 1:2.6
+Requires:	rpm-devel >= 5
 Obsoletes:	libapt-pkg-devel
-Obsoletes:	libapt-pkg-static
 
 %description devel
 This package contains the header files and static libraries for
@@ -77,32 +84,40 @@ korzystających z biblioteki libapt-pkg.
 %description devel -l pt_BR.UTF-8
 Arquivos de desenvolvimento para a biblioteca libapt-pkg do APT
 
+%package static
+Summary:	Static libapt-pkg library
+Summary(pl.UTF-8):	Statyczna biblioteka libapt-pkg
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+Obsoletes:	libapt-pkg-static
+
+%description static
+Static libapt-pkg library.
+
+%description static -l pl.UTF-8
+Statyczna biblioteka libapt-pkg.
+
 %prep
 %setup -q -a5
-#%patch0 -p1
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
-#%patch3 -p1
+%patch3 -p1
 %patch4 -p1
 %patch5 -p1
-
-mv po/es{_ES,}.po
-mv po/it{_IT,}.po
-mv po/de{_DE,}.po
+%patch6 -p1
 
 %build
-%{__libtoolize}
 %{__gettextize}
-%{__aclocal} -I buildlib
-#need patching
-#autoheader
+%{__libtoolize}
+%{__aclocal} -I m4 -I buildlib
 %{__autoconf}
-CPPFLAGS="-Wno-deprecated"
-CXXFLAGS="%{rpmcflags} -fno-exceptions"
-bash %configure \
-	--enable-nls \
-	--with-gpm
-%{__make} CC="%{__cc}" CXX="%{__cxx}"
+%{__autoheader}
+%{__automake}
+CXXFLAGS="%{rpmcxxflags} -fpermissive"
+bash %configure
+
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -117,16 +132,20 @@ install -d $RPM_BUILD_ROOT/var/cache/apt/archives/partial \
 
 install doc/pl/*.8 $RPM_BUILD_ROOT%{_mandir}/pl/man8
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/apt/methods/bzip2
-rm -f $RPM_BUILD_ROOT%{_libdir}/apt/methods/ssh
-ln -sf ./gzip $RPM_BUILD_ROOT%{_libdir}/apt/methods/bzip2
-ln -sf ./rsh $RPM_BUILD_ROOT%{_libdir}/apt/methods/ssh
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/apt/methods/bzip2
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/apt/methods/ssh
+ln -sf gzip $RPM_BUILD_ROOT%{_libdir}/apt/methods/bzip2
+ln -sf rsh $RPM_BUILD_ROOT%{_libdir}/apt/methods/ssh
 
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/apt.conf
 install %{SOURCE3}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/vendors.list
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_sysconfdir}/apt/rpmpriorities
 
 sed -e s/@ARCH@/%{_target_cpu}/ %{SOURCE2} > $RPM_BUILD_ROOT%{_sysconfdir}/apt/sources.list
+
+%{__mv} $RPM_BUILD_ROOT%{_localedir}/{de_DE,de}
+%{__mv} $RPM_BUILD_ROOT%{_localedir}/{es_ES,es}
+%{__mv} $RPM_BUILD_ROOT%{_localedir}/{it_IT,it}
 
 %find_lang %{name}
 
@@ -138,24 +157,52 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc doc/examples/* TODO
-%attr(755,root,root) %{_bindir}/*
+# COPYING contains general notes; GPL text is in COPYING.GPL
+%doc AUTHORS AUTHORS.RPM COPYING ChangeLog TODO doc/examples/*
+%attr(755,root,root) %{_bindir}/apt-cache
+%attr(755,root,root) %{_bindir}/apt-cdrom
+%attr(755,root,root) %{_bindir}/apt-config
+%attr(755,root,root) %{_bindir}/apt-get
+%attr(755,root,root) %{_bindir}/apt-shell
+%attr(755,root,root) %{_bindir}/countpkglist
+%attr(755,root,root) %{_bindir}/genbasedir
+%attr(755,root,root) %{_bindir}/genpkglist
+%attr(755,root,root) %{_bindir}/gensrclist
+%attr(755,root,root) %{_libdir}/libapt-pkg.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libapt-pkg.so.3
+%dir %{_libdir}/apt
+%dir %{_libdir}/apt/methods
+%attr(755,root,root) %{_libdir}/apt/methods/*
 %dir %{_sysconfdir}/apt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apt/apt.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apt/sources.list
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apt/vendors.list
 %config %{_sysconfdir}/apt/rpmpriorities
-%dir %{_libdir}/apt
-%attr(755,root,root) %{_libdir}/apt/*
-%{_mandir}/man[58]/*
-%lang(pl) %{_mandir}/pl/man8/*
+%dir %{_sysconfdir}/apt/apt.conf.d
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apt/apt.conf.d/multilib.conf
+%{_mandir}/man5/apt.conf.5*
+%{_mandir}/man5/apt_preferences.5*
+%{_mandir}/man5/sources.list.5*
+%{_mandir}/man5/vendors.list.5*
+%{_mandir}/man8/apt.8*
+%{_mandir}/man8/apt-cache.8*
+%{_mandir}/man8/apt-cdrom.8*
+%{_mandir}/man8/apt-config.8*
+%{_mandir}/man8/apt-get.8*
+%lang(pl) %{_mandir}/pl/man8/apt.8*
+%lang(pl) %{_mandir}/pl/man8/apt-cache.8*
+%lang(pl) %{_mandir}/pl/man8/apt-cdrom.8*
+%lang(pl) %{_mandir}/pl/man8/apt-get.8*
 /var/cache/apt
 /var/lib/apt
-%attr(755,root,root) %{_libdir}/libapt*.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
-%{_libdir}/libapt*.so
-%{_libdir}/libapt*.a
-%{_libdir}/libapt*.la
+%attr(755,root,root) %{_libdir}/libapt-pkg.so
+%{_libdir}/libapt-pkg.la
 %{_includedir}/apt-pkg
+%{_pkgconfigdir}/libapt-pkg.pc
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libapt-pkg.a

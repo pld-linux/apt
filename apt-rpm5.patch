@@ -1,0 +1,137 @@
+--- apt-0.5.15lorg3.94a/configure.ac.orig	2015-02-05 18:11:36.748429800 +0100
++++ apt-0.5.15lorg3.94a/configure.ac	2015-02-05 20:40:37.388054598 +0100
+@@ -99,8 +99,8 @@
+ fi
+ 
+ dnl Various rpm header checks..
+-AC_CHECK_HEADER(rpm/rpmlib.h, [],
+-	   [AC_MSG_ERROR([Can't find rpmlib.h])])
++AC_CHECK_HEADER(rpm/rpmio.h, [],
++	   [AC_MSG_ERROR([Can't find rpmio.h])])
+ AC_CHECK_HEADERS([rpm/rpmsx.h rpm/rpmcallback.h rpm/rpmcb.h \
+ 	     rpm/rpmmessages.h rpm/rpmevr.h])
+ 
+@@ -116,7 +116,7 @@
+ 	[AC_MSG_RESULT(no) ])
+ 	
+ AC_MSG_CHECKING(for fdigests)
+-AC_EGREP_HEADER(RPMTRANS_FLAG_NOFDIGESTS, rpm/rpmlib.h,
++AC_EGREP_HEADER(RPMTRANS_FLAG_NOFDIGESTS, rpm/rpmts.h,
+ 	[AC_MSG_RESULT(yes) AC_DEFINE(RPM_HAVE_FDIGESTS, 1, [fdigests]) ],
+ 	[AC_MSG_RESULT(no) ])
+ 
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/aptcallback.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/aptcallback.cc	2015-02-05 21:20:41.861287026 +0100
+@@ -1,6 +1,6 @@
+ #include <map>
+ #include <stdio.h>
+-#include <rpm/rpmlib.h>
++#include <rpm/rpmio.h>
+ #include <apti18n.h>
+ 
+ #include <apt-pkg/progress.h>
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmhandler.h.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmhandler.h	2015-02-05 21:21:37.227951369 +0100
+@@ -21,7 +21,7 @@
+ #include "sqlite.h"
+ #endif
+ 
+-#include <rpm/rpmlib.h>
++#include <rpm/rpm4compat.h>
+ #include <rpm/rpmmacro.h>
+ 
+ #include <sys/types.h>
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmpackagedata.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmpackagedata.cc	2015-02-05 21:41:50.177900464 +0100
+@@ -12,7 +12,7 @@
+ 
+ #include <apti18n.h>
+ 
+-#include <rpm/rpmlib.h>
++#include <rpm/rpm4compat.h>
+ 
+ RPMPackageData::RPMPackageData()
+    :
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmpm.h.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmpm.h	2015-02-05 21:47:51.287885311 +0100
+@@ -11,7 +11,7 @@
+ #ifndef PKGLIB_rpmPM_H
+ #define PKGLIB_rpmPM_H
+ 
+-#include <rpm/rpmlib.h>
++#include <rpm/rpm4compat.h>
+ #if RPM_VERSION >= 0x040100
+ #include <rpm/rpmts.h>
+ #endif
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmpm.cc.orig	2015-02-05 21:47:55.474551799 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmpm.cc	2015-02-08 16:16:03.291176510 +0100
+@@ -709,6 +709,7 @@
+ 	    if (rc)
+ 	       _error->Error(_("Failed adding %s to transaction %s"),
+ 			     *I, "(install)");
++	    using ::Header;
+ 	    headerFree(hdr);
+ 	    Fclose(fd);
+ 	    break;
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmsystem.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmsystem.cc	2015-02-08 16:23:09.601158619 +0100
+@@ -38,7 +38,6 @@
+ #include <stdlib.h>
+ #include <dirent.h>
+ #include <fcntl.h>
+-#include <rpm/rpmlib.h>
+ #include <assert.h>
+ #include <time.h>
+ 									/*}}}*/
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmversion.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmversion.cc	2015-02-08 16:31:54.937803242 +0100
+@@ -27,7 +27,7 @@
+ #include "rpmversion.h"
+ #include <apt-pkg/pkgcache.h>
+ 
+-#include <rpm/rpmlib.h>
++#include <rpm/rpm4compat.h>
+ 
+ #include <stdlib.h>
+ #include <assert.h>
+--- apt-0.5.15lorg3.94a/tools/genpkglist.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/tools/genpkglist.cc	2015-02-08 17:08:43.291043897 +0100
+@@ -6,7 +6,6 @@
+ #include <dirent.h>
+ #include <errno.h>
+ #include <fcntl.h>
+-#include <rpm/rpmlib.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/stat.h>
+--- apt-0.5.15lorg3.94a/tools/cached_md5.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/tools/cached_md5.cc	2015-02-08 17:09:19.007709065 +0100
+@@ -6,7 +6,6 @@
+ #include <dirent.h>
+ #include <errno.h>
+ #include <fcntl.h>
+-#include <rpm/rpmlib.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/stat.h>
+--- apt-0.5.15lorg3.94a/tools/gensrclist.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/tools/gensrclist.cc	2015-02-08 17:11:07.871037829 +0100
+@@ -6,7 +6,6 @@
+ #include <dirent.h>
+ #include <errno.h>
+ #include <fcntl.h>
+-#include <rpm/rpmlib.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/stat.h>
+--- apt-0.5.15lorg3.94a/tools/countpkglist.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/tools/countpkglist.cc	2015-02-08 17:12:58.104366537 +0100
+@@ -2,7 +2,7 @@
+ #include <errno.h>
+ #include <string.h>
+ 
+-#include <rpm/rpmlib.h>
++#include <rpm/rpm4compat.h>
+ 
+ int main(int argc, char *argv[])
+ {
