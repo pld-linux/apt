@@ -1,5 +1,7 @@
 # TODO:
 # - use system lua
+# NOTE: apt is currently not supported as PLD package manager;
+#       apt 0.5.x was never supported because of too greedy Obsoletes handling
 #
 # Conditional build:
 %bcond_without	python	# Python binding
