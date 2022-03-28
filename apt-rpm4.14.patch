@@ -1,0 +1,702 @@
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/aptcallback.cc.orig	2022-03-26 15:35:58.278412514 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/aptcallback.cc	2022-03-26 15:36:05.188375079 +0100
+@@ -23,7 +23,11 @@ static void getPackageData(const Header
+    Data.clear();
+    for (Tag = &copyTags[0]; *Tag != NULL; *Tag++) {
+       sprintf(rTag, "%%{%s}", *Tag);
++#if RPM_VERSION < 0x040600
+       char *s = headerSprintf(h, rTag, rpmTagTable, rpmHeaderFormats, NULL);
++#else
++      char *s = headerFormat(h, rTag, NULL);
++#endif
+       Data[*Tag] = s;
+       free(s);
+    }
+@@ -59,12 +63,20 @@ void * rpmCallback(const void * arg,
+ 	 return NULL;
+       fd = Fopen(filename, "r.ufdio");
+       if (fd)
++#if RPM_VERSION >= 0x040600
++	 fd = fdLink(fd);
++#else
+ 	 fd = fdLink(fd, "persist (showProgress)");
++#endif
+       return fd;
+       break;
+ 
+    case RPMCALLBACK_INST_CLOSE_FILE:
++#if RPM_VERSION >= 0x040600
++      fd = fdFree(fd);
++#else
+       fd = fdFree(fd, "persist (showProgress)");
++#endif
+       if (fd) {
+ 	 (void) Fclose(fd);
+ 	 fd = NULL;
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmhandler.h.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmhandler.h	2022-03-26 11:39:15.685354565 +0100
+@@ -62,9 +62,9 @@ class RPMHandler
+    off_t iSize;
+    string ID;
+ 
+-   unsigned int DepOp(int_32 rpmflags);
+-   bool InternalDep(const char *name, const char *ver, int_32 flag);
+-   bool PutDep(const char *name, const char *ver, int_32 flags,
++   unsigned int DepOp(int32_t rpmflags);
++   bool InternalDep(const char *name, const char *ver, int32_t flag);
++   bool PutDep(const char *name, const char *ver, int32_t flags,
+                unsigned int type, vector<Dependency*> &Deps);
+ 
+    public:
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmhandler.cc.orig	2022-03-26 16:00:06.463900352 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmhandler.cc	2022-03-27 08:01:59.956038790 +0200
+@@ -55,10 +55,10 @@
+ 
+ // XXX we'd need to include rpmsq.h but it's not valid C++ in many
+ // existing rpm versions so just declare rpmsqCaught extern.. sigh.
+-#if 1
+-extern sigset_t rpmsqCaught;
+-#else
++#if RPM_VERSION >= 0x040600
+ #include <rpm/rpmsq.h>
++#else
++extern sigset_t rpmsqCaught;
+ #endif
+ 
+ #define rpmxxInitIterator(a,b,c,d) rpmtsInitIterator(a,(rpmTag)b,c,d)
+@@ -68,8 +68,8 @@ extern sigset_t rpmsqCaught;
+ 
+ #ifndef RPM_HAVE_DATA_T
+ typedef void * rpm_data_t;
+-typedef int_32 rpm_count_t;
+-typedef int_32 rpm_tagtype_t;
++typedef int32_t rpm_count_t;
++typedef int32_t rpm_tagtype_t;
+ #endif
+ 
+ // An attempt to deal with false zero epochs from repomd. With older rpm's we
+@@ -97,10 +97,10 @@ string RPMHandler::EVR()
+    return evr;
+ } 
+ 
+-unsigned int RPMHandler::DepOp(int_32 rpmflags)
++unsigned int RPMHandler::DepOp(int32_t rpmflags)
+ {
+    unsigned int Op = 0;
+-   int_32 flags = (rpmflags & RPMSENSE_SENSEMASK);
++   int32_t flags = (rpmflags & RPMSENSE_SENSEMASK);
+    if (flags == RPMSENSE_ANY) {
+       Op = pkgCache::Dep::NoOp;
+    } else if (flags & RPMSENSE_LESS) {
+@@ -138,7 +138,7 @@ bool RPMHandler::HasFile(const char *Fil
+    return false;
+ }
+ 
+-bool RPMHandler::InternalDep(const char *name, const char *ver, int_32 flag) 
++bool RPMHandler::InternalDep(const char *name, const char *ver, int32_t flag) 
+ {
+    if (strncmp(name, "rpmlib(", strlen("rpmlib(")) == 0) {
+ #if RPM_VERSION >= 0x040100
+@@ -247,7 +247,7 @@ bool RPMHandler::InternalDep(const char
+    return false; 
+ }
+ 
+-bool RPMHandler::PutDep(const char *name, const char *ver, int_32 flags, 
++bool RPMHandler::PutDep(const char *name, const char *ver, int32_t flags, 
+ 			unsigned int Type, vector<Dependency*> &Deps)
+ {
+    if (InternalDep(name, ver, flags) == true) {
+@@ -282,43 +282,57 @@ bool RPMHandler::PutDep(const char *name
+ string RPMHdrHandler::Epoch()
+ {
+    char str[512] = "";
++   assert(HeaderP != NULL);
++#if RPM_VERSION >= 0x040600
++   int32_t epoch = headerGetNumber(HeaderP, RPMTAG_EPOCH);
++   snprintf(str, sizeof(str), "%i", epoch);
++#else
+    rpm_count_t count;
+    rpm_tagtype_t type;
+    rpm_data_t val;
+-   int_32 *epoch;
+-   assert(HeaderP != NULL);
++   int32_t *epoch;
+    int rc = headerGetEntry(HeaderP, RPMTAG_EPOCH, &type, &val, &count);
+-   epoch = (int_32*)val;
++   epoch = (int32_t*)val;
+    if (rc == 1 && count > 0) {
+       snprintf(str, sizeof(str), "%i", epoch[0]);
+    }
++#endif
+    return string(str);
+ }
+ 
+ off_t RPMHdrHandler::GetITag(rpmTag Tag)
+ {
++   assert(HeaderP != NULL);
++#if RPM_VERSION >= 0x040600
++   int32_t num = headerGetNumber(HeaderP, Tag);
++   return num;
++#else
+    rpm_count_t count;
+    rpm_tagtype_t type;
+    rpm_data_t val;
+-   int_32 *num;
+-   assert(HeaderP != NULL);
++   int32_t *num;
+    int rc = headerGetEntry(HeaderP, Tag,
+ 			   &type, &val, &count);
+-   num = (int_32*)val;
++   num = (int32_t*)val;
+    return rc?num[0]:0;
++#endif
+ }
+ 
+ string RPMHdrHandler::GetSTag(rpmTag Tag)
+ {
+-   const char *str;
++   assert(HeaderP != NULL);
++#if RPM_VERSION >= 0x040600
++   return string(headerGetString(HeaderP, Tag));
++#else
+    rpm_data_t val;
+    rpm_count_t count;
+    rpm_tagtype_t type;
+-   assert(HeaderP != NULL);
++   const char *str;
+    int rc = headerGetEntry(HeaderP, Tag,
+ 			   &type, &val, &count);
+    str = (const char *)val;
+    return string(rc?str:"");
++#endif
+ }
+ 
+ 
+@@ -341,7 +355,11 @@ bool RPMHdrHandler::PRCO(unsigned int Ty
+ 	 break;
+ #if RPM_VERSION >= 0x040403
+       case pkgCache::Dep::Suggests:
++#if RPM_VERSION >= 0x040600
++	 deptype = RPMTAG_SUGGESTNAME;
++#else
+ 	 deptype = RPMTAG_SUGGESTSNAME;
++#endif
+ 	 break;
+ #if 0 // Enhances dep type is not even known to apt, sigh..
+       case pkgCache::Dep::Enhances:
+@@ -371,7 +371,7 @@ bool RPMHdrHandler::PRCO(unsigned int Ty
+    char **verl = NULL;
+    int *flagl = NULL;
+    int res, type, count;
+-   int_32 deptag, depver, depflags;
++   int32_t deptag, depver, depflags;
+    void *nameval = NULL;
+    void *verval = NULL;
+    void *flagval = NULL;
+@@ -442,7 +442,7 @@ bool RPMHdrHandler::FileList(vector<stri
+ {
+    const char **names = NULL;
+    void *val = NULL;
+-   int_32 count = 0;
++   int32_t count = 0;
+    bool ret = true;
+    rpmHeaderGetEntry(HeaderP, RPMTAG_OLDFILENAMES,
+                      NULL, (void **) &val, &count);
+@@ -458,6 +476,36 @@ bool RPMHdrHandler::FileList(vector<stri
+ 
+ bool RPMHdrHandler::ChangeLog(vector<ChangeLogEntry *> &ChangeLogs)
+ {
++#if RPM_VERSION >= 0x040600
++   headerGetFlags flags = HEADERGET_MINMEM | HEADERGET_EXT;
++   rpmtd changelogtimes = rpmtdNew();
++   rpmtd changelognames = rpmtdNew();
++   rpmtd changelogtexts = rpmtdNew();
++
++   if (headerGet(HeaderP, RPMTAG_CHANGELOGTIME, changelogtimes, flags) &&
++       headerGet(HeaderP, RPMTAG_CHANGELOGNAME, changelognames, flags) &&
++       headerGet(HeaderP, RPMTAG_CHANGELOGTEXT, changelogtexts, flags)) {
++      rpmtdInit(changelogtimes);
++      rpmtdInit(changelognames);
++      rpmtdInit(changelogtexts);
++      while ((rpmtdNext(changelogtimes) != -1) &&
++	     (rpmtdNext(changelognames) != -1) &&
++	     (rpmtdNext(changelogtexts) != -1)) {
++         ChangeLogEntry *Entry = new ChangeLogEntry;
++         Entry->Time = rpmtdGetNumber(changelogtimes);
++	 Entry->Author = rpmtdGetString(changelognames);
++	 Entry->Text = rpmtdGetString(changelogtexts);
++         ChangeLogs.push_back(Entry);
++      }
++   }
++   rpmtdFreeData(changelogtimes);
++   rpmtdFreeData(changelognames);
++   rpmtdFreeData(changelogtexts);
++
++   rpmtdFree(changelogtimes);
++   rpmtdFree(changelognames);
++   rpmtdFree(changelogtexts);
++#else
+    int *timel = NULL;
+    char **authorl = NULL;
+    char **entryl = NULL;
+@@ -483,7 +531,8 @@ bool RPMHdrHandler::ChangeLog(vector<Cha
+    }
+    free(entryl);
+    free(authorl);
+-      
++#endif
++
+    return true;
+ }
+ 
+@@ -870,11 +919,20 @@ RPMDBHandler::~RPMDBHandler()
+     * There's a WTF involved as rpmCheckSignals() actually calls exit()
+     * so we shouldn't even get here really?!
+     */
++#if RPM_VERSION >= 0x040600
++   if (rpmsqIsCaught(SIGINT) ||
++       rpmsqIsCaught(SIGQUIT) ||
++       rpmsqIsCaught(SIGHUP) ||
++       rpmsqIsCaught(SIGTERM) ||
++       rpmsqIsCaught(SIGPIPE))
++#else
+    if (sigismember(&rpmsqCaught, SIGINT) || 
+        sigismember(&rpmsqCaught, SIGQUIT) ||
+        sigismember(&rpmsqCaught, SIGHUP) ||
+        sigismember(&rpmsqCaught, SIGTERM) ||
+-       sigismember(&rpmsqCaught, SIGPIPE)) {
++       sigismember(&rpmsqCaught, SIGPIPE))
++#endif
++   {
+       /* do nothing */
+    } else if (Handler != NULL) {
+       rpmtsFree(Handler);
+@@ -942,7 +942,7 @@ bool RPMDBHandler::Jump(off_t Offset)
+    iOffset = Offset;
+ #if RPM_VERSION >= 0x040000
+    // rpmdb indexes are hardcoded uint32_t, the size must match here
+-   uint_32 rpmOffset = iOffset;
++   uint32_t rpmOffset = iOffset;
+    if (RpmIter == NULL)
+       return false;
+    rpmdbFreeIterator(RpmIter);
+@@ -1265,7 +1265,7 @@ bool RPMRepomdHandler::PRCO(unsigned int
+       return true;
+    }
+    for (xmlNode *n = prco->children; n; n = n->next) {
+-      int_32 RpmOp = 0;
++      int32_t RpmOp = 0;
+       string deptype, depver;
+       xmlChar *depname, *flags;
+       if ((depname = xmlGetProp(n, (xmlChar*)"name")) == NULL) continue;
+@@ -1703,7 +1703,7 @@ bool RPMSqliteHandler::PRCO(unsigned int
+    }
+ 
+    while (prco->Step()) {
+-      int_32 RpmOp = 0;
++      int32_t RpmOp = 0;
+       string deptype, depver = "";
+       string e, v, r;
+ 
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmlistparser.h.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmlistparser.h	2022-03-26 21:29:55.630026571 +0100
+@@ -52,7 +52,7 @@ class rpmListParser : public pkgCacheGen
+    
+    bool ParseStatus(pkgCache::PkgIterator Pkg,pkgCache::VerIterator Ver);
+    bool ParseDepends(pkgCache::VerIterator Ver,
+-		     char **namel, char **verl, int_32 *flagl,
++		     char **namel, char **verl, int32_t *flagl,
+ 		     int count, unsigned int Type);
+    bool ParseDepends(pkgCache::VerIterator Ver, unsigned int Type);
+    bool ParseProvides(pkgCache::VerIterator Ver);
+--- apt-0.5.15lorg3.94a/tools/genpkglist.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/tools/genpkglist.cc	2022-03-28 18:03:32.655772212 +0200
+@@ -31,13 +31,13 @@
+ 
+ #ifndef RPM_HAVE_DATA_T
+ typedef void * rpm_data_t;
+-typedef int_32 rpm_count_t;
+-typedef int_32 rpm_tagtype_t;
++typedef int32_t rpm_count_t;
++typedef int32_t rpm_tagtype_t;
+ #endif
+ 
+ #define CRPMTAG_TIMESTAMP   1012345
+ 
+-int tags[] =  {
++rpmTagVal tags[] =  {
+        RPMTAG_NAME, 
+        RPMTAG_EPOCH,
+        RPMTAG_VERSION,
+@@ -70,9 +70,10 @@ int tags[] =  {
+        RPMTAG_OBSOLETEFLAGS,
+        RPMTAG_OBSOLETEVERSION,
+ 
+-       RPMTAG_FILEFLAGS
++       RPMTAG_FILEFLAGS,
++       0
+ };
+-int numTags = sizeof(tags) / sizeof(int);
++int numTags = sizeof(tags) / sizeof(int) - 1;
+ 
+ 
+ 
+@@ -84,7 +85,7 @@ typedef struct {
+ } UpdateInfo;
+ 
+ 
+-static inline int usefullFile(char *a)
++static inline int usefullFile(const char *a)
+ {
+    int l = strlen(a);
+    
+@@ -103,15 +104,74 @@ static inline int usefullFile(char *a)
+ 
+ static void copyStrippedFileList(Header header, Header newHeader)
+ {
++#if RPM_VERSION >= 0x040600
++   headerGetFlags flags = HEADERGET_MINMEM | HEADERGET_EXT;
++   rpmtd dirnames = rpmtdNew();
++   rpmtd basenames = rpmtdNew();
++   rpmtd dirindexes = rpmtdNew();
++
++   if (headerGet(header, RPMTAG_DIRNAMES, dirnames, flags) &&
++       headerGet(header, RPMTAG_BASENAMES, basenames, flags) &&
++       headerGet(header, RPMTAG_DIRINDEXES, dirindexes, flags)) {
++      rpmtdInit(dirnames);
++      rpmtdInit(basenames);
++      rpmtdInit(dirindexes);
++      std::map<std::string, uint32_t> dirToIndex;
++      std::vector<std::string> newBasenames, newDirnames;
++      std::vector<uint32_t> newDirindexes;
++      while ((rpmtdNext(basenames) != -1) && (rpmtdNext(dirindexes) != -1)) {
++         const char *basename = rpmtdGetString(basenames);
++	 uint32_t idx = rpmtdGetNumber(dirindexes);
++	 if (rpmtdSetIndex(dirnames, idx) == -1)
++            continue;
++	 const char *dirname = rpmtdGetString(dirnames);
++         bool ok = usefullFile(basename);
++	 if (!ok)
++            ok = usefullFile(dirname);
++	 if (ok) {
++             newBasenames.push_back(basename);
++	     uint32_t newIdx;
++	     if (dirToIndex.find(dirname) != dirToIndex.end())
++                newIdx = dirToIndex.at(dirname);
++	     else {
++		newIdx = newDirnames.size();
++		dirToIndex[dirname] = newIdx;
++                newDirnames.push_back(dirname);
++	     }
++	     newDirindexes.push_back(newIdx);
++	 }
++      }
++      if (newBasenames.size() > 0) {
++	 const char **data = new const char*[newDirnames.size()];
++	 for (size_t i = 0; i < newDirnames.size(); i++)
++            data[i] = newDirnames[i].c_str();
++	 headerPutStringArray(newHeader, RPMTAG_DIRNAMES, data, newDirnames.size());
++	 delete data;
++	 data = new const char*[newBasenames.size()];
++	 for (size_t i = 0; i < newBasenames.size(); i++)
++            data[i] = newBasenames[i].c_str();
++	 headerPutStringArray(newHeader, RPMTAG_BASENAMES, data, newBasenames.size());
++	 delete data;
++	 headerPutUint32(newHeader, RPMTAG_DIRINDEXES, newDirindexes.data(), newDirindexes.size());
++      }
++   }
++   rpmtdFreeData(dirnames);
++   rpmtdFreeData(basenames);
++   rpmtdFreeData(dirindexes);
++
++   rpmtdFree(dirnames);
++   rpmtdFree(basenames);
++   rpmtdFree(dirindexes);
++#else
+    rpm_count_t i, i1, i2;
+    
+    rpm_tagtype_t type1, type2, type3;
+    rpm_count_t count1, count2, count3;
+    char **dirnames = NULL, **basenames = NULL;
+-   int_32 *dirindexes = NULL;
++   int32_t *dirindexes = NULL;
+    rpm_data_t dirnameval = NULL, basenameval = NULL, dirindexval = NULL;
+    char **dnames, **bnames;
+-   int_32 *dindexes;
++   int32_t *dindexes;
+    int res1, res2, res3;
+    
+ #define FREE(a) if (a) free(a);
+@@ -124,7 +184,7 @@ static void copyStrippedFileList(Header
+ 			 &dirindexval, &count3);
+    dirnames = (char **)dirnameval;
+    basenames = (char **)basenameval;
+-   dirindexes = (int_32 *)dirindexval;
++   dirindexes = (int32_t *)dirindexval;
+    
+    if (res1 != 1 || res2 != 1 || res3 != 1) {
+       FREE(dirnames);
+@@ -134,7 +194,7 @@ static void copyStrippedFileList(Header
+ 
+    dnames = dirnames;
+    bnames = basenames;
+-   dindexes = (int_32*)malloc(sizeof(int_32)*count3);
++   dindexes = (int32_t*)malloc(sizeof(int32_t)*count3);
+    
+    i1 = 0;
+    i2 = 0;
+@@ -195,6 +255,7 @@ static void copyStrippedFileList(Header
+    FREE(dirnames);
+    FREE(basenames);
+    FREE(dindexes);
++#endif
+ }
+ 
+ 
+@@ -227,11 +288,11 @@ bool loadUpdateInfo(char *path, map<stri
+    return true;
+ }
+ 
+-#if RPM_VERSION >= 0x040000
++#if RPM_VERSION >= 0x040000 && RPM_VERSION < 0x040600
+ // No prototype from rpm after 4.0.
+ extern "C" {
+-int headerGetRawEntry(Header h, int_32 tag, int_32 * type,
+-		      void *p, int_32 *c);
++int headerGetRawEntry(Header h, int32_t tag, int32_t * type,
++		      void *p, int32_t *c);
+ }
+ #endif
+ 
+@@ -241,13 +302,16 @@ bool copyFields(Header h, Header newHead
+ 		bool fullFileList)
+ {
+    int i;
+-   int_32 size[1];
++   int32_t size[1];
+ 
+    size[0] = filesize;
+    
++#if RPM_VERSION >= 0x040600
++   headerCopyTags(h, newHeader, tags);
++#else
+    // the std tags
+    for (i = 0; i < numTags; i++) {
+-      int_32 type, count;
++      int32_t type, count;
+       void *data;
+       int res;
+       
+@@ -258,8 +322,28 @@ bool copyFields(Header h, Header newHead
+ 	 continue;
+       headerAddEntry(newHeader, tags[i], type, data, count);
+    }
++#endif
+  
+    if (fullFileList) {
++#if RPM_VERSION >= 0x040600
++      headerGetFlags flags = HEADERGET_MINMEM | HEADERGET_EXT;
++      rpmtd dnames = rpmtdNew();
++      rpmtd bnames = rpmtdNew();
++      rpmtd dindexes = rpmtdNew();
++      if (headerGet(h, RPMTAG_DIRNAMES, dnames, flags) &&
++          headerGet(h, RPMTAG_BASENAMES, bnames, flags) &&
++	  headerGet(h, RPMTAG_DIRINDEXES, dindexes, flags)) {
++         headerPut(newHeader, dnames, HEADERPUT_DEFAULT);
++         headerPut(newHeader, bnames, HEADERPUT_DEFAULT);
++         headerPut(newHeader, dindexes, HEADERPUT_DEFAULT);
++      }
++      rpmtdFreeData(dnames);
++      rpmtdFreeData(bnames);
++      rpmtdFreeData(dindexes);
++      rpmtdFree(dnames);
++      rpmtdFree(bnames);
++      rpmtdFree(dindexes);
++#else
+       rpm_tagtype_t type1, type2, type3;
+       rpm_count_t count1, count2, count3;
+       char **dnames, **bnames, **dindexes;
+@@ -282,17 +366,23 @@ bool copyFields(Header h, Header newHead
+ 	 headerAddEntry(newHeader, RPMTAG_BASENAMES, type2, bnames, count2);
+ 	 headerAddEntry(newHeader, RPMTAG_DIRINDEXES, type3, dindexes, count3);
+       }
++#endif
+    } else {
+        copyStrippedFileList(h, newHeader);
+    }
+    
+    // update index of srpms
+    if (idxfile) {
++      const char *srpm, *name;
++      int res;
++#if RPM_VERSION >= 0x040600
++      name = headerGetString(h, RPMTAG_NAME);
++      srpm = headerGetString(h, RPMTAG_SOURCERPM);
++      res = (name && srpm) ? 1 : 0;
++#else
+       rpm_tagtype_t type;
+       rpm_count_t count;
+       rpm_data_t srpmval, nameval;
+-      char *srpm, *name;
+-      int res;
+       
+       res = headerGetEntry(h, RPMTAG_NAME, &type, 
+ 			   &nameval, &count);
+@@ -300,23 +390,36 @@ bool copyFields(Header h, Header newHead
+ 			   &srpmval, &count);
+       name = (char *)nameval;
+       srpm = (char *)srpmval;
+-
++#endif
+       if (res == 1) {
+ 	 fprintf(idxfile, "%s %s\n", srpm, name);
+       }
+    }
+    // our additional tags
++#if RPM_VERSION >= 0x040600
++   uint32_t usize = size[0];
++   headerPutString(newHeader, CRPMTAG_DIRECTORY, directory);
++   headerPutString(newHeader, CRPMTAG_FILENAME, filename);
++   headerPutUint32(newHeader, CRPMTAG_FILESIZE, &usize, 1);
++#else
+    headerAddEntry(newHeader, CRPMTAG_DIRECTORY, RPM_STRING_TYPE,
+ 		  directory, 1);
+    headerAddEntry(newHeader, CRPMTAG_FILENAME, RPM_STRING_TYPE, 
+ 		  filename, 1);
+    headerAddEntry(newHeader, CRPMTAG_FILESIZE, RPM_INT32_TYPE,
+ 		  size, 1);
++#endif
+       
+    // update description tags
+    if (updateInfo.find(string(filename)) != updateInfo.end()) {
+-      const char *tmp;
+       string name = string(filename);
++#if RPM_VERSION >= 0x040600
++      headerPutString(newHeader, CRPMTAG_UPDATE_SUMMARY, updateInfo[name].summary.c_str());
++      headerPutString(newHeader, CRPMTAG_UPDATE_URL, updateInfo[name].url.c_str());
++      headerPutString(newHeader, CRPMTAG_UPDATE_DATE, updateInfo[name].date.c_str());
++      headerPutString(newHeader, CRPMTAG_UPDATE_IMPORTANCE, updateInfo[name].importance.c_str());
++#else
++      const char *tmp;
+       
+       tmp = updateInfo[name].summary.c_str();
+       headerAddEntry(newHeader, CRPMTAG_UPDATE_SUMMARY,
+@@ -334,6 +437,7 @@ bool copyFields(Header h, Header newHead
+       headerAddEntry(newHeader, CRPMTAG_UPDATE_IMPORTANCE,
+ 		     RPM_STRING_TYPE,
+ 		     tmp, 1);
++#endif
+    }
+    
+    return true;
+@@ -590,7 +694,11 @@ int main(int argc, char ** argv)
+ 
+ 	    md5cache->MD5ForFile(string(dirEntries[entry_cur]->d_name), 
+ 				 sb.st_mtime, md5);
++#if RPM_VERSION >= 0x040600
++	    headerPutString(newHeader, CRPMTAG_MD5, md5);
++#else
+ 	    headerAddEntry(newHeader, CRPMTAG_MD5, RPM_STRING_TYPE, md5, 1);
++#endif
+ 
+ 	    headerWrite(outfd, newHeader, HEADER_MAGIC_YES);
+ 	    
+--- apt-0.5.15lorg3.94a/tools/gensrclist.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/tools/gensrclist.cc	2022-03-28 18:20:13.380350822 +0200
+@@ -51,9 +51,10 @@ int tags[] =  {
+        
+        RPMTAG_REQUIREFLAGS, 
+        RPMTAG_REQUIRENAME,
+-       RPMTAG_REQUIREVERSION
++       RPMTAG_REQUIREVERSION,
++       0
+ };
+-int numTags = sizeof(tags) / sizeof(int);
++int numTags = sizeof(tags) / sizeof(int) - 1;
+ 
+ #if defined(__APPLE__) || defined(__FREEBSD__)
+ int selectDirent(struct dirent *ent)
+@@ -136,11 +137,11 @@ void usage()
+    cerr << " --cachedir=DIR  use a custom directory for package md5sum cache"<<endl;
+ }
+ 
+-#if RPM_VERSION >= 0x040000
++#if RPM_VERSION >= 0x040000 && RPM_VERSION < 0x040600
+ extern "C" {
+ // No prototype from rpm after 4.0.
+-int headerGetRawEntry(Header h, int_32 tag, int_32 * type,
+-		      void *p, int_32 *c);
++int headerGetRawEntry(Header h, int32_t tag, int32_t * type,
++		      void *p, int32_t *c);
+ }
+ #endif
+ 
+@@ -153,7 +154,7 @@ int main(int argc, char ** argv)
+    struct dirent **dirEntries;
+    int rc, i;
+    Header h;
+-   int_32 size[1];
++   int32_t size[1];
+    int entry_no, entry_cur;
+    CachedMD5 *md5cache;
+    map<string, list<char*>* > rpmTable; // table that maps srpm -> generated rpm
+@@ -333,6 +334,9 @@ int main(int argc, char ** argv)
+ 	    newHeader = headerNew();
+ 	    
+ 	    // the std tags
++#if RPM_VERSION >= 0x040600
++	    headerCopyTags(h, newHeader, tags);
++#else
+ 	    for (i = 0; i < numTags; i++) {
+ 	       int type, count;
+ 	       void *data;
+@@ -345,9 +349,16 @@ int main(int argc, char ** argv)
+ 		  continue;
+ 	       headerAddEntry(newHeader, tags[i], type, data, count);
+ 	    }
++#endif
+ 	    
+ 	    
+ 	    // our additional tags
++#if RPM_VERSION >= 0x040600
++	    uint32_t usize = size[0];
++	    headerPutString(newHeader, CRPMTAG_DIRECTORY, srpmdir.c_str());
++	    headerPutString(newHeader, CRPMTAG_FILENAME, dirEntries[entry_cur]->d_name);
++	    headerPutUint32(newHeader, CRPMTAG_FILESIZE, &usize, 1);
++#else
+ 	    headerAddEntry(newHeader, CRPMTAG_DIRECTORY, RPM_STRING_TYPE,
+ 			   srpmdir.c_str(), 1);
+ 	    
+@@ -355,14 +366,19 @@ int main(int argc, char ** argv)
+ 			   dirEntries[entry_cur]->d_name, 1);
+ 	    headerAddEntry(newHeader, CRPMTAG_FILESIZE, RPM_INT32_TYPE,
+ 			   size, 1);
++#endif
+ 	    
+ 	    {
+ 	       char md5[34];
+ 	       
+ 	       md5cache->MD5ForFile(dirEntries[entry_cur]->d_name, sb.st_mtime, md5);
+ 	       
++#if RPM_VERSION >= 0x040600
++	       headerPutString(newHeader, CRPMTAG_MD5, md5);
++#else
+ 	       headerAddEntry(newHeader, CRPMTAG_MD5, RPM_STRING_TYPE,
+ 			      md5, 1);
++#endif
+ 	    }
+ 	    
+ 	    foundInIndex = false;
+@@ -384,8 +400,12 @@ int main(int argc, char ** argv)
+ 	       }
+ 	       
+ 	       if (count) {
++#if RPM_VERSION >= 0x040600
++		  headerPutStringArray(newHeader, CRPMTAG_BINARY, l, count);
++#else
+ 		  headerAddEntry(newHeader, CRPMTAG_BINARY,
+ 				 RPM_STRING_ARRAY_TYPE, l, count);
++#endif
+ 	       }
+ 	    }
+ 	    if (foundInIndex || !mapi)

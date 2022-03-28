@@ -1,0 +1,22 @@
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmlistparser.h.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmlistparser.h	2022-03-26 21:29:55.630026571 +0100
+@@ -42,7 +42,7 @@ class rpmListParser : public pkgCacheGen
+    
+ #ifdef APT_WITH_GNU_HASH_MAP
+    typedef hash_map<const char*,bool,
+-   		    hash<const char*>,cstr_eq_pred> SeenPackagesType;
++   		    std::hash<const char*>,cstr_eq_pred> SeenPackagesType;
+ #else
+    typedef map<const char*,bool,cstr_lt_pred> SeenPackagesType;
+ #endif
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmpackagedata.h.orig	2022-03-26 15:57:50.104639074 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmpackagedata.h	2022-03-26 15:57:52.957956950 +0100
+@@ -32,7 +32,7 @@ class RPMPackageData
+    typedef map<string,pkgCache::VerIterator> VerMapValueType;
+    typedef hash_map<unsigned long,VerMapValueType> VerMapType;
+    typedef hash_map<const char*,int,
+-		    hash<const char*>,cstr_eq_pred> ArchScoresType;
++		    std::hash<const char*>,cstr_eq_pred> ArchScoresType;
+ #else
+    map<string,pkgCache::State::VerPriority> Priorities;
+    map<string,pkgCache::Flag::PkgFlags> Flags;

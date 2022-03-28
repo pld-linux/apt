@@ -5,6 +5,7 @@
 #
 # Conditional build:
 %bcond_without	python	# Python binding
+%bcond_with	rpm5	# build with rpm5 instead of rpm.org
 #
 Summary:	Debian's Advanced Packaging Tool with RPM support
 Summary(pl.UTF-8):	Zaawansowane narzędzie do zarządzania pakietami
@@ -29,6 +30,8 @@ Patch3:		%{name}-includes.patch
 Patch4:		%{name}-filed.patch
 Patch5:		%{name}-pld_user_in_ftp_pass.patch
 Patch6:		%{name}-format.patch
+Patch7:		%{name}-types.patch
+Patch8:		%{name}-rpm4.14.patch
 URL:		http://apt-rpm.org/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake >= 1:1.9.5
@@ -121,13 +124,15 @@ Wiązania Pythona do biblioteki libapt-pkg.
 
 %prep
 %setup -q -a5
-%patch0 -p1
+%{?with_rpm5:%patch0 -p1}
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
+%patch8 -p1
 
 # swig rebuild doesn't work (plain swig cannot cope with class Class::SubClass { })
 #%{__rm} python/{apt.py,apt_wrap.cxx}

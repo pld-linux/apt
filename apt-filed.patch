@@ -9,9 +9,9 @@
  msgstr ""
  "Da Sie nur eine einzelne Operation angefordert haben, ist es extrem\n"
  "wahrscheinlich, dass das Paket schlichtweg nicht installierbar ist und\n"
---- apt-0.5.5cnc3/po/es_ES.po.wiget	Thu Feb 27 17:18:58 2003
-+++ apt-0.5.5cnc3/po/es_ES.po	Thu Mar  6 17:39:08 2003
-@@ -815,7 +815,7 @@
+--- apt-0.5.15lorg3.94a/po/es_ES.po.orig	2022-03-07 10:47:14.282241858 +0100
++++ apt-0.5.15lorg3.94a/po/es_ES.po	2022-03-26 11:07:12.459106909 +0100
+@@ -702,7 +702,7 @@ msgstr ""
  msgid ""
  "Since you only requested a single operation it is extremely likely that\n"
  "the package is simply not installable and a bug report against\n"
@@ -19,7 +19,7 @@
 +"that package should be filled."
  msgstr "Como solicitó solamente una única operación, es muy probable que"
  
- #: cmdline/apt-get.cc:2099 cmdline/apt-shell.cc:2180
+ #: cmdline/apt-get.cc:1368 cmdline/apt-shell.cc:1404
 --- apt-0.5.5cnc3/po/it_IT.po.wiget	Thu Feb 27 17:18:30 2003
 +++ apt-0.5.5cnc3/po/it_IT.po	Thu Mar  6 17:39:08 2003
 @@ -815,7 +815,7 @@
