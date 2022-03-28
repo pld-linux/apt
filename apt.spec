@@ -55,7 +55,7 @@ BuildRequires:	swig-python
 Requires:	gnupg
 Requires:	libxml2 >= 1:2.6
 Requires:	rpm
-Obsoletes:	libapt-pkg
+Obsoletes:	libapt-pkg < 0.3.19cnc36
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -83,7 +83,7 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
 Requires:	libxml2-devel >= 1:2.6
 Requires:	rpm-devel >= 5
-Obsoletes:	libapt-pkg-devel
+Obsoletes:	libapt-pkg-devel < 0.3.19cnc36
 
 %description devel
 This package contains the header files and static libraries for
@@ -102,7 +102,7 @@ Summary:	Static libapt-pkg library
 Summary(pl.UTF-8):	Statyczna biblioteka libapt-pkg
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
-Obsoletes:	libapt-pkg-static
+Obsoletes:	libapt-pkg-static < 0.3.19cnc36
 
 %description static
 Static libapt-pkg library.
