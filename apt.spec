@@ -32,6 +32,7 @@ Patch5:		%{name}-pld_user_in_ftp_pass.patch
 Patch6:		%{name}-format.patch
 Patch7:		%{name}-types.patch
 Patch8:		%{name}-rpm4.14.patch
+Patch9:		%{name}-rpm4.20.patch
 URL:		http://apt-rpm.org/
 BuildRequires:	autoconf >= 2.59
 BuildRequires:	automake >= 1:1.9.5
@@ -45,6 +46,7 @@ BuildRequires:	libxml2-devel >= 1:2.6
 BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 BuildRequires:	rpm-devel >= 5
+BuildRequires:	rpmbuild(macros) >= 2.043
 BuildRequires:	sqlite3-devel
 BuildRequires:	zlib-devel
 %if %{with python}
@@ -133,6 +135,7 @@ Wiązania Pythona do biblioteki libapt-pkg.
 %patch -P6 -p1
 %patch -P7 -p1
 %patch -P8 -p1
+%patch -P9 -p1
 
 # swig rebuild doesn't work (plain swig cannot cope with class Class::SubClass { })
 #%{__rm} python/{apt.py,apt_wrap.cxx}
@@ -145,7 +148,8 @@ Wiązania Pythona do biblioteki libapt-pkg.
 %{__autoheader}
 %{__automake}
 CXXFLAGS="%{rpmcxxflags} -fpermissive"
-bash %configure
+%define	configureshell bash
+%configure
 
 %{__make}
 
@@ -175,7 +179,7 @@ cp -p python/apt.py $RPM_BUILD_ROOT%{py_sitedir}
 %py_postclean
 %endif
 
-install doc/pl/*.8 $RPM_BUILD_ROOT%{_mandir}/pl/man8
+cp -p doc/pl/*.8 $RPM_BUILD_ROOT%{_mandir}/pl/man8
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/apt/methods/bzip2
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/apt/methods/ssh
@@ -213,8 +217,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/genbasedir
 %attr(755,root,root) %{_bindir}/genpkglist
 %attr(755,root,root) %{_bindir}/gensrclist
-%attr(755,root,root) %{_libdir}/libapt-pkg.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libapt-pkg.so.3
+%{_libdir}/libapt-pkg.so.*.*.*
+%ghost %{_libdir}/libapt-pkg.so.3
 %dir %{_libdir}/apt
 %dir %{_libdir}/apt/methods
 %attr(755,root,root) %{_libdir}/apt/methods/*
@@ -243,7 +247,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libapt-pkg.so
+%{_libdir}/libapt-pkg.so
 %{_libdir}/libapt-pkg.la
 %{_includedir}/apt-pkg
 %{_pkgconfigdir}/libapt-pkg.pc
@@ -255,6 +259,6 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python}
 %files -n python-apt
 %defattr(644,root,root,755)
-%attr(755,root,root) %{py_sitedir}/_apt.so
+%{py_sitedir}/_apt.so
 %{py_sitedir}/apt.py[co]
 %endif

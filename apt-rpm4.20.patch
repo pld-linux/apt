@@ -1,0 +1,43 @@
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmhandler.cc.orig	2026-09-19 16:14:46.594186630 +0200
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmhandler.cc	2026-09-19 16:29:01.966219349 +0200
+@@ -912,6 +912,7 @@ RPMDBHandler::~RPMDBHandler()
+ #endif
+ 
+ #if RPM_VERSION >= 0x040100
++#if RPM_VERSION < 0x041300
+    /* 
+     * If termination signal, do nothing as rpmdb has already freed
+     * our ts set behind our back and rpmtsFree() will crash and burn with a 
+@@ -934,7 +935,9 @@ RPMDBHandler::~RPMDBHandler()
+ #endif
+    {
+       /* do nothing */
+-   } else if (Handler != NULL) {
++   } else
++#endif
++   if (Handler != NULL) {
+       rpmtsFree(Handler);
+    }
+ #else
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmversion.cc.orig	2008-01-12 10:45:07.000000000 +0100
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmversion.cc	2026-09-19 16:41:38.952118404 +0200
+@@ -205,7 +205,7 @@ bool rpmVersioningSystem::CheckDep(const
+ #if RPM_VERSION >= 0x040100
+    rpmds pds = rpmdsSingle(RPMTAG_PROVIDENAME, "", PkgVer, PkgFlags);
+    rpmds dds = rpmdsSingle(RPMTAG_REQUIRENAME, "", DepVer, DepFlags);
+-#if RPM_VERSION >= 0x040201
++#if (RPM_VERSION >= 0x040201) && (RPM_VERSION < 0x041000)
+    rpmdsSetNoPromote(pds, _rpmds_nopromote);
+    rpmdsSetNoPromote(dds, _rpmds_nopromote);
+ #endif
+--- apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmsystem.cc.orig	2026-09-19 16:44:00.334685802 +0200
++++ apt-0.5.15lorg3.94a/apt-pkg/rpm/rpmsystem.cc	2026-09-19 16:46:09.523985923 +0200
+@@ -147,7 +147,7 @@ bool rpmSystem::Initialize(Configuration
+    Cnf.CndSet("Acquire::CDROM::Mount", "/media/cdrom");
+    Cnf.CndSet("Acquire::CDROM::Copy-All", "true");
+ 
+-#if RPM_VERSION >= 0x040201
++#if (RPM_VERSION >= 0x040201) && (RPM_VERSION < 0x041000)
+    const char *RPMOptions[] =
+    {
+       "RPM::Options",
